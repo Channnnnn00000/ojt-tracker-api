@@ -1,0 +1,95 @@
+const mongoose = require("mongoose");
+
+const coordinatorSchema = new mongoose.Schema({
+  assignedCourse: {
+    type: String,
+    required: true,
+    default: "BSIT",
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  firstname: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  middlename: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  lastname: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  sex: {
+    type: String,
+    required: true,
+    default: "Male",
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    default: "Coor@coor.com",
+  },
+  birthday: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  contactNumber: {
+    type: Number,
+    required: true,
+    default: 12345,
+  },
+  province: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  city: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  brgy: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+  street: {
+    type: String,
+    required: true,
+    default: "Coor",
+  },
+
+  createdAt: {
+    type: String,
+    default: getDateValue(),
+  },
+  updatedAt: {
+    type: String,
+    default: getDateValue(),
+  },
+});
+
+function getDateValue() {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+  let finaldate;
+
+  return (finaldate = `${month} ${day}, ${year}`);
+}
+
+const Coordinator = mongoose.model("Coordinator", coordinatorSchema);
+module.exports = Coordinator;
