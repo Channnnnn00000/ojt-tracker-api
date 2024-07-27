@@ -39,10 +39,9 @@ class AdminController {
   }
   async hteRegistration(req, res) {
     try {
-      const newHTE = await adminService.registerHTE(req.body);
+      await adminService.registerHTE(req.body);
       res.status(201).json({
         message: "New HTE Added",
-        content: newHTE,
       });
     } catch (error) {
       res.status(500).json({
@@ -76,10 +75,36 @@ class AdminController {
   }
 
   // Get list of users for each role
+  async getAllUsers(req, res) {
+    try {
+      const listOfUsers = await adminService.getAllUsers();
+      if (listOfUsers.length === 0) {
+        return res.status(201).json({
+          message: "Request Success!",
+          data: "No users found",
+        });
+      }
+      return res.status(201).json({
+        message: "Success!",
+        data: listOfUsers,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
   async getAdminUsers(req, res) {
     try {
       const listOfAdmin = await adminService.getAdmin();
-      res.status(201).json({
+      if (listOfAdmin.length === 0) {
+        return res.status(201).json({
+          message: "Request Success!",
+          data: "No admin users found",
+        });
+      }
+      return res.status(201).json({
         message: "Success!",
         data: listOfAdmin,
       });
@@ -92,6 +117,12 @@ class AdminController {
   async getHteUsers(req, res) {
     try {
       const listOfHTE = await adminService.getHTE();
+      if (listOfHTE.length === 0) {
+        return res.status(201).json({
+          message: "Request Success!",
+          data: "No hte users found",
+        });
+      }
       res.status(201).json({
         message: "Success!",
         data: listOfHTE,
@@ -105,6 +136,12 @@ class AdminController {
   async getCoorUsers(req, res) {
     try {
       const listOfCoor = await adminService.getCoor();
+      if (listOfCoor.length === 0) {
+        return res.status(201).json({
+          message: "Request Success!",
+          data: "No coor users found",
+        });
+      }
       res.status(201).json({
         message: "Success!",
         data: listOfCoor,
@@ -118,6 +155,12 @@ class AdminController {
   async getInternUsers(req, res) {
     try {
       const listOfIntern = await adminService.getIntern();
+      if (listOfIntern.length === 0) {
+        return res.status(201).json({
+          message: "Request Success!",
+          data: "No intern users found",
+        });
+      }
       res.status(201).json({
         message: "Success!",
         data: listOfIntern,

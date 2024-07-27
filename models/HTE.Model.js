@@ -1,15 +1,6 @@
 const mongoose = require("mongoose");
 
 const hteSchema = new mongoose.Schema({
-  // username: {
-  //   type: String,
-  //   required: true,
-  //   unique: true,
-  // },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
   name: {
     type: String,
     required: true,
@@ -57,6 +48,18 @@ function getDateValue() {
 
   return (finaldate = `${month} ${day}, ${year}`);
 }
+
+hteSchema.methods.postJob = function (jobDetails) {
+  const newJob = new JobVacancy({ ...jobDetails, company: this._id });
+  return newJob.save().then((job) => {
+    this.jobVacancies.push(job._id);
+    return this.save().then(() => job);
+  });
+};
+
+hteSchema.methods.getPostedJobs = function () {
+  return JobVacancy.find({ company: this._id });
+};
 
 const HTE = mongoose.model("HTE", hteSchema);
 module.exports = HTE;

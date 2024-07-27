@@ -2,13 +2,15 @@ const hteService = require("../services/hteService");
 
 class HteController {
   async postInternship(req, res) {
-    // const { title, description, slots, location } = req.body;
-    console.log(req.body);
     try {
-      const newInternship = await hteService.postVacancy(req.body);
+      await hteService.postVacancy(req.user.userId, {
+        title: req.body.title,
+        description: req.body.description,
+        slots: req.body.slots,
+        location: req.body.location,
+      });
       res.status(201).json({
         message: "Internship posted!",
-        data: newInternship,
       });
     } catch (error) {
       res.status(500).json({
@@ -46,7 +48,9 @@ class HteController {
   }
   async getListOfInternship(req, res) {
     try {
-      const listOfIntership = await hteService.getPostedInternship();
+      const listOfIntership = await hteService.getPostedInternship(
+        req.user.userId
+      );
       console.log(listOfIntership);
       res.status(201).json({
         message: "Success!",
@@ -58,19 +62,20 @@ class HteController {
       });
     }
   }
+
   async login(req, res) {
     const { username, password } = req.body;
     try {
-      const token = await authService.loginUser(username, password);
+      const token = await hteService.loginUser(username, password);
       if (!token)
         return res.status(401).json({ message: "Invalid credentials" });
 
-      //   res.cookie("jwt", token, {
-      //     httpOnly: true,
-      //     secure: true,
-      //     sameSite: "none",
-      //   });
-      res.setHeader("Authorization", `Bearer ${token}`);
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      });
+      // res.setHeader("Authorization", `Bearer ${token}`);
       res.json({ token });
     } catch (error) {
       res.status(500).json({

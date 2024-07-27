@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 class AdminService {
   // Authentication
   async loginAdmin(username, password) {
-    const user = await Admin.findOne({ username });
+    const user = await User.findOne({ username });
     if (!user) return null;
     const isMatch = await bcrypt.compare(password, user.password);
     return isMatch ? jwtUtils.generateToken(user._id) : null;
@@ -38,14 +38,19 @@ class AdminService {
       password: hashedPassword,
       email: payload.email,
       role: payload.role,
-      profile: new HTE({
-        name: payload.companyName,
-        contact: payload.contactNumber,
-        address: payload.address,
-        hasMoa: payload.hasMoa,
-        moaAttachement: payload.moaAttachement,
-      }),
     });
+    await newUser.save();
+
+    const profile = new HTE({
+      name: payload.companyName,
+      contact: payload.contactNumber,
+      address: payload.address,
+      hasMoa: payload.hasMoa,
+      moaAttachement: payload.moaAttachement,
+    });
+    await profile.save();
+
+    newUser.profile = profile._id;
     await newUser.save();
   }
   async registerCoordinator(payload) {
@@ -84,22 +89,27 @@ class AdminService {
   }
 
   //Viewing the users
+
+  async getAllUsers() {
+    return await User.find().exec();
+  }
+
   async getAdmin() {
-    return await Admin.find().exec();
+    return await User.find({ role: "admin" }).exec();
   }
   async getHTE() {
-    return await HTE.find().exec();
+    return await User.find({ role: "hte" }).exec();
   }
   async getCoor() {
-    return await Coordinator.find().exec();
+    return await User.find({ role: "coordinator" }).exec();
   }
   async getIntern() {
-    return await Intern.find().exec();
+    return await User.find({ role: "intern" }).exec();
   }
 
   // Update Section
   async updateAdmin(id, payload) {
-    const updatedData = await Admin.findByIdAndUpdate(id, payload, {
+    const updatedData = await User.findByIdAndUpdate(id, payload, {
       new: true,
       runValidators: true,
     });

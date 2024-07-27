@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const internVacancySchema = new mongoose.Schema({
-  company: {},
   title: {
     type: String,
     required: true,
@@ -19,6 +18,8 @@ const internVacancySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  acceptedApplicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   createdAt: {
     type: String,
     default: getDateValue(),
