@@ -1,4 +1,4 @@
-const Internship = require("../models/Internship.Model");
+const Internship = require("../models/InternVacancy.Model");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 

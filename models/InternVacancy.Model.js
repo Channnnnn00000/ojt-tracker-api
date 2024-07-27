@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const internshipSchema = new mongoose.Schema({
+const internVacancySchema = new mongoose.Schema({
+  company: {},
   title: {
     type: String,
     required: true,
@@ -18,12 +19,6 @@ const internshipSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  applicantsList: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Application",
-    },
-  ],
   createdAt: {
     type: String,
     default: getDateValue(),
@@ -44,5 +39,5 @@ function getDateValue() {
   return (finaldate = `${month} ${day}, ${year}`);
 }
 
-const Internship = mongoose.model("Internship", internshipSchema);
-module.exports = Internship;
+const InternVacancy = mongoose.model("InternVacancy", internVacancySchema);
+module.exports = InternVacancy;

@@ -2,71 +2,84 @@ const mongoose = require("mongoose");
 
 const internSchema = new mongoose.Schema({
   // Format userid + @dhvsu.edu.ph
-  username: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  firstname: {
-    type: String,
-    required: true,
-    default: "intern",
-  },
-  middlename: {
+  // username: {
+  //   type: String,
+  //   required: true,
+  // },
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
+  fullName: {
     type: String,
     required: true,
     default: "intern",
   },
-  lastname: {
+  resume: {
     type: String,
-    required: true,
-    default: "intern",
+    default: "intern url for resume",
   },
-  email: {
-    type: String,
-    required: true,
-    default: "intern",
-  },
-  age: {
-    type: Number,
-    required: true,
-    default: 20,
-  },
+  appliedInternships: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "InternVacancy",
+    },
+  ],
+  acceptedInternships: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "InternVacancy",
+    },
+  ],
+  dailyTimeRecords: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DailyTimeRecord",
+    },
+  ],
 
-  sex: {
-    type: String,
-    required: true,
-    default: "Male",
-  },
+  // email: {
+  //   type: String,
+  //   required: true,
+  //   default: "intern",
+  // },
+  // age: {
+  //   type: Number,
+  //   required: true,
+  //   default: 20,
+  // },
 
-  birthday: {
-    type: String,
-    required: true,
-    default: "intern",
-  },
-  contactNumber: {
-    type: Number,
-    required: true,
-    default: 12345,
-  },
-  province: {
-    type: String,
-    required: true,
-    default: "intern",
-  },
-  municipality: {
-    type: String,
-    required: true,
-    default: "intern",
-  },
-  province: {
-    type: String,
-    required: true,
-    default: "intern",
-  },
+  // sex: {
+  //   type: String,
+  //   required: true,
+  //   default: "Male",
+  // },
+
+  // birthday: {
+  //   type: String,
+  //   required: true,
+  //   default: "intern",
+  // },
+  // contactNumber: {
+  //   type: Number,
+  //   required: true,
+  //   default: 12345,
+  // },
+  // province: {
+  //   type: String,
+  //   required: true,
+  //   default: "intern",
+  // },
+  // municipality: {
+  //   type: String,
+  //   required: true,
+  //   default: "intern",
+  // },
+  // province: {
+  //   type: String,
+  //   required: true,
+  //   default: "intern",
+  // },
   // applicationList: [
   //   {
   //     type: mongoose.Schema.Types.ObjectId,

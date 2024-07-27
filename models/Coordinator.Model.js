@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
 const coordinatorSchema = new mongoose.Schema({
+  // username: {
+  //   type: String,
+  //   required: true,
+  // },
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
   assignedCourse: {
     type: String,
     required: true,
     default: "BSIT",
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
   },
   firstname: {
     type: String,
@@ -29,47 +29,57 @@ const coordinatorSchema = new mongoose.Schema({
     required: true,
     default: "Coor",
   },
-  sex: {
-    type: String,
-    required: true,
-    default: "Male",
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    default: "Coor@coor.com",
-  },
-  birthday: {
-    type: String,
-    required: true,
-    default: "Coor",
-  },
-  contactNumber: {
+  contact: {
     type: Number,
     required: true,
     default: 12345,
   },
-  province: {
+  address: {
     type: String,
     required: true,
-    default: "Coor",
+    default: "Coor Address here",
   },
-  city: {
-    type: String,
-    required: true,
-    default: "Coor",
-  },
-  brgy: {
-    type: String,
-    required: true,
-    default: "Coor",
-  },
-  street: {
-    type: String,
-    required: true,
-    default: "Coor",
-  },
+  // sex: {
+  //   type: String,
+  //   required: true,
+  //   default: "Male",
+  // },
+  // email: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  //   default: "Coor@coor.com",
+  // },
+  // birthday: {
+  //   type: String,
+  //   required: true,
+  //   default: "Coor",
+  // },
+  // contactNumber: {
+  //   type: Number,
+  //   required: true,
+  //   default: 12345,
+  // },
+  // province: {
+  //   type: String,
+  //   required: true,
+  //   default: "Coor",
+  // },
+  // city: {
+  //   type: String,
+  //   required: true,
+  //   default: "Coor",
+  // },
+  // brgy: {
+  //   type: String,
+  //   required: true,
+  //   default: "Coor",
+  // },
+  // street: {
+  //   type: String,
+  //   required: true,
+  //   default: "Coor",
+  // },
 
   createdAt: {
     type: String,

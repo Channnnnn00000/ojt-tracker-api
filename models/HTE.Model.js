@@ -1,23 +1,19 @@
 const mongoose = require("mongoose");
 
 const hteSchema = new mongoose.Schema({
+  // username: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
   name: {
     type: String,
     required: true,
     default: "ABC",
-  },
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    default: null,
   },
   contactNumber: {
     type: Number,
@@ -36,10 +32,10 @@ const hteSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  internshipList: [
+  internVacancy: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Internship",
+      ref: "InternVacancy",
     },
   ],
   createdAt: {

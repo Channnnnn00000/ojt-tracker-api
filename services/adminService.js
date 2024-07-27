@@ -1,6 +1,7 @@
 const HTE = require("../models/HTE.Model");
 const Admin = require("../models/Admin.Model");
 const Coordinator = require("../models/Coordinator.Model");
+const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
@@ -8,9 +9,7 @@ const bcrypt = require("bcryptjs");
 class AdminService {
   // Authentication
   async loginAdmin(username, password) {
-    console.log(username);
     const user = await Admin.findOne({ username });
-    console.log(user);
     if (!user) return null;
     const isMatch = await bcrypt.compare(password, user.password);
     return isMatch ? jwtUtils.generateToken(user._id) : null;
@@ -19,36 +18,67 @@ class AdminService {
   // Registering the accounts
   async registerAdmin(payload) {
     const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const newAdmin = new Admin({
+    const newUser = new User({
       username: payload.username,
       password: hashedPassword,
+      email: payload.email,
+      role: payload.role,
+      profile: new Admin({
+        firstname: payload.firstname,
+        middlename: payload.middlename,
+        lastname: payload.lastname,
+      }),
     });
-    return await newAdmin.save();
+    await newUser.save();
   }
   async registerHTE(payload) {
-    console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const newHTE = new HTE({
+    const newUser = new User({
       username: payload.username,
       password: hashedPassword,
+      email: payload.email,
+      role: payload.role,
+      profile: new HTE({
+        name: payload.companyName,
+        contact: payload.contactNumber,
+        address: payload.address,
+        hasMoa: payload.hasMoa,
+        moaAttachement: payload.moaAttachement,
+      }),
     });
-    return await newHTE.save();
+    await newUser.save();
   }
   async registerCoordinator(payload) {
-    console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const newCoor = new Coordinator({
+    const newUser = new User({
       username: payload.username,
       password: hashedPassword,
+      email: payload.email,
+      role: payload.role,
+      profile: new Coordinator({
+        assignedCourse: payload.assignedCourse,
+        firstname: payload.firstname,
+        middlename: payload.middlename,
+        lastname: payload.lastname,
+        contact: payload.contactNumber,
+        address: payload.address,
+      }),
     });
-    return await newCoor.save();
+    await newUser.save();
   }
   async registerIntern(payload) {
     console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const newIntern = new Intern({
+    const newIntern = new User({
       username: payload.username + "@dhvsu.edu.ph",
       password: hashedPassword,
+      email: payload.email,
+      role: payload.role,
+      profile: new Intern({
+        firstname: payload.firstname,
+        middlename: payload.middlename,
+        lastname: payload.lastname,
+      }),
     });
     return await newIntern.save();
   }

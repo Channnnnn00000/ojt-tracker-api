@@ -1,15 +1,20 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-const userSchema = new mongoose.Schema({
-  username: {
+const userSchema = new Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  role: {
     type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
+    enum: ["hte", "coordinator", "intern", "admin"],
     required: true,
   },
+  profile: {
+    // Different profiles based on the role
+    type: Schema.Types.Mixed,
+  },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const User = mongoose.model("User", userSchema);

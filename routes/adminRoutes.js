@@ -10,8 +10,9 @@ router.get("/coor", adminController.getCoorUsers);
 router.get("/intern", adminController.getInternUsers);
 
 // Registration
+router.post("/user", adminController.userRegistration);
 router.post("/hte", adminController.hteRegistration);
-router.post("/admin", adminController.adminRegistration);
+// router.post("/admin", adminController.adminRegistration);
 router.post("/coor", adminController.coorRegistration);
 router.post("/intern", adminController.internRegistration);
 

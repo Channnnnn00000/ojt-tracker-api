@@ -4,7 +4,6 @@ class AdminController {
   // Authentication
   async login(req, res) {
     const { username, password } = req.body;
-    console.log(username);
     try {
       const token = await adminService.loginAdmin(username, password);
       if (!token)
@@ -24,12 +23,13 @@ class AdminController {
     }
   }
   // Registration of each role
-  async adminRegistration(req, res) {
+
+  async userRegistration(req, res) {
     try {
-      const newInternship = await adminService.registerAdmin(req.body);
+      const newUser = await adminService.registerAdmin(req.body);
       res.status(201).json({
         message: "New Admin added",
-        content: newInternship.username,
+        content: newUser,
       });
     } catch (error) {
       res.status(500).json({
@@ -39,10 +39,10 @@ class AdminController {
   }
   async hteRegistration(req, res) {
     try {
-      const newInternship = await adminService.registerHTE(req.body);
+      const newHTE = await adminService.registerHTE(req.body);
       res.status(201).json({
         message: "New HTE Added",
-        content: newInternship,
+        content: newHTE,
       });
     } catch (error) {
       res.status(500).json({
@@ -52,10 +52,9 @@ class AdminController {
   }
   async coorRegistration(req, res) {
     try {
-      const newCoor = await adminService.registerCoordinator(req.body);
+      await adminService.registerCoordinator(req.body);
       res.status(201).json({
         message: "New Coordinator added",
-        content: newCoor.username,
       });
     } catch (error) {
       res.status(500).json({
@@ -65,10 +64,9 @@ class AdminController {
   }
   async internRegistration(req, res) {
     try {
-      const newIntern = await adminService.registerIntern(req.body);
+      await adminService.registerIntern(req.body);
       res.status(201).json({
         message: "New Intern added",
-        content: newIntern.username,
       });
     } catch (error) {
       res.status(500).json({

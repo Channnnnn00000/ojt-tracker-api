@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
+  // username: {
+  //   type: String,
+  //   required: true,
+  // },
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
   firstname: {
     type: String,
     required: true,
@@ -24,48 +24,48 @@ const adminSchema = new mongoose.Schema({
     required: true,
     default: "Admin",
   },
-  sex: {
-    type: String,
-    required: true,
-    default: "Male",
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    default: "Admin@admin.com",
-  },
-  birthday: {
-    type: String,
-    required: true,
+  // sex: {
+  //   type: String,
+  //   required: true,
+  //   default: "Male",
+  // },
+  // email: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  //   default: "Admin@admin.com",
+  // },
+  // birthday: {
+  //   type: String,
+  //   required: true,
 
-    default: "Admin",
-  },
-  contactNumber: {
-    type: Number,
-    required: true,
-    default: 12345,
-  },
-  province: {
-    type: String,
-    required: true,
-    default: "Admin",
-  },
-  city: {
-    type: String,
-    required: true,
-    default: "Admin",
-  },
-  brgy: {
-    type: String,
-    required: true,
-    default: "Admin",
-  },
-  street: {
-    type: String,
-    required: true,
-    default: "Admin",
-  },
+  //   default: "Admin",
+  // },
+  // contactNumber: {
+  //   type: Number,
+  //   required: true,
+  //   default: 12345,
+  // },
+  // province: {
+  //   type: String,
+  //   required: true,
+  //   default: "Admin",
+  // },
+  // city: {
+  //   type: String,
+  //   required: true,
+  //   default: "Admin",
+  // },
+  // brgy: {
+  //   type: String,
+  //   required: true,
+  //   default: "Admin",
+  // },
+  // street: {
+  //   type: String,
+  //   required: true,
+  //   default: "Admin",
+  // },
 
   createdAt: {
     type: String,
