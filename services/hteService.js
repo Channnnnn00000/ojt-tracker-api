@@ -23,17 +23,21 @@ class HTEService {
     await profileData.save();
   }
   async getPostedInternship(id) {
-    return await InternshipVacancy.find({ hte: id }).exec();
+    const userData = await User.findOne({ _id: id }).exec();
+    const profileData = await HTE.findOne({ _id: userData.profile })
+      .populate("internVacancy")
+      .exec();
+    return profileData.internVacancy;
   }
   async updatePostVacancy(id, payload) {
-    const updatedData = await Internship.findByIdAndUpdate(id, payload, {
+    const updatedData = await InternshipVacancy.findByIdAndUpdate(id, payload, {
       new: true,
       runValidators: true,
     });
     return updatedData;
   }
   async deletePostVacancy(id) {
-    return await Internship.findByIdAndDelete(id);
+    return await InternshipVacancy.findByIdAndDelete(id);
   }
 }
 

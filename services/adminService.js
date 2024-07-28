@@ -74,18 +74,21 @@ class AdminService {
   async registerIntern(payload) {
     console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const newIntern = new User({
+    const newUser = new User({
       username: payload.username + "@dhvsu.edu.ph",
       password: hashedPassword,
       email: payload.email,
       role: payload.role,
-      profile: new Intern({
-        firstname: payload.firstname,
-        middlename: payload.middlename,
-        lastname: payload.lastname,
-      }),
     });
-    return await newIntern.save();
+    await newUser.save();
+    const internProfile = new Intern({
+      fullName: payload.fullName,
+      resume: payload.resume,
+    });
+    await internProfile.save();
+
+    newUser.profile = internProfile._id;
+    await newUser.save();
   }
 
   //Viewing the users

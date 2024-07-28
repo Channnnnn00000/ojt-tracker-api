@@ -2,22 +2,30 @@ const mongoose = require("mongoose");
 
 const internApplicationSchema = new mongoose.Schema({
   // Format userid + @dhvsu.edu.ph
-  studentID: {
-    type: String,
-    required: true,
+  internId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
-  status: {
-    type: String,
-    default: "Pending",
+  internVacancy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InternVacancy",
   },
   intern_resume: {
     type: String,
+    default: "resume link",
   },
-  endorsement_form: {
+  intern_eform: {
     type: String,
+    default: "endorsement link",
   },
   moa_hte: {
     type: String,
+    default: "moe link",
+  },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "rejected"],
+    default: "pending",
   },
   createdAt: {
     type: String,

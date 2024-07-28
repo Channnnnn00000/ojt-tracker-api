@@ -24,6 +24,7 @@ class HteController {
         req.params.id,
         req.body
       );
+
       res.status(201).json({
         message: "Internship updated!",
         data: updatedInternship,
@@ -51,7 +52,13 @@ class HteController {
       const listOfIntership = await hteService.getPostedInternship(
         req.user.userId
       );
-      console.log(listOfIntership);
+      // console.log(listOfIntership);
+      if (listOfIntership.length === 0) {
+        return res.status(201).json({
+          status: "Success",
+          content: "No available internship",
+        });
+      }
       res.status(201).json({
         message: "Success!",
         data: listOfIntership,
