@@ -18,7 +18,7 @@ app.use(
 app.use(morgan("dev"));
 // app.use("/auth", authroutes);
 // app.use("/auth", useRoutes);
-app.use("/api/v1/", hteRoutes);
+app.use("/api/v1/hte", hteRoutes);
 app.use("/api/v1/", adminRoutes);
 app.use("/api/v1/intern", internRoutes);
 

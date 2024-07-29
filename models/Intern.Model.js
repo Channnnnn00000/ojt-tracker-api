@@ -15,9 +15,9 @@ const internSchema = new mongoose.Schema({
     required: true,
     default: "intern",
   },
-  resume: {
-    type: String,
-    default: "intern url for resume",
+  requiredHours: {
+    type: Number,
+    default: 0,
   },
   appliedInternships: [
     {

@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const internApplicationSchema = new mongoose.Schema({
   // Format userid + @dhvsu.edu.ph
+  hteId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   internId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

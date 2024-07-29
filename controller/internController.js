@@ -38,10 +38,38 @@ class InternController {
   }
   async getVacancy(req, res) {
     try {
-      const listOfVacancy = await internService.getVacancy();
+      const listOfVacancy = await internService.getVacancy(req.user.userId);
       res.status(201).json({
         message: "Success!",
         data: listOfVacancy,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getSingleVacancy(req, res) {
+    try {
+      const listOfVacancy = await internService.getSingleVacancy(req.params.id);
+      res.status(201).json({
+        message: "Success!",
+        data: listOfVacancy,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getApplicationList(req, res) {
+    try {
+      const listOfApplication = await internService.getInternApplicationList(
+        req.user.userId
+      );
+      res.status(201).json({
+        message: "Success!",
+        data: listOfApplication,
       });
     } catch (error) {
       res.status(500).json({
@@ -63,7 +91,7 @@ class InternController {
       });
     } catch (err) {
       res.status(500).json({
-        message: error.message,
+        message: err.message,
       });
     }
   }

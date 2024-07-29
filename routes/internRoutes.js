@@ -13,7 +13,19 @@ router.get(
   authMiddleware.verifyToken,
   internController.getProfileInformation
 );
+
+// Getting list of your application submitted
+router.get(
+  "/applications",
+  authMiddleware.verifyToken,
+  internController.getApplicationList
+);
 router.get("/vacancy", authMiddleware.verifyToken, internController.getVacancy);
+router.get(
+  "/vacancy/:id",
+  authMiddleware.verifyToken,
+  internController.getSingleVacancy
+);
 router.post(
   "/apply/:id",
   authMiddleware.verifyToken,

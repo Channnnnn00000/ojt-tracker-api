@@ -1,10 +1,10 @@
 const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const InternVacancy = require("../models/InternVacancy.Model");
-const internApplication = require("../models/InternApplication.Model");
+const InternApplication = require("../models/InternApplication.Model");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
-
+const { ObjectId } = require("mongodb");
 class InternService {
   async loginIntern(username, password) {
     const user = await User.findOne({ username });
@@ -14,32 +14,60 @@ class InternService {
   }
   async getInternInformation(id) {
     const userData = await User.findOne({ _id: id }).exec();
-    const profileData = await Intern.findOne({ _id: userData.profile })
-      .populate("appliedInternships")
-      .exec();
+    const profileData = await Intern.findOne({ _id: userData.profile });
+    // .populate("appliedInternships")
+    // .exec();
     console.log(profileData);
     return profileData;
   }
   async getVacancy() {
-    return await InternVacancy.find().exec();
+    return await InternVacancy.find({ slots: { $gte: 1 } }).exec();
+  }
+  async getSingleVacancy(jobId) {
+    return await InternVacancy.find({ _id: jobId }).exec();
+  }
+  async getInternApplicationList(id) {
+    return await InternApplication.find({ internId: id });
   }
   async applyInternship(userId, jobId, payload) {
+    const vacancyData = await InternVacancy.findById({ _id: jobId });
+
+    function checkDuplicate(obj) {
+      return obj.toString() === userId;
+    }
+    const checkApplication = vacancyData.applicants.some(checkDuplicate);
+    if (checkApplication) {
+      return {
+        message: "Duplicate Application",
+      };
+    }
+
+    // pushing jobid to interns profile
     const intern = await User.findOne({ _id: userId });
     const profileId = intern.profile;
     const profileData = await Intern.findOne({ _id: profileId });
+    const checkDuplicateApply = profileData.appliedInternships.some(
+      (obj) => obj.toString() === jobId
+    );
+    if (checkDuplicateApply) {
+      return {
+        message: "Duplicate Application",
+      };
+    }
     profileData.appliedInternships.push(jobId);
     await profileData.save();
 
-    const newApplication = new internApplication({
+    // New object to save in InternApplication Collection
+    const newApplication = new InternApplication({
+      hteId: vacancyData.hteId,
       internId: userId,
-      internVacancyId: jobId,
+      internVacancy: jobId,
       intern_resume: payload.intern_resume,
       intern_eform: payload.intern_eform,
       moa_hte: payload.moa_hte,
       status: payload.status,
     });
     await newApplication.save();
-    const vacancyData = await InternVacancy.findOne({ _id: jobId });
     vacancyData.applicants.push(userId);
     await vacancyData.save();
   }

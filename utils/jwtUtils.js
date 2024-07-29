@@ -6,4 +6,6 @@ const generateToken = (userId) =>
 
 const verifyToken = (token) => jwt.verify(token, process.env.ADMINSECRET);
 
+const checkApplicationDuplicate = () => {};
+
 module.exports = { generateToken, verifyToken };

@@ -18,6 +18,10 @@ const internVacancySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hteId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "HTE",
+  },
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   acceptedApplicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   createdAt: {

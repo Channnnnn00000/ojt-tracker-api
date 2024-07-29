@@ -4,6 +4,7 @@ class HteController {
   async postInternship(req, res) {
     try {
       await hteService.postVacancy(req.user.userId, {
+        hteId: req.user.userId,
         title: req.body.title,
         description: req.body.description,
         slots: req.body.slots,
@@ -62,6 +63,45 @@ class HteController {
       res.status(201).json({
         message: "Success!",
         data: listOfIntership,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  async getListOfApplicant(req, res) {
+    try {
+      const listOfApplications = await hteService.getInternshipApplication(
+        req.user.userId
+      );
+      // console.log(listOfIntership);
+      if (listOfApplications.length === 0) {
+        return res.status(201).json({
+          status: "Success",
+          content: "No available data",
+        });
+      }
+      res.status(201).json({
+        message: "Success!",
+        data: listOfApplications,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async acceptApplicant(req, res) {
+    try {
+      const listOfApplications = await hteService.acceptApplication(
+        req.user.userId,
+        req.params.applicationId
+      );
+      res.status(201).json({
+        message: "Success!",
+        data: listOfApplications,
       });
     } catch (error) {
       res.status(500).json({
