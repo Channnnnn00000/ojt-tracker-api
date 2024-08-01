@@ -10,6 +10,12 @@ const userSchema = new Schema({
     enum: ["hte", "coordinator", "intern", "admin"],
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["active", "inactive", "suspended"],
+    required: true,
+    default: "active",
+  },
   profile: {
     // Different profiles based on the role
     type: Schema.Types.Mixed,
