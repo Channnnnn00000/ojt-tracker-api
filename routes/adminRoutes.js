@@ -5,7 +5,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 // Getting Route
 router.get("/admin", authMiddleware.verifyToken, adminController.getAdminUsers);
-router.get("/hte", authMiddleware.verifyToken, adminController.getHteUsers);
+router.get("/hte", adminController.getHteUsers);
 router.get("/coor", authMiddleware.verifyToken, adminController.getCoorUsers);
 router.get(
   "/intern",
