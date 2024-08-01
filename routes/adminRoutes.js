@@ -12,7 +12,7 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getInternUsers
 );
-router.get("/users", authMiddleware.verifyToken, adminController.getAllUsers);
+router.get("/users", adminController.getAllUsers);
 
 // Registration
 router.post("/user", adminController.userRegistration);

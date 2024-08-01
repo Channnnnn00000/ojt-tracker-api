@@ -23,12 +23,18 @@ class AdminService {
       password: hashedPassword,
       email: payload.email,
       role: payload.role,
-      profile: new Admin({
-        firstname: payload.firstname,
-        middlename: payload.middlename,
-        lastname: payload.lastname,
-      }),
     });
+    await newUser.save();
+
+    const profileAdmin = new Admin({
+      firstname: payload.firstname,
+      middlename: payload.middlename,
+      lastname: payload.lastname,
+    });
+
+    await profileAdmin.save();
+
+    newUser.profile = profileAdmin._id;
     await newUser.save();
   }
   async registerHTE(payload) {
