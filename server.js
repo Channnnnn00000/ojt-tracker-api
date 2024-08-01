@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cors = require("cors");
 const hteRoutes = require("./routes/hteRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const internRoutes = require("./routes/internRoutes");
@@ -14,7 +15,13 @@ app.use(
     extended: true,
   })
 );
-
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
+app.options("*", cors());
 app.use(morgan("dev"));
 // app.use("/auth", authroutes);
 // app.use("/auth", useRoutes);
