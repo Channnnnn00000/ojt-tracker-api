@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const jwtUtils = require("../utils/jwtUtils")
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -20,8 +21,20 @@ const userSchema = new Schema({
     // Different profiles based on the role
     type: Schema.Types.Mixed,
   },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: {
+    type: String,
+    default: getDateValue(),
+  },
 });
+function getDateValue() {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+  let finaldate;
+
+  return (finaldate = `${month} ${day}, ${year}`);
+}
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

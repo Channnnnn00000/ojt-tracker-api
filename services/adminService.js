@@ -83,7 +83,7 @@ class AdminService {
     await newUser.save();
     const internProfile = new Intern({
       fullName: payload.fullName,
-      resume: payload.resume,
+      department: payload.department
     });
     await internProfile.save();
 

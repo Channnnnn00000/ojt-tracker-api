@@ -15,6 +15,10 @@ const internSchema = new mongoose.Schema({
     required: true,
     default: "intern",
   },
+  department: {
+    type: String,
+    required: true,
+  },
   requiredHours: {
     type: Number,
     default: 0,
