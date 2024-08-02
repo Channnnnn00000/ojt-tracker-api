@@ -81,7 +81,7 @@ class AdminController {
       if (listOfUsers.length === 0) {
         return res.status(201).json({
           message: "Request Success!",
-          content: "No users found",
+          content: listOfUsers,
         });
       }
       return res.status(201).json({
