@@ -16,8 +16,8 @@ const hteSchema = new mongoose.Schema({
     default: null,
   },
   hasMoa: {
-    type: Boolean,
-    default: false,
+    type: String,
+    default: 'false',
   },
   moaAttachement: {
     type: String,
