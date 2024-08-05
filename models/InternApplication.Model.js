@@ -14,17 +14,22 @@ const internApplicationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "InternVacancy",
   },
+  fileResume: {
+    type: String,
+  },
   intern_resume: {
     type: String,
-    default: "resume link",
   },
   intern_eform: {
     type: String,
     default: "endorsement link",
   },
+  fileMoa: {
+    type: String,
+  },
   moa_hte: {
     type: String,
-    default: "moe link",
+
   },
   status: {
     type: String,

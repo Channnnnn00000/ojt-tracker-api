@@ -62,7 +62,7 @@ class InternService {
 
     // New object to save in InternApplication Collection
     const newApplication = new InternApplication({
-      hteId: vacancyData.hteId,
+      hteId: vacancyData.hte,
       internId: userId,
       internVacancy: jobId,
       intern_resume: payload.intern_resume,
