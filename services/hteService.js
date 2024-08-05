@@ -24,6 +24,9 @@ class HTEService {
 
     profileData.internVacancy.push(newVacancy);
     await profileData.save();
+
+    newVacancy.hte = profileData._id;
+    await newVacancy.save()
   }
   async getPostedInternship(id) {
     const userData = await User.findOne({ _id: id }).exec();
@@ -89,6 +92,9 @@ class HTEService {
       acceptedDate: new Date(),
     });
     await acceptedApplicant.save();
+  }
+  async getProfile() {
+    return await HTE.find().populate('internVacancy').exec()
   }
 }
 

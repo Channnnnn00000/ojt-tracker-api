@@ -14,6 +14,12 @@ class AdminService {
     const isMatch = await bcrypt.compare(password, user.password);
     return isMatch ? jwtUtils.generateToken(user._id) : null;
   }
+  // Get information of current logged in user
+  async getLoggedInUser(id) {
+    const userInfo = await User.findOne({_id: id}).populate('profile').exec()
+    return userInfo;
+
+  }
 
   // Registering the accounts
   async registerAdmin(payload) {
@@ -48,11 +54,11 @@ class AdminService {
     await newUser.save();
 
     const profile = new HTE({
-      name: payload.companyName,
+      name: payload.name,
       contact: payload.contactNumber,
       address: payload.address,
       hasMoa: payload.hasMoa,
-      moaAttachement: payload.moaAttachement,
+
     });
     await profile.save();
 
@@ -100,14 +106,14 @@ class AdminService {
   //Viewing the users
 
   async getAllUsers() {
-    return await User.find().exec();
+    return await User.find().populate('profile').exec();
   }
 
   async getAdmin() {
-    return await User.find({ role: "admin" }).exec();
+    return await User.find({ role: "admin" }).populate('profile').exec();
   }
   async getHTE() {
-    return await User.find({ role: "hte" }).exec();
+    return await User.find({ role: "hte" }).populate('profile').exec();
   }
   async getCoor() {
     return await User.find({ role: "coordinator" }).exec();

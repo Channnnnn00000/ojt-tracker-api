@@ -4,11 +4,10 @@ const hteSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    default: "ABC",
+
   },
   contactNumber: {
     type: Number,
-    default: null,
     // required: true,
   },
   address: {
@@ -49,17 +48,7 @@ function getDateValue() {
   return (finaldate = `${month} ${day}, ${year}`);
 }
 
-hteSchema.methods.postJob = function (jobDetails) {
-  const newJob = new JobVacancy({ ...jobDetails, company: this._id });
-  return newJob.save().then((job) => {
-    this.jobVacancies.push(job._id);
-    return this.save().then(() => job);
-  });
-};
 
-hteSchema.methods.getPostedJobs = function () {
-  return JobVacancy.find({ company: this._id });
-};
 
 const HTE = mongoose.model("HTE", hteSchema);
 module.exports = HTE;

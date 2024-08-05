@@ -15,12 +15,28 @@ class AdminController {
         sameSite: "none",
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
-      res.json({ token });
+      return res.status(201).json({ message: "Login Success" });
     } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
+  }
+  // Get info of loggedIn user
+  async checkUserLoggedIn(req, res) {
+    console.log(req.user.userId);
+    try {
+      const userInfo = await adminService.getLoggedInUser(req.user.userId)
+      res.status(200).json({
+        content: userInfo
+      })
+    }catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  
+
   }
   // Registration of each role
 

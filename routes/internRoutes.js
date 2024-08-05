@@ -20,7 +20,7 @@ router.get(
   authMiddleware.verifyToken,
   internController.getApplicationList
 );
-router.get("/vacancy", authMiddleware.verifyToken, internController.getVacancy);
+router.get("/vacancy",  internController.getVacancy);
 router.get(
   "/vacancy/:id",
   authMiddleware.verifyToken,

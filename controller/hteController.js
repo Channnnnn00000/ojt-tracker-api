@@ -2,16 +2,34 @@ const hteService = require("../services/hteService");
 
 class HteController {
   async postInternship(req, res) {
+    console.log(req.body);
     try {
-      await hteService.postVacancy(req.user.userId, {
-        hteId: req.user.userId,
-        title: req.body.title,
-        description: req.body.description,
-        slots: req.body.slots,
-        location: req.body.location,
-      });
+      await hteService.postVacancy(req.user.userId, req.body);
       res.status(201).json({
         message: "Internship posted!",
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getListOfInternship(req, res) {
+    try {
+      const listOfIntership = await hteService.getPostedInternship(
+        req.user.userId
+        // req.params.userId
+      );
+      // console.log(listOfIntership);
+      if (listOfIntership.length === 0) {
+        return res.status(201).json({
+          status: "Fetching Internship successful",
+          content: listOfIntership,
+        });
+      }
+      res.status(201).json({
+
+        content: listOfIntership,
       });
     } catch (error) {
       res.status(500).json({
@@ -41,28 +59,6 @@ class HteController {
       await hteService.deletePostVacancy(req.params.id);
       res.status(201).json({
         status: "Deleted",
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: error.message,
-      });
-    }
-  }
-  async getListOfInternship(req, res) {
-    try {
-      const listOfIntership = await hteService.getPostedInternship(
-        req.user.userId
-      );
-      // console.log(listOfIntership);
-      if (listOfIntership.length === 0) {
-        return res.status(201).json({
-          status: "Success",
-          content: "No available internship",
-        });
-      }
-      res.status(201).json({
-        message: "Success!",
-        data: listOfIntership,
       });
     } catch (error) {
       res.status(500).json({
@@ -123,13 +119,35 @@ class HteController {
         sameSite: "none",
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
-      res.json({ token });
+      return res.status(201).json({ message: "Login Success" });
     } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
   }
+  async getProfile(req, res) {
+    try {
+      const profile = await hteService.getProfile(
+      );
+      // console.log(listOfIntership);
+      if (profile.length === 0) {
+        return res.status(201).json({
+          status: "Success",
+          content: "No available data",
+        });
+      }
+      res.status(201).json({
+        message: "Success!",
+        data: profile,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
 }
 
 module.exports = new HteController();

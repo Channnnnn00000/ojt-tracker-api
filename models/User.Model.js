@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const jwtUtils = require("../utils/jwtUtils")
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   role: {
     type: String,
-    enum: ["hte", "coordinator", "intern", "admin"],
+    enum: ["HTE", "Coordinator", "Intern", "Admin"],
     required: true,
   },
   status: {
@@ -19,7 +19,8 @@ const userSchema = new Schema({
   },
   profile: {
     // Different profiles based on the role
-    type: Schema.Types.Mixed,
+    type: mongoose.Schema.Types.ObjectId,
+    refPath:'role'
   },
   createdAt: {
     type: String,

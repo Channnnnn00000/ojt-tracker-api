@@ -3,6 +3,13 @@ const router = express.Router();
 const adminController = require("../controller/adminController");
 const authMiddleware = require("../middleware/authMiddleware");
 
+
+// Getting info of current users
+router.get(
+  "/active",
+  authMiddleware.verifyToken,
+  adminController.checkUserLoggedIn
+);
 // Getting Route
 router.get("/admin", authMiddleware.verifyToken, adminController.getAdminUsers);
 router.get("/hte", adminController.getHteUsers);
@@ -12,7 +19,7 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getInternUsers
 );
-router.get("/users", adminController.getAllUsers);
+router.get("/users",authMiddleware.verifyToken, adminController.getAllUsers);
 
 // Registration
 router.post("/user", adminController.userRegistration);

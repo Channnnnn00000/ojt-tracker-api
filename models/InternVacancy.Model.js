@@ -14,13 +14,19 @@ const internVacancySchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  status: {
+    type: String,
+    enum:['Active', 'Inactive'],
+    default: 'Active'
+  },
   location: {
     type: String,
     required: true,
   },
-  hteId: {
+  hte: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "HTE",
+    ref: 'HTE',
+
   },
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   acceptedApplicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

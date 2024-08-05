@@ -14,7 +14,7 @@ class InternController {
         sameSite: "none",
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
-      res.json({ token });
+      return res.status(201).json({ message: "Login Success" });
     } catch (error) {
       res.status(500).json({
         message: error.message,
@@ -38,10 +38,11 @@ class InternController {
   }
   async getVacancy(req, res) {
     try {
-      const listOfVacancy = await internService.getVacancy(req.user.userId);
+      // const listOfVacancy = await internService.getVacancy(req.user.userId);
+      const listOfVacancy = await internService.getVacancy();
       res.status(201).json({
         message: "Success!",
-        data: listOfVacancy,
+        content: listOfVacancy
       });
     } catch (error) {
       res.status(500).json({

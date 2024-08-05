@@ -20,8 +20,12 @@ class InternService {
     console.log(profileData);
     return profileData;
   }
+  // async getVacancy() {
+  //   return await InternVacancy.find({ slots: { $gte: 1 } }).populate('hteId').exec();
+  // }
   async getVacancy() {
-    return await InternVacancy.find({ slots: { $gte: 1 } }).exec();
+    const allVacancyListed = await InternVacancy.find().populate('hte').exec()
+   return allVacancyListed;
   }
   async getSingleVacancy(jobId) {
     return await InternVacancy.find({ _id: jobId }).exec();
@@ -41,7 +45,6 @@ class InternService {
         message: "Duplicate Application",
       };
     }
-
     // pushing jobid to interns profile
     const intern = await User.findOne({ _id: userId });
     const profileId = intern.profile;

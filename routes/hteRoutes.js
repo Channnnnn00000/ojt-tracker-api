@@ -4,8 +4,7 @@ const hteController = require("../controller/hteController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.post(
-  "/create",
-  authMiddleware.verifyToken,
+  "/create",authMiddleware.verifyToken,
   hteController.postInternship
 );
 router.put(
@@ -13,7 +12,9 @@ router.put(
   authMiddleware.verifyToken,
   hteController.acceptApplicant
 );
-router.get("/", authMiddleware.verifyToken, hteController.getListOfInternship);
+router.get('/profile', hteController.getProfile)
+// User id will remove when we apply the authorization middleware
+router.get("/list",authMiddleware.verifyToken,hteController.getListOfInternship);
 router.get(
   "/applicants",
   authMiddleware.verifyToken,
