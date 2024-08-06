@@ -72,7 +72,7 @@ class HteController {
       const listOfApplications = await hteService.getInternshipApplication(
         req.user.userId
       );
-      // console.log(listOfIntership);
+ 
       if (listOfApplications.length === 0) {
         return res.status(201).json({
           status: "Success",

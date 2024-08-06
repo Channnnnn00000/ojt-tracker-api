@@ -83,9 +83,15 @@ class InternController {
       const applyInformation = await internService.applyInternship(
         req.user.userId,
         req.params.id,
-        req.body
+        req.files,
       );
-
+      console.log(applyInformation);
+      
+       if(applyInformation.ErrorMessage) {
+        return res.status(400).json({
+          content: 'Duplicate application'
+        })
+       }
       return res.status(201).json({
         status: "Success",
         data: applyInformation,

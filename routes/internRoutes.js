@@ -2,7 +2,17 @@ const express = require("express");
 const router = express.Router();
 const internController = require("../controller/internController");
 const authMiddleware = require("../middleware/authMiddleware");
+const multer = require("multer");
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/img/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 // router.post(
 //   "/create",
 //   authMiddleware.verifyToken,
@@ -29,6 +39,7 @@ router.get(
 router.post(
   "/apply/:id",
   authMiddleware.verifyToken,
+  upload.array("files", 10),
   internController.applyInternShip
 );
 // router.patch("/:id", internController.updateInternship);

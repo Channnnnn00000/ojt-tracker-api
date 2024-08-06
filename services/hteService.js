@@ -14,7 +14,6 @@ class HTEService {
     const isMatch = await bcrypt.compare(password, user.password);
     return isMatch ? jwtUtils.generateToken(user._id) : null;
   }
-
   async postVacancy(id, payload) {
     const userData = await User.findOne({ _id: id }).exec();
 
@@ -48,8 +47,10 @@ class HTEService {
 
   // View only application you posted
   async getInternshipApplication(id) {
+    const results = await User.findById({_id: id})
+    const profileId = results.profile.toString();
     const listOfApplicants = await InternApplication.find({
-      hteId: id,
+      hteId: profileId,
       status: "pending",
     });
     return listOfApplicants;

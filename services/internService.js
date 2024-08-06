@@ -34,6 +34,11 @@ class InternService {
     return await InternApplication.find({ internId: id });
   }
   async applyInternship(userId, jobId, payload) {
+    console.log(jobId);
+    console.log(userId);
+    console.log(payload[0].path);
+    console.log(payload[1].path);
+    
     const vacancyData = await InternVacancy.findById({ _id: jobId });
 
     function checkDuplicate(obj) {
@@ -42,7 +47,7 @@ class InternService {
     const checkApplication = vacancyData.applicants.some(checkDuplicate);
     if (checkApplication) {
       return {
-        message: "Duplicate Application",
+        ErrorMessage: 'Duplicate application'
       };
     }
     // pushing jobid to interns profile
@@ -65,14 +70,18 @@ class InternService {
       hteId: vacancyData.hte,
       internId: userId,
       internVacancy: jobId,
-      intern_resume: payload.intern_resume,
-      intern_eform: payload.intern_eform,
-      moa_hte: payload.moa_hte,
-      status: payload.status,
+      resumePath: payload[0].path,
+      resumeFile: payload[0].filename,
+      moaPath: payload[1].path,
+      moaFile: payload[1].filename,
+
     });
     await newApplication.save();
     vacancyData.applicants.push(userId);
     await vacancyData.save();
+    return {
+      message: 'Application sent'
+    }
   }
 }
 
