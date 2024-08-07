@@ -85,8 +85,6 @@ class InternController {
         req.params.id,
         req.files,
       );
-      console.log(applyInformation);
-      
        if(applyInformation.ErrorMessage) {
         return res.status(400).json({
           content: 'Duplicate application'

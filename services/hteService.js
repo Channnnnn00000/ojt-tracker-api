@@ -29,10 +29,12 @@ class HTEService {
   }
   async getPostedInternship(id) {
     const userData = await User.findOne({ _id: id }).exec();
-    const profileData = await HTE.findOne({ _id: userData.profile })
-      .populate("internVacancy")
-      .exec();
-    return profileData.internVacancy;
+    const vacancy = await InternshipVacancy.find({hte: userData.profile}).populate('applicants').exec();
+    return vacancy;
+    // const profileData = await HTE.findOne({ _id: userData.profile })
+    //   .populate("internVacancy")
+    //   .exec();
+    // return profileData.internVacancy;
   }
   async updatePostVacancy(id, payload) {
     const updatedData = await InternshipVacancy.findByIdAndUpdate(id, payload, {
@@ -45,8 +47,8 @@ class HTEService {
     return await InternshipVacancy.findByIdAndDelete(id);
   }
 
-  // View only application you posted
-  async getInternshipApplication(id) {
+  // View only internship application 
+    async getInternshipApplication(id) {
     const results = await User.findById({_id: id})
     const profileId = results.profile.toString();
     const listOfApplicants = await InternApplication.find({
@@ -54,6 +56,26 @@ class HTEService {
       status: "pending",
     });
     return listOfApplicants;
+  }
+    // View only internship application 
+    async getApplicationItem(jobId,internId) {
+      const applicantInfo = await InternApplication.find({
+        internId: internId,
+        internVacancy: jobId
+      })
+      return applicantInfo;
+      // const results = await User.findById({_id: id})
+      // const profileId = results.profile.toString();
+      // const listOfApplicants = await InternApplication.find({
+      //   hteId: profileId,
+      //   status: "pending",
+      // });
+      // return listOfApplicants;
+    }
+    // View only specific internship you posted
+  async getSingleInternshipApplication(id) {
+    const internShipItem = await InternshipVacancy.findById({_id: id}).populate('applicants').exec();
+    return internShipItem;
   }
   async acceptApplication(userId, applicationId, res) {
     const application = await InternApplication.findById(applicationId);

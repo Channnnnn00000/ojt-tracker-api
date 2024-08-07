@@ -38,6 +38,8 @@ class InternService {
     console.log(userId);
     console.log(payload[0].path);
     console.log(payload[1].path);
+    const userData = await User.findOne({_id:userId})
+    console.log(userData);
     
     const vacancyData = await InternVacancy.findById({ _id: jobId });
 
@@ -59,7 +61,7 @@ class InternService {
     );
     if (checkDuplicateApply) {
       return {
-        message: "Duplicate Application",
+        ErrorMessage: 'Duplicate application'
       };
     }
     profileData.appliedInternships.push(jobId);
@@ -68,7 +70,7 @@ class InternService {
     // New object to save in InternApplication Collection
     const newApplication = new InternApplication({
       hteId: vacancyData.hte,
-      internId: userId,
+      internId: userData.profile,
       internVacancy: jobId,
       resumePath: payload[0].path,
       resumeFile: payload[0].filename,
@@ -77,7 +79,7 @@ class InternService {
 
     });
     await newApplication.save();
-    vacancyData.applicants.push(userId);
+    vacancyData.applicants.push(userData.profile);
     await vacancyData.save();
     return {
       message: 'Application sent'

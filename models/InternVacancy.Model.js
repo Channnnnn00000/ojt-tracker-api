@@ -28,8 +28,8 @@ const internVacancySchema = new mongoose.Schema({
     ref: 'HTE',
 
   },
-  applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  acceptedApplicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }],
+  acceptedApplicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }],
   createdAt: {
     type: String,
     default: getDateValue(),
