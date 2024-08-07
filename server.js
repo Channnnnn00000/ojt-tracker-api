@@ -5,11 +5,13 @@ const cors = require("cors");
 const hteRoutes = require("./routes/hteRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const internRoutes = require("./routes/internRoutes");
+const path = require('path')
 require("./config/database");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.static(__dirname + "/public"));
 app.use(
   express.urlencoded({
     extended: true,
@@ -25,8 +27,8 @@ app.options("*", cors());
 app.use(morgan("dev"));
 // app.use("/auth", authroutes);
 // app.use("/auth", useRoutes);
-app.use("/api/v1/hte", hteRoutes);
 app.use("/api/v1/", adminRoutes);
+app.use("/api/v1/hte", hteRoutes);
 app.use("/api/v1/intern", internRoutes);
 
 app.listen(process.env.PORT || 4000, () => {

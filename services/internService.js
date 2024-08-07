@@ -72,9 +72,9 @@ class InternService {
       hteId: vacancyData.hte,
       internId: userData.profile,
       internVacancy: jobId,
-      resumePath: payload[0].path,
+      resumePath: 'http://localhost:4000/img/' + payload[0].filename,
       resumeFile: payload[0].filename,
-      moaPath: payload[1].path,
+      moaPath: 'http://localhost:4000/img/' + payload[1].filename,
       moaFile: payload[1].filename,
 
     });

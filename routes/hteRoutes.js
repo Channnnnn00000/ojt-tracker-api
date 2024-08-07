@@ -8,7 +8,7 @@ router.post(
   hteController.postInternship
 );
 router.put(
-  "/applicantion/:applicationId/accept",
+  "/application/:applicationId/accept",
   authMiddleware.verifyToken,
   hteController.acceptApplicant
 );
@@ -27,7 +27,7 @@ router.get(
   hteController.getListOfApplicant
 );
 router.patch("/:id", hteController.updateInternship);
-router.delete("/:id", hteController.deleteInternship);
+router.delete("/delete/:id", hteController.deleteInternship);
 
 // Authentication
 router.post("/login", hteController.login);

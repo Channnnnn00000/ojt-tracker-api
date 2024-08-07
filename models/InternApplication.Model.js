@@ -22,11 +22,11 @@ const internApplicationSchema = new mongoose.Schema({
   },
   endorsementPath: {
     type: String,
-    default: "endorsement link",
+
   },
   eformFile: {
     type: String,
-    default: "endorsement link",
+
   },
   moaPath: {
     type: String,
@@ -37,8 +37,8 @@ const internApplicationSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected"],
-    default: "pending",
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
   },
   createdAt: {
     type: String,

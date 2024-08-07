@@ -76,7 +76,7 @@ class HteController {
       });
     }
   }
-  async deleteInternship(req, res) {
+  async deleteInternship(req, res) {    
     try {
       await hteService.deletePostVacancy(req.params.id);
       res.status(201).json({
@@ -172,18 +172,16 @@ class HteController {
   async getSingleApplication(req, res) {
     try {
       const applicantsData = await hteService.getApplicationItem(
-        req.params.jobId,req.params.internId
+        req.params
       );
- 
-      if (applicantsData) {
+      if (applicantsData.length) {
         return res.status(201).json({
           status: "Success",
-          content: "No available data",
+          content: applicantsData,
         });
       }
-      res.status(201).json({
-        message: "Success!",
-        content: applicantsData,
+      res.status(400).json({
+        message: "No data found",
       });
     } catch (error) {
       res.status(500).json({

@@ -58,19 +58,13 @@ class HTEService {
     return listOfApplicants;
   }
     // View only internship application 
-    async getApplicationItem(jobId,internId) {
+    async getApplicationItem(payload) {      
       const applicantInfo = await InternApplication.find({
-        internId: internId,
-        internVacancy: jobId
+        internId: payload.internId,
+        internVacancy: payload.jobId
       })
       return applicantInfo;
-      // const results = await User.findById({_id: id})
-      // const profileId = results.profile.toString();
-      // const listOfApplicants = await InternApplication.find({
-      //   hteId: profileId,
-      //   status: "pending",
-      // });
-      // return listOfApplicants;
+
     }
     // View only specific internship you posted
   async getSingleInternshipApplication(id) {
@@ -78,23 +72,29 @@ class HTEService {
     return internShipItem;
   }
   async acceptApplication(userId, applicationId, res) {
+    let newArr = []
     const application = await InternApplication.findById(applicationId);
 
     const vacancyData = await InternshipVacancy.findById(
       application.internVacancy
     );
+    console.log(application.internId);
+    
     const slotsRemaining = vacancyData.slots - 1;
     await InternshipVacancy.updateOne(
       { _id: application.internVacancy },
       { $set: { slots: slotsRemaining } }
     );
     vacancyData.acceptedApplicants.push(application.internId);
+ 
+    vacancyData.applicants = vacancyData.applicants.filter(item => item.id === application.internId);
+    console.log(vacancyData.applicants);
+    
     await vacancyData.save();
 
-    const internUser = await User.findById(application.internId);
-
-    const internData = await Intern.findById(internUser.profile);
+    const internData = await Intern.findById(application.internId);
     internData.acceptedInternships.push(application.internVacancy);
+    internData.appliedInternships = internData.appliedInternships.filter(item => item.id === application.internVacancy);
     await internData.save();
 
     if (!application) {
@@ -102,7 +102,7 @@ class HTEService {
     }
     const updateResult = await InternApplication.updateOne(
       { _id: applicationId },
-      { $set: { status: "accepted" } }
+      { $set: { status: "Accepted" } }
     );
     if (updateResult.nModified === 0) {
       return res
