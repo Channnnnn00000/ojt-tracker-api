@@ -42,5 +42,6 @@ router.delete("/intern/:id", adminController.removeIntern);
 
 // Authentication
 router.post("/admin/login", adminController.login);
+router.post("/admin/logout", adminController.logout);
 
 module.exports = router;

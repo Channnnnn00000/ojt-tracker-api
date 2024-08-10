@@ -23,6 +23,7 @@ class HteController {
       // console.log(listOfIntership);
       if (listOfIntership) {
         return res.status(201).json({
+          data: listOfIntership.length,
           status: "Fetching Internship successful",
           content: listOfIntership,
         });
@@ -88,7 +89,6 @@ class HteController {
       });
     }
   }
-
   async getListOfApplicant(req, res) {
     try {
       const listOfApplications = await hteService.getInternshipApplication(
@@ -102,8 +102,9 @@ class HteController {
         });
       }
       res.status(201).json({
+        lenght: listOfApplications.length,
         message: "Success!",
-        data: listOfApplications,
+        content: listOfApplications,
       });
     } catch (error) {
       res.status(500).json({
@@ -178,6 +179,27 @@ class HteController {
         return res.status(201).json({
           status: "Success",
           content: applicantsData,
+        });
+      }
+      res.status(400).json({
+        message: "No data found",
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getAcceptedInterns(req, res) {
+    try {
+      const acceptedInterns = await hteService.getAcceptedInterns(
+        req.user.userId
+      );
+      if (acceptedInterns) {
+        return res.status(201).json({
+          length: acceptedInterns.length,
+          status: "Success",
+          content: acceptedInterns,
         });
       }
       res.status(400).json({

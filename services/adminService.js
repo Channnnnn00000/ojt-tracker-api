@@ -20,7 +20,6 @@ class AdminService {
     return userInfo;
 
   }
-
   // Registering the accounts
   async registerAdmin(payload) {
     const hashedPassword = await bcrypt.hash(payload.password, 12);
@@ -110,16 +109,16 @@ class AdminService {
   }
 
   async getAdmin() {
-    return await User.find({ role: "admin" }).populate('profile').exec();
+    return await User.find({ role: "Admin" }).populate('profile').exec();
   }
   async getHTE() {
-    return await User.find({ role: "hte" }).populate('profile').exec();
+    return await User.find({ role: "HTE" }).populate('profile').exec();
   }
   async getCoor() {
-    return await User.find({ role: "coordinator" }).exec();
+    return await User.find({ role: "Coordinator" }).exec();
   }
   async getIntern() {
-    return await User.find({ role: "intern" }).exec();
+    return await User.find({ role: "Intern" }).exec();
   }
 
   // Update Section

@@ -1,4 +1,5 @@
 const User = require("../models/User.Model");
+const HTE = require('../models/HTE.Model')
 const Intern = require("../models/Intern.Model");
 const InternVacancy = require("../models/InternVacancy.Model");
 const InternApplication = require("../models/InternApplication.Model");
@@ -24,14 +25,34 @@ class InternService {
   //   return await InternVacancy.find({ slots: { $gte: 1 } }).populate('hteId').exec();
   // }
   async getVacancy() {
-    const allVacancyListed = await InternVacancy.find().populate('hte').exec()
+    const allVacancyListed = await InternVacancy.find({slots: {$gte: 1}}).populate('hte').exec()
    return allVacancyListed;
   }
   async getSingleVacancy(jobId) {
     return await InternVacancy.find({ _id: jobId }).exec();
   }
   async getInternApplicationList(id) {
-    return await InternApplication.find({ internId: id });
+    let applicationArr = []
+    const userInfo =  await User.findById(id)
+    const applicationInfo = await InternApplication.find({ internId: userInfo.profile });
+    const results = await Promise.all(applicationInfo.map(async (element) => {
+      const jobInfo = await InternVacancy.findOne({ _id: element.internVacancy });
+      const hteInfo = await HTE.findOne({_id: jobInfo.hte})
+
+      const applicationObj = {
+          DateAppied: element.createdAt,
+          jobTitle: jobInfo.title,
+          status: element.status,
+          company: hteInfo.name
+      };
+      return applicationObj;
+  }));
+
+  applicationArr.push(...results);
+
+  console.log(applicationArr);
+  return applicationArr;
+    
   }
   async applyInternship(userId, jobId, payload) {
     console.log(jobId);

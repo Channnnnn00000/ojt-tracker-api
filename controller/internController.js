@@ -69,8 +69,8 @@ class InternController {
         req.user.userId
       );
       res.status(201).json({
-        message: "Success!",
-        data: listOfApplication,
+        message: "Fetching application success",
+        content: listOfApplication,
       });
     } catch (error) {
       res.status(500).json({

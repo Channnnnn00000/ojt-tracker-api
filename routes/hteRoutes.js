@@ -22,9 +22,14 @@ router.get(
   hteController.getSingleApplication
 );
 router.get(
-  "/applicants",
+  "/applicants/pending",
   authMiddleware.verifyToken,
   hteController.getListOfApplicant
+);
+router.get(
+  "/applicants/accepted",
+  authMiddleware.verifyToken,
+  hteController.getAcceptedInterns
 );
 router.patch("/:id", hteController.updateInternship);
 router.delete("/delete/:id", hteController.deleteInternship);

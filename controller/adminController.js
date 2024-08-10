@@ -22,6 +22,14 @@ class AdminController {
       });
     }
   }
+  async logout(req, res) {
+    await res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+    });
+    await res.sendStatus(204);
+  }
   // Get info of loggedIn user
   async checkUserLoggedIn(req, res) {
     console.log(req.user.userId);
@@ -117,12 +125,12 @@ class AdminController {
       if (listOfAdmin.length === 0) {
         return res.status(201).json({
           message: "Request Success!",
-          data: "No admin users found",
+          content: "No admin users found",
         });
       }
       return res.status(201).json({
         message: "Success!",
-        data: listOfAdmin,
+        content: listOfAdmin,
       });
     } catch (error) {
       res.status(500).json({
@@ -136,12 +144,12 @@ class AdminController {
       if (listOfHTE.length === 0) {
         return res.status(201).json({
           message: "Request Success!",
-          data: "No hte users found",
+          content: "No hte users found",
         });
       }
       res.status(201).json({
         message: "Success!",
-        data: listOfHTE,
+        content: listOfHTE,
       });
     } catch (error) {
       res.status(500).json({
@@ -152,15 +160,15 @@ class AdminController {
   async getCoorUsers(req, res) {
     try {
       const listOfCoor = await adminService.getCoor();
-      if (listOfCoor.length === 0) {
+      if (listOfCoor) {
         return res.status(201).json({
           message: "Request Success!",
-          data: "No coor users found",
+          content: listOfCoor,
         });
       }
-      res.status(201).json({
+      res.status(204).json({
         message: "Success!",
-        data: listOfCoor,
+        content: listOfCoor,
       });
     } catch (error) {
       res.status(500).json({
@@ -172,14 +180,14 @@ class AdminController {
     try {
       const listOfIntern = await adminService.getIntern();
       if (listOfIntern.length === 0) {
-        return res.status(201).json({
+        return res.status(204).json({
           message: "Request Success!",
-          data: "No intern users found",
+          content: "No intern users found",
         });
       }
       res.status(201).json({
         message: "Success!",
-        data: listOfIntern,
+        content: listOfIntern,
       });
     } catch (error) {
       res.status(500).json({

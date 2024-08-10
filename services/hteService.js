@@ -27,6 +27,8 @@ class HTEService {
     newVacancy.hte = profileData._id;
     await newVacancy.save()
   }
+
+  // Get internship you posted
   async getPostedInternship(id) {
     const userData = await User.findOne({ _id: id }).exec();
     const vacancy = await InternshipVacancy.find({hte: userData.profile}).populate('applicants').exec();
@@ -43,17 +45,18 @@ class HTEService {
     });
     return updatedData;
   }
-  async deletePostVacancy(id) {
+  // Remove Internship listing
+  async deletePostVacancy(id) { 
     return await InternshipVacancy.findByIdAndDelete(id);
   }
 
-  // View only internship application 
-    async getInternshipApplication(id) {
+  // View only all internship application 
+  async getInternshipApplication(id) {
     const results = await User.findById({_id: id})
     const profileId = results.profile.toString();
     const listOfApplicants = await InternApplication.find({
       hteId: profileId,
-      status: "pending",
+      status: "Pending",
     });
     return listOfApplicants;
   }
@@ -71,6 +74,7 @@ class HTEService {
     const internShipItem = await InternshipVacancy.findById({_id: id}).populate('applicants').exec();
     return internShipItem;
   }
+  // Accepting intern application
   async acceptApplication(userId, applicationId, res) {
     let newArr = []
     const application = await InternApplication.findById(applicationId);
@@ -110,11 +114,18 @@ class HTEService {
         .json({ message: "Failed to update application status" });
     }
     const acceptedApplicant = new AcceptedApplicant({
-      jobId: application.id,
-      applicantId: application.internId,
+      applicationId: applicationId,
+      jobId: application.internVacancy,
+      internId: application.internId,
+      hteId: application.hteId,
       acceptedDate: new Date(),
     });
     await acceptedApplicant.save();
+  }
+  async getAcceptedInterns(userId) {
+    const userProfile = await User.findById(userId)
+    const acceptedInterns = await AcceptedApplicant.find({hteId: userProfile.profile.toString()})
+    return acceptedInterns;
   }
   async getProfile() {
     return await HTE.find().populate('internVacancy').exec()

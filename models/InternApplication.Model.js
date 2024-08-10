@@ -4,7 +4,7 @@ const internApplicationSchema = new mongoose.Schema({
   // Format userid + @dhvsu.edu.ph
   hteId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "HTE",
   },
   internId: {
     type: mongoose.Schema.Types.ObjectId,

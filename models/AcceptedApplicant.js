@@ -1,14 +1,28 @@
 const mongoose = require("mongoose");
 
 const acceptedApplicantSchema = new mongoose.Schema({
-  jobId: {
-    type: String,
-    required: true,
+  applicationId: 
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Application",
   },
-  applicantId: {
-    type: String,
-    required: true,
+
+  jobId:     {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InternVacancy",
   },
+  internId: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Intern",
+    },
+  
+  hteId: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Intern",
+    },
+  
   createdAt: {
     type: String,
     default: getDateValue(),
