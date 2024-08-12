@@ -42,6 +42,11 @@ router.post(
   upload.array("files", 10),
   internController.applyInternShip
 );
+router.post(
+  "/reset",
+  authMiddleware.verifyToken,
+  internController.setStateToFalse
+);
 // router.patch("/:id", internController.updateInternship);
 // router.delete("/:id", internController.deleteInternship);
 

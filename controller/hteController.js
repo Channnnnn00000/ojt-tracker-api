@@ -40,19 +40,19 @@ class HteController {
   }
   async getSingleInternship(req, res) {
     try {
-      const SingleIntership = await hteService.getSingleInternshipApplication(
+      const response = await hteService.getSingleInternshipApplication(
         req.params.jobId
         // req.params.userId
       );
       // console.log(listOfIntership);
-      if (SingleIntership) {
+      if (response) {
         return res.status(201).json({
           status: "Fetching Single Internship successful",
-          content: SingleIntership,
+          content: response,
         });
       }
       res.status(201).json({
-        content: listOfIntership,
+        content: response,
       });
     } catch (error) {
       res.status(500).json({
@@ -95,17 +95,14 @@ class HteController {
         req.user.userId
       );
  
-      if (listOfApplications.length === 0) {
-        return res.status(201).json({
-          status: "Success",
-          content: "No available data",
+      if (listOfApplications.length) {
+        res.status(201).json({
+          lenght: listOfApplications.length,
+          message: "Success!",
+          content: listOfApplications,
         });
       }
-      res.status(201).json({
-        lenght: listOfApplications.length,
-        message: "Success!",
-        content: listOfApplications,
-      });
+
     } catch (error) {
       res.status(500).json({
         message: error.message,
@@ -175,7 +172,7 @@ class HteController {
       const applicantsData = await hteService.getApplicationItem(
         req.params
       );
-      if (applicantsData.length) {
+      if (applicantsData) {
         return res.status(201).json({
           status: "Success",
           content: applicantsData,

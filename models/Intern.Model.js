@@ -25,22 +25,29 @@ const internSchema = new mongoose.Schema({
   },
   appliedInternships: [
     {
+      index: true,
       type: mongoose.Schema.Types.ObjectId,
-      ref: "InternVacancy",
+      ref: "Application",
     },
   ],
-  acceptedInternships: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "InternVacancy",
-    },
-  ],
-  dailyTimeRecords: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "DailyTimeRecord",
-    },
-  ],
+  // approvedInternships: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "InternVacancy",
+  //   },
+  // ],
+  // acceptedInternships: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "InternVacancy",
+  //   },
+  // ],
+  // dailyTimeRecords: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "DailyTimeRecord",
+  //   },
+  // ],
 
   // email: {
   //   type: String,

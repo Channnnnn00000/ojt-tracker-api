@@ -87,16 +87,30 @@ class InternController {
       );
        if(applyInformation.ErrorMessage) {
         return res.status(400).json({
-          content: 'Duplicate application'
+          content: 'Already applied to this internship'
         })
        }
       return res.status(201).json({
         status: "Success",
         data: applyInformation,
+        message: applyInformation.message
       });
     } catch (err) {
       res.status(500).json({
         message: err.message,
+      });
+    }
+  }
+  async setStateToFalse(req, res) {
+    try {
+      const results = await internService.applyReset(req.user.userId)
+      res.status(201).json({
+        message: "Success!",
+        data: results,
+      });
+    }catch(error) {
+      res.status(500).json({
+        message: error.message,
       });
     }
   }

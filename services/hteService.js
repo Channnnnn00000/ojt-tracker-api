@@ -3,7 +3,7 @@ const HTE = require("../models/HTE.Model");
 const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const InternApplication = require("../models/InternApplication.Model");
-const AcceptedApplicant = require("../models/AcceptedApplicant");
+const AcceptedApplicant = require("../models/ApprovedApplicant");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 
@@ -31,7 +31,7 @@ class HTEService {
   // Get internship you posted
   async getPostedInternship(id) {
     const userData = await User.findOne({ _id: id }).exec();
-    const vacancy = await InternshipVacancy.find({hte: userData.profile}).populate('applicants').exec();
+    const vacancy = await InternshipVacancy.find({hte: userData.profile})
     return vacancy;
     // const profileData = await HTE.findOne({ _id: userData.profile })
     //   .populate("internVacancy")
@@ -60,25 +60,53 @@ class HTEService {
     });
     return listOfApplicants;
   }
-    // View only internship application 
-    async getApplicationItem(payload) {      
+  
+  async getApplicationItem(payload) {      
       const applicantInfo = await InternApplication.find({
         internId: payload.internId,
         internVacancy: payload.jobId
       })
+      console.log(applicantInfo);
+      
       return applicantInfo;
 
     }
     // View only specific internship you posted
   async getSingleInternshipApplication(id) {
-    const internShipItem = await InternshipVacancy.findById({_id: id}).populate('applicants').exec();
-    return internShipItem;
+    let applicationArr = []
+    const applicationItem = await InternApplication.find({internVacancy: id,status:'Pending'}).populate('internId').populate('internVacancy').exec()
+    // const internShipItem = await InternshipVacancy.findById({_id: id}).populate('applicants').exec();
+    // console.log(applicationItem);
+   const results = await Promise.all(applicationItem.map(element => {
+    // console.log(element.internVacancy);
+    // console.log(element._id);
+    console.log(element);
+    
+    
+    const applicantsObj = {
+      internId: element.internId._id,
+      applicationId: element._id.toString(),
+      name: element.internId.fullName,
+      department: element.internId.department,
+      appliedInternships: element.internId.appliedInternships,
+      jobTitle: element.internVacancy.title,
+      postedOn: element.internVacancy.createdAt
+    }
+    return applicantsObj
+    }));
+    // return internShipItem;
+    applicationArr.push(...results)
+    // console.log(applicationArr);
+    
+    return applicationArr;
   }
   // Accepting intern application
   async acceptApplication(userId, applicationId, res) {
     let newArr = []
     const application = await InternApplication.findById(applicationId);
-
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
     const vacancyData = await InternshipVacancy.findById(
       application.internVacancy
     );
@@ -89,38 +117,36 @@ class HTEService {
       { _id: application.internVacancy },
       { $set: { slots: slotsRemaining } }
     );
-    vacancyData.acceptedApplicants.push(application.internId);
+    // vacancyData.acceptedApplicants.push(application.internId);
  
-    vacancyData.applicants = vacancyData.applicants.filter(item => item.id === application.internId);
+    vacancyData.applicants = vacancyData.applicants.filter(item => item.id === application._id);
     console.log(vacancyData.applicants);
     
     await vacancyData.save();
 
-    const internData = await Intern.findById(application.internId);
-    internData.acceptedInternships.push(application.internVacancy);
-    internData.appliedInternships = internData.appliedInternships.filter(item => item.id === application.internVacancy);
-    await internData.save();
+    // const internData = await Intern.findById(application.internId);
+    // internData.acceptedInternships.push(application.internVacancy);
+    // internData.approvedInternships = internData.approvedInternships.filter(item => item.id === application.internVacancy);
+    // await internData.save();
 
-    if (!application) {
-      return res.status(404).json({ message: "Application not found" });
-    }
+
     const updateResult = await InternApplication.updateOne(
       { _id: applicationId },
-      { $set: { status: "Accepted" } }
+      { $set: { status: "Approved", isUpdated: true, } }
     );
     if (updateResult.nModified === 0) {
       return res
         .status(400)
         .json({ message: "Failed to update application status" });
     }
-    const acceptedApplicant = new AcceptedApplicant({
-      applicationId: applicationId,
-      jobId: application.internVacancy,
-      internId: application.internId,
-      hteId: application.hteId,
-      acceptedDate: new Date(),
-    });
-    await acceptedApplicant.save();
+    // const acceptedApplicant = new AcceptedApplicant({
+    //   applicationId: applicationId,
+    //   jobId: application.internVacancy,
+    //   internId: application.internId,
+    //   hteId: application.hteId,
+    //   acceptedDate: new Date(),
+    // });
+    // await acceptedApplicant.save();
   }
   async getAcceptedInterns(userId) {
     const userProfile = await User.findById(userId)

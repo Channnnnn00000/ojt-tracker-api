@@ -5,7 +5,7 @@ const InternVacancy = require("../models/InternVacancy.Model");
 const InternApplication = require("../models/InternApplication.Model");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
-const { ObjectId } = require("mongodb");
+
 class InternService {
   async loginIntern(username, password) {
     const user = await User.findOne({ username });
@@ -40,10 +40,13 @@ class InternService {
       const hteInfo = await HTE.findOne({_id: jobInfo.hte})
 
       const applicationObj = {
-          DateAppied: element.createdAt,
+          applicationId: element._id,
+          hteId: element.hteId,
+          DateApplied: element.createdAt,
           jobTitle: jobInfo.title,
           status: element.status,
-          company: hteInfo.name
+          company: hteInfo.name,
+          isUpdated: element.isUpdated
       };
       return applicationObj;
   }));
@@ -55,56 +58,118 @@ class InternService {
     
   }
   async applyInternship(userId, jobId, payload) {
-    console.log(jobId);
-    console.log(userId);
-    console.log(payload[0].path);
-    console.log(payload[1].path);
-    const userData = await User.findOne({_id:userId})
-    console.log(userData);
+    console.log(payload);
     
+    const userData = await User.findOne({_id: userId})
+    const internData = await Intern.findOne({_id: userData.profile.toString()})
     const vacancyData = await InternVacancy.findById({ _id: jobId });
-
-    function checkDuplicate(obj) {
-      return obj.toString() === userId;
-    }
-    const checkApplication = vacancyData.applicants.some(checkDuplicate);
-    if (checkApplication) {
+    const applicationData = await InternApplication.find({internId: internData.id, internVacancy: jobId}).exec()
+    if(applicationData.length) {
       return {
-        ErrorMessage: 'Duplicate application'
-      };
+            ErrorMessage: 'Duplicate application'
+          };
     }
-    // pushing jobid to interns profile
-    const intern = await User.findOne({ _id: userId });
-    const profileId = intern.profile;
-    const profileData = await Intern.findOne({ _id: profileId });
-    const checkDuplicateApply = profileData.appliedInternships.some(
-      (obj) => obj.toString() === jobId
-    );
-    if (checkDuplicateApply) {
-      return {
-        ErrorMessage: 'Duplicate application'
-      };
-    }
-    profileData.appliedInternships.push(jobId);
-    await profileData.save();
+        // New object to save in InternApplication Collection
+        if(payload.length >= 2) {
+          const newApplication = new InternApplication({
+            hteId: vacancyData.hte,
+            internId: userData.profile,
+            internVacancy: jobId,
+            resumePath: 'http://localhost:4000/img/' + payload[0].filename,
+            resumeFile: payload[0].filename,
+            moaPath: 'http://localhost:4000/img/' + payload[1].filename,
+            moaFile: payload[1].filename,
+      
+          });
+          await newApplication.save();
+          vacancyData.applicants.push(newApplication._id);
+          internData.appliedInternships.push(newApplication._id)
+          await vacancyData.save();
+          await internData.save();
+          return {
+            message: 'Application sent'
+          }
+      
+        } else {
+          const newApplication = new InternApplication({
+            hteId: vacancyData.hte,
+            internId: userData.profile,
+            internVacancy: jobId,
+            resumePath: 'http://localhost:4000/img/' + payload[0].filename,
+            resumeFile: payload[0].filename,
 
-    // New object to save in InternApplication Collection
-    const newApplication = new InternApplication({
-      hteId: vacancyData.hte,
-      internId: userData.profile,
-      internVacancy: jobId,
-      resumePath: 'http://localhost:4000/img/' + payload[0].filename,
-      resumeFile: payload[0].filename,
-      moaPath: 'http://localhost:4000/img/' + payload[1].filename,
-      moaFile: payload[1].filename,
+          });
+          await newApplication.save();
+          vacancyData.applicants.push(newApplication._id);
+          internData.appliedInternships.push(newApplication._id)
+          await vacancyData.save();
+          await internData.save();
+          return {
+            message: 'Application sent'
+          }
+        }
 
-    });
-    await newApplication.save();
-    vacancyData.applicants.push(userData.profile);
-    await vacancyData.save();
-    return {
-      message: 'Application sent'
-    }
+    // console.log(jobId);
+    // console.log(userId);
+    // console.log(payload[0].path);
+    // console.log(payload[1].path);
+    // const userData = await User.findOne({_id:userId})
+    // console.log(userData);
+    
+    // const vacancyData = await InternVacancy.findById({ _id: jobId });
+
+    // function checkDuplicate(obj) {
+    //   return obj.toString() === userId;
+    // }
+    // const checkApplication = vacancyData.applicants.some(checkDuplicate);
+    // if (checkApplication) {
+    //   return {
+    //     ErrorMessage: 'Duplicate application'
+    //   };
+    // }
+    // // pushing jobid to interns profile
+    // const intern = await User.findOne({ _id: userId });
+    // const profileId = intern.profile;
+    // const profileData = await Intern.findOne({ _id: profileId });
+    // const checkDuplicateApply = profileData.appliedInternships.some(
+    //   (obj) => obj.toString() === jobId
+    // );
+    // if (checkDuplicateApply) {
+    //   return {
+    //     ErrorMessage: 'Duplicate application'
+    //   };
+    // }
+    // profileData.appliedInternships.push(jobId);
+    // await profileData.save();
+
+    // // New object to save in InternApplication Collection
+    // const newApplication = new InternApplication({
+    //   hteId: vacancyData.hte,
+    //   internId: userData.profile,
+    //   internVacancy: jobId,
+    //   resumePath: 'http://localhost:4000/img/' + payload[0].filename,
+    //   resumeFile: payload[0].filename,
+    //   moaPath: 'http://localhost:4000/img/' + payload[1].filename,
+    //   moaFile: payload[1].filename,
+
+    // });
+    // await newApplication.save();
+    // vacancyData.applicants.push(userData.profile);
+    // await vacancyData.save();
+    // return {
+    //   message: 'Application sent'
+    // }
+  }
+  async applyReset (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const appInfo = await InternApplication.find({internId: userData.profile.toString()})
+    console.log(appInfo);
+    
+    // const updateResult = await InternApplication.updateOne(
+    //   { _id: applicationId },
+    //   { $set: { status: "Approved", isUpdated: true, } }
+    // );
+
   }
 }
 

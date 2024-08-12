@@ -8,7 +8,7 @@ const internApplicationSchema = new mongoose.Schema({
   },
   internId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Intern",
   },
   internVacancy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -37,8 +37,12 @@ const internApplicationSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Accepted", "Rejected"],
+    enum: ["Pending", "Accepted", "Rejected",'Approved'],
     default: "Pending",
+  },
+  isUpdated: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: String,
