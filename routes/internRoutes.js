@@ -47,6 +47,11 @@ router.post(
   authMiddleware.verifyToken,
   internController.setStateToFalse
 );
+router.patch(
+  "/acceptoffer/:id",
+  authMiddleware.verifyToken,
+  internController.acceptHteOffer
+);
 // router.patch("/:id", internController.updateInternship);
 // router.delete("/:id", internController.deleteInternship);
 

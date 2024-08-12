@@ -103,9 +103,9 @@ class InternController {
   }
   async setStateToFalse(req, res) {
     try {
-      const results = await internService.applyReset(req.user.userId)
+      await internService.applyReset(req.user.userId)
       res.status(201).json({
-        message: "Success!",
+        message: "Reset state success!",
         data: results,
       });
     }catch(error) {
@@ -113,6 +113,22 @@ class InternController {
         message: error.message,
       });
     }
+  }
+  async acceptHteOffer(req, res) {
+    try {
+      const response = await internService.acceptHteOffer(req.params.id)
+      res.status(200).json({
+        message: 'Success',
+        content: response
+      });
+      
+    }
+    catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+ 
   }
 }
 

@@ -3,7 +3,7 @@ const HTE = require("../models/HTE.Model");
 const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const InternApplication = require("../models/InternApplication.Model");
-const AcceptedApplicant = require("../models/ApprovedApplicant");
+
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 
@@ -56,7 +56,6 @@ class HTEService {
     const profileId = results.profile.toString();
     const listOfApplicants = await InternApplication.find({
       hteId: profileId,
-      status: "Pending",
     });
     return listOfApplicants;
   }
@@ -101,7 +100,7 @@ class HTEService {
     return applicationArr;
   }
   // Accepting intern application
-  async acceptApplication(userId, applicationId, res) {
+  async approvingApplication(userId, applicationId, res) {
     let newArr = []
     const application = await InternApplication.findById(applicationId);
     if (!application) {
@@ -110,6 +109,8 @@ class HTEService {
     const vacancyData = await InternshipVacancy.findById(
       application.internVacancy
     );
+
+    // Put error trapping when the value of slot is 0
     console.log(application.internId);
     
     const slotsRemaining = vacancyData.slots - 1;
@@ -148,9 +149,9 @@ class HTEService {
     // });
     // await acceptedApplicant.save();
   }
-  async getAcceptedInterns(userId) {
+  async getApprovedInterns(userId) {
     const userProfile = await User.findById(userId)
-    const acceptedInterns = await AcceptedApplicant.find({hteId: userProfile.profile.toString()})
+    const acceptedInterns = await InternApplication.find({hteId: userProfile.profile.toString(), status: 'Approved'})
     return acceptedInterns;
   }
   async getProfile() {

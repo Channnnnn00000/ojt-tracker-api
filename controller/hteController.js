@@ -109,9 +109,9 @@ class HteController {
       });
     }
   }
-  async acceptApplicant(req, res) {
+  async approvedApplicant(req, res) {
     try {
-      const listOfApplications = await hteService.acceptApplication(
+      const listOfApplications = await hteService.approvingApplication(
         req.user.userId,
         req.params.applicationId
       );
@@ -187,9 +187,9 @@ class HteController {
       });
     }
   }
-  async getAcceptedInterns(req, res) {
+  async getApprovedInterns(req, res) {
     try {
-      const acceptedInterns = await hteService.getAcceptedInterns(
+      const acceptedInterns = await hteService.getApprovedInterns(
         req.user.userId
       );
       if (acceptedInterns) {

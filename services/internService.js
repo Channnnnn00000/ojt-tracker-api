@@ -108,68 +108,21 @@ class InternService {
             message: 'Application sent'
           }
         }
-
-    // console.log(jobId);
-    // console.log(userId);
-    // console.log(payload[0].path);
-    // console.log(payload[1].path);
-    // const userData = await User.findOne({_id:userId})
-    // console.log(userData);
-    
-    // const vacancyData = await InternVacancy.findById({ _id: jobId });
-
-    // function checkDuplicate(obj) {
-    //   return obj.toString() === userId;
-    // }
-    // const checkApplication = vacancyData.applicants.some(checkDuplicate);
-    // if (checkApplication) {
-    //   return {
-    //     ErrorMessage: 'Duplicate application'
-    //   };
-    // }
-    // // pushing jobid to interns profile
-    // const intern = await User.findOne({ _id: userId });
-    // const profileId = intern.profile;
-    // const profileData = await Intern.findOne({ _id: profileId });
-    // const checkDuplicateApply = profileData.appliedInternships.some(
-    //   (obj) => obj.toString() === jobId
-    // );
-    // if (checkDuplicateApply) {
-    //   return {
-    //     ErrorMessage: 'Duplicate application'
-    //   };
-    // }
-    // profileData.appliedInternships.push(jobId);
-    // await profileData.save();
-
-    // // New object to save in InternApplication Collection
-    // const newApplication = new InternApplication({
-    //   hteId: vacancyData.hte,
-    //   internId: userData.profile,
-    //   internVacancy: jobId,
-    //   resumePath: 'http://localhost:4000/img/' + payload[0].filename,
-    //   resumeFile: payload[0].filename,
-    //   moaPath: 'http://localhost:4000/img/' + payload[1].filename,
-    //   moaFile: payload[1].filename,
-
-    // });
-    // await newApplication.save();
-    // vacancyData.applicants.push(userData.profile);
-    // await vacancyData.save();
-    // return {
-    //   message: 'Application sent'
-    // }
   }
   async applyReset (userId) {
     const userData = await User.findOne({ _id: userId }).exec();
     const appInfo = await InternApplication.find({internId: userData.profile.toString()})
     console.log(appInfo);
-    
-    // const updateResult = await InternApplication.updateOne(
-    //   { _id: applicationId },
-    //   { $set: { status: "Approved", isUpdated: true, } }
-    // );
-
+    appInfo.map(async element => {
+      await InternApplication.updateOne(
+        {_id: element.id},
+        {$set: { isUpdated: false}}
+      )
+    })
+  }
+  async acceptHteOffer(applicationId) {
+    const updatedData = await InternApplication.updateOne({_id: applicationId},{$set: {status: 'Accepted'}})
+    return updatedData;
   }
 }
 

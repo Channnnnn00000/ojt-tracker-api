@@ -10,7 +10,7 @@ router.post(
 router.put(
   "/application/:applicationId/accept",
   authMiddleware.verifyToken,
-  hteController.acceptApplicant
+  hteController.approvedApplicant
 );
 router.get('/profile', hteController.getProfile)
 // User id will remove when we apply the authorization middleware
@@ -22,14 +22,14 @@ router.get(
   hteController.getSingleApplication
 );
 router.get(
-  "/applicants/pending",
+  "/applicants/list",
   authMiddleware.verifyToken,
   hteController.getListOfApplicant
 );
 router.get(
-  "/applicants/accepted",
+  "/applicants/approved",
   authMiddleware.verifyToken,
-  hteController.getAcceptedInterns
+  hteController.getApprovedInterns
 );
 router.patch("/:id", hteController.updateInternship);
 router.delete("/delete/:id", hteController.deleteInternship);
