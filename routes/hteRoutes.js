@@ -22,6 +22,11 @@ router.get(
   hteController.getSingleApplication
 );
 router.get(
+  "/applicants/pending",
+  authMiddleware.verifyToken,
+  hteController.getListOfPendingApplicant
+);
+router.get(
   "/applicants/list",
   authMiddleware.verifyToken,
   hteController.getListOfApplicant

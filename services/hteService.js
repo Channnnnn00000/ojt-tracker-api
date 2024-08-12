@@ -50,8 +50,18 @@ class HTEService {
     return await InternshipVacancy.findByIdAndDelete(id);
   }
 
-  // View only all internship application 
+  // View only all internship application with Pending Status
   async getInternshipApplication(id) {
+    const results = await User.findById({_id: id})
+    const profileId = results.profile.toString();
+    const listOfApplicants = await InternApplication.find({
+      hteId: profileId,
+      status:'Pending'
+    });
+    return listOfApplicants;
+  }
+    // View only all internship application 
+  async getAllInternshipApplication(id) {
     const results = await User.findById({_id: id})
     const profileId = results.profile.toString();
     const listOfApplicants = await InternApplication.find({
