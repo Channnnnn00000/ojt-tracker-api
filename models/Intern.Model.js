@@ -23,6 +23,10 @@ const internSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  isInternshipReady: {
+    type: Boolean,
+    default: false
+  },
   appliedInternships: [
     {
       index: true,

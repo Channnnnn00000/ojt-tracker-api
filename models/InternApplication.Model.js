@@ -40,9 +40,9 @@ const internApplicationSchema = new mongoose.Schema({
     enum: ["Pending", "Accepted", "Rejected",'Approved'],
     default: "Pending",
   },
-  isUpdated: {
-    type: Boolean,
-    default: false,
+  remarks: {
+    type: String,
+    default: null
   },
   createdAt: {
     type: String,

@@ -51,25 +51,39 @@ class HTEService {
   }
 
   // View only all internship application with Pending Status
-  async getInternshipApplication(id) {
-    const results = await User.findById({_id: id})
-    const profileId = results.profile.toString();
-    const listOfApplicants = await InternApplication.find({
-      hteId: profileId,
-      status:'Pending'
-    });
-    return listOfApplicants;
-  }
+
     // View only all internship application 
   async getAllInternshipApplication(id) {
-    const results = await User.findById({_id: id})
-    const profileId = results.profile.toString();
+    let applicationArr = []
+    const profileData = await User.findById({_id: id})
+
     const listOfApplicants = await InternApplication.find({
-      hteId: profileId,
+      hteId: profileData.profile
     });
-    return listOfApplicants;
+    const results = await Promise.all(listOfApplicants.map(async (element) => {
+      const internInfo = await Intern.findOne({_id: element.internId})
+      const jobInfo = await InternshipVacancy.findOne({_id: element.internVacancy})
+
+      const applicationListObj = {
+        applicationId: element._id,
+        jobId: element.internVacancy,
+        internId: element.internId,
+        hteId: element.hteId,
+        title: jobInfo.title,
+        applicantName: internInfo.fullName,
+        department: internInfo.department,
+        status: element.status,
+        remarks: element.remarks
+      }
+      return applicationListObj;
+      
+    }));
+    applicationArr.push(...results)
+    console.log(applicationArr);
+    
+    return applicationArr;
   }
-  
+
   async getApplicationItem(payload) {      
       const applicantInfo = await InternApplication.find({
         internId: payload.internId,
@@ -99,7 +113,7 @@ class HTEService {
       department: element.internId.department,
       appliedInternships: element.internId.appliedInternships,
       jobTitle: element.internVacancy.title,
-      postedOn: element.internVacancy.createdAt
+      postedOn: element.internVacancy.createdAt,
     }
     return applicantsObj
     }));
@@ -143,7 +157,7 @@ class HTEService {
 
     const updateResult = await InternApplication.updateOne(
       { _id: applicationId },
-      { $set: { status: "Approved", isUpdated: true, } }
+      { $set: { status: "Approved", remarks: "Intern's review" } }
     );
     if (updateResult.nModified === 0) {
       return res
@@ -159,11 +173,7 @@ class HTEService {
     // });
     // await acceptedApplicant.save();
   }
-  async getApprovedInterns(userId) {
-    const userProfile = await User.findById(userId)
-    const acceptedInterns = await InternApplication.find({hteId: userProfile.profile.toString(), status: 'Approved'})
-    return acceptedInterns;
-  }
+
   async getProfile() {
     return await HTE.find().populate('internVacancy').exec()
   }

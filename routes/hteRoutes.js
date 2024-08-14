@@ -21,21 +21,21 @@ router.get(
   authMiddleware.verifyToken,
   hteController.getSingleApplication
 );
-router.get(
-  "/applicants/pending",
-  authMiddleware.verifyToken,
-  hteController.getListOfPendingApplicant
-);
+// router.get(
+//   "/applicants/pending",
+//   authMiddleware.verifyToken,
+//   hteController.getListOfPendingApplicant
+// );
 router.get(
   "/applicants/list",
   authMiddleware.verifyToken,
   hteController.getListOfApplicant
 );
-router.get(
-  "/applicants/approved",
-  authMiddleware.verifyToken,
-  hteController.getApprovedInterns
-);
+// router.get(
+//   "/applicants/approved",
+//   authMiddleware.verifyToken,
+//   hteController.getApprovedInterns
+// );
 router.patch("/:id", hteController.updateInternship);
 router.delete("/delete/:id", hteController.deleteInternship);
 

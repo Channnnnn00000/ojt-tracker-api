@@ -58,4 +58,6 @@ router.patch(
 // Authentication
 router.post("/login", internController.login);
 
+router.get("/totalhours", internController.getTotalHoursRequired)
+
 module.exports = router;

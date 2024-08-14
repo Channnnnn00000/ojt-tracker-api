@@ -28,7 +28,7 @@ class InternController {
       );
       res.status(201).json({
         message: "Success!",
-        data: listOfIntership,
+        content: listOfIntership,
       });
     } catch (error) {
       res.status(500).json({
@@ -116,7 +116,7 @@ class InternController {
   }
   async acceptHteOffer(req, res) {
     try {
-      const response = await internService.acceptHteOffer(req.params.id)
+      const response = await internService.acceptHteOffer(req.params.id, req.user.userId)
       res.status(200).json({
         message: 'Success',
         content: response
@@ -129,6 +129,22 @@ class InternController {
       });
     }
  
+  }
+  async getTotalHoursRequired(req, res) {    
+    try{
+      const totalHoursRequired = await internService.getTotalHours(req.user.userId)
+        res.status(200).json({
+          status: true,
+          content: totalHoursRequired
+        })
+      
+    }catch(err) {
+      res.status(400).json({
+        content: 'Failed to get the total hours required',
+        status: err.message
+      })
+
+    }
   }
 }
 

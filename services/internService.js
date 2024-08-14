@@ -46,7 +46,6 @@ class InternService {
           jobTitle: jobInfo.title,
           status: element.status,
           company: hteInfo.name,
-          isUpdated: element.isUpdated
       };
       return applicationObj;
   }));
@@ -120,9 +119,23 @@ class InternService {
       )
     })
   }
-  async acceptHteOffer(applicationId) {
-    const updatedData = await InternApplication.updateOne({_id: applicationId},{$set: {status: 'Accepted'}})
+  async acceptHteOffer(applicationId,userId) {
+    console.log(applicationId);
+    
+    const userData = await User.findOne({_id: userId})
+    const updateResults = await Intern.updateOne({_id: userData.profile}, {$set:{isInternshipReady: true}})
+    console.log(updateResults);
+    
+    const updatedData = await InternApplication.updateOne({_id: applicationId},{$set: {status: 'Accepted',remarks:'Intern deployment'}})
     return updatedData;
+  }
+  async getTotalHours(userID) {
+    console.log(userID)
+    const profileData = await User.findById({_id: userID})
+    console.log(profileData.profile);
+    const profileInfo = await Intern.findById({_id: profileData.profile})
+    return profileInfo.requiredHours; 
+    
   }
 }
 
