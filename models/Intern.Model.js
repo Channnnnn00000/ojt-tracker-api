@@ -1,15 +1,6 @@
 const mongoose = require("mongoose");
 
 const internSchema = new mongoose.Schema({
-  // Format userid + @dhvsu.edu.ph
-  // username: {
-  //   type: String,
-  //   required: true,
-  // },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
   fullName: {
     type: String,
     required: true,
@@ -25,7 +16,7 @@ const internSchema = new mongoose.Schema({
   },
   isInternshipReady: {
     type: Boolean,
-    default: false
+    default: false,
   },
   appliedInternships: [
     {
@@ -34,6 +25,17 @@ const internSchema = new mongoose.Schema({
       ref: "Application",
     },
   ],
+  dailyTimeRecords: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DailyTimeRecord",
+    },
+  ],
+  acceptedInternship: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Application",
+  },
+
   // approvedInternships: [
   //   {
   //     type: mongoose.Schema.Types.ObjectId,
@@ -44,12 +46,6 @@ const internSchema = new mongoose.Schema({
   //   {
   //     type: mongoose.Schema.Types.ObjectId,
   //     ref: "InternVacancy",
-  //   },
-  // ],
-  // dailyTimeRecords: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "DailyTimeRecord",
   //   },
   // ],
 
