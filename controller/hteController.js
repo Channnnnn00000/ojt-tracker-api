@@ -29,7 +29,6 @@ class HteController {
         });
       }
       res.status(201).json({
-
         content: listOfIntership,
       });
     } catch (error) {
@@ -77,7 +76,7 @@ class HteController {
       });
     }
   }
-  async deleteInternship(req, res) {    
+  async deleteInternship(req, res) {
     try {
       await hteService.deletePostVacancy(req.params.id);
       res.status(201).json({
@@ -101,27 +100,25 @@ class HteController {
           content: listOfApplications,
         });
       }
-
     } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
   }
-  async getListOfPendingApplicant(req, res) {
+  async getlistOfAcceptedInterns(req, res) {
     try {
-      const listOfApplications = await hteService.getInternshipApplication(
+      const listOfApplications = await hteService.getInternshipAccepted(
         req.user.userId
       );
- 
-      if (listOfApplications.length) {
+
+      if (listOfApplications) {
         res.status(201).json({
           lenght: listOfApplications.length,
           message: "Success!",
           content: listOfApplications,
         });
       }
-
     } catch (error) {
       res.status(500).json({
         message: error.message,
@@ -167,8 +164,7 @@ class HteController {
   }
   async getProfile(req, res) {
     try {
-      const profile = await hteService.getProfile(
-      );
+      const profile = await hteService.getProfile();
       // console.log(listOfIntership);
       if (profile.length === 0) {
         return res.status(201).json({
@@ -188,9 +184,7 @@ class HteController {
   }
   async getSingleApplication(req, res) {
     try {
-      const applicantsData = await hteService.getApplicationItem(
-        req.params
-      );
+      const applicantsData = await hteService.getApplicationItem(req.params);
       if (applicantsData) {
         return res.status(201).json({
           status: "Success",

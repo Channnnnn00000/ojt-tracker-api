@@ -10,11 +10,19 @@ const internSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  workedHours: {
+    type: Number,
+    default: 0,
+  },
   requiredHours: {
     type: Number,
     default: 0,
   },
   isInternshipReady: {
+    type: Boolean,
+    default: false,
+  },
+  isTimeIn: {
     type: Boolean,
     default: false,
   },

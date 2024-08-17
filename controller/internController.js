@@ -42,7 +42,7 @@ class InternController {
       const listOfVacancy = await internService.getVacancy();
       res.status(201).json({
         message: "Success!",
-        content: listOfVacancy
+        content: listOfVacancy,
       });
     } catch (error) {
       res.status(500).json({
@@ -83,17 +83,17 @@ class InternController {
       const applyInformation = await internService.applyInternship(
         req.user.userId,
         req.params.id,
-        req.files,
+        req.files
       );
-       if(applyInformation.ErrorMessage) {
+      if (applyInformation.ErrorMessage) {
         return res.status(400).json({
-          content: 'Already applied to this internship'
-        })
-       }
+          content: "Already applied to this internship",
+        });
+      }
       return res.status(201).json({
         status: "Success",
         data: applyInformation,
-        message: applyInformation.message
+        message: applyInformation.message,
       });
     } catch (err) {
       res.status(500).json({
@@ -103,12 +103,12 @@ class InternController {
   }
   async setStateToFalse(req, res) {
     try {
-      await internService.applyReset(req.user.userId)
+      await internService.applyReset(req.user.userId);
       res.status(201).json({
         message: "Reset state success!",
         data: results,
       });
-    }catch(error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
@@ -116,34 +116,50 @@ class InternController {
   }
   async acceptHteOffer(req, res) {
     try {
-      const response = await internService.acceptHteOffer(req.params.id, req.user.userId)
+      const response = await internService.acceptHteOffer(
+        req.params.id,
+        req.user.userId
+      );
       res.status(200).json({
-        message: 'Success',
-        content: response
+        message: "Success",
+        content: response,
       });
-      
-    }
-    catch (error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
- 
   }
-  async getTotalHoursRequired(req, res) {    
-    try{
-      const totalHoursRequired = await internService.getTotalHours(req.user.userId)
+  async getTotalHoursRequired(req, res) {
+    try {
+      const totalHoursRequired = await internService.getTotalHours(
+        req.user.userId
+      );
+      res.status(200).json({
+        status: true,
+        content: totalHoursRequired,
+      });
+    } catch (err) {
+      res.status(400).json({
+        content: "Failed to get the total hours required",
+        status: err.message,
+      });
+    }
+  }
+  async timeInHandler(req, res) {
+    try {
+      const response = await internService.timeIn(req.user.userId, req.body);
+      if (response) {
         res.status(200).json({
           status: true,
-          content: totalHoursRequired
-        })
-      
-    }catch(err) {
-      res.status(400).json({
-        content: 'Failed to get the total hours required',
-        status: err.message
-      })
-
+          content: response,
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        status: false,
+        message: err.message,
+      });
     }
   }
 }
