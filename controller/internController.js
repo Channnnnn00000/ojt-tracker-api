@@ -173,7 +173,7 @@ class InternController {
       const response = await internService.timeOut(
         req.user.userId,
         req.body,
-        req.params.id
+        // req.params.id
       );
       if (response) {
         res.status(200).json({

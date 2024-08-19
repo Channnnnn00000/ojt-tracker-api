@@ -201,9 +201,15 @@ class InternService {
     const internProfile = await Intern.findOne(profileData.profile);
 
     console.log(internProfile.workedHours);
-    const dtrData = await DailyTimeRecord.findOne({ internId:profileData.profile, });
-    // const updatedDTR = await DailyTimeRecord.findOne({ _id: dtrId });
-    // console.log(updatedDTR);
+    const dtrData = await DailyTimeRecord.findOne({ internId:profileData.profile,date:payload.date });
+    console.log(dtrData._id);
+    // if(dtrData) {
+    //   return {
+    //     message: 'Record Found'
+    //   }
+    // }
+    const updatedDTR = await DailyTimeRecord.findOne({_id: dtrData._id});
+    console.log(updatedDTR);
 
     (updatedDTR.timeOut = payload.timeOut),
       (updatedDTR.timeOutLocation = payload.timeOutLocation),

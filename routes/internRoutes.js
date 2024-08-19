@@ -65,7 +65,7 @@ router.post(
   internController.timeInHandler
 );
 router.put(
-  "/timeout/:id",
+  "/timeout",
   authMiddleware.verifyToken,
   internController.timeOutHandler
 );
