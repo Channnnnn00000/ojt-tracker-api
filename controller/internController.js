@@ -149,6 +149,32 @@ class InternController {
   async timeInHandler(req, res) {
     try {
       const response = await internService.timeIn(req.user.userId, req.body);
+      if (response.errorMessage) {
+        return res.status(400).json({
+          status: false,
+          content: response.errorMessage,
+        });
+      }
+      if (response) {
+        return res.status(200).json({
+          status: true,
+          content: response,
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        status: false,
+        message: err.message,
+      });
+    }
+  }
+  async timeOutHandler(req, res) {
+    try {
+      const response = await internService.timeOut(
+        req.user.userId,
+        req.body,
+        req.params.id
+      );
       if (response) {
         res.status(200).json({
           status: true,

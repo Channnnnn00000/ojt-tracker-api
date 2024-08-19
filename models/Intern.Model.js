@@ -22,7 +22,7 @@ const internSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  isTimeIn: {
+  isClockIn: {
     type: Boolean,
     default: false,
   },

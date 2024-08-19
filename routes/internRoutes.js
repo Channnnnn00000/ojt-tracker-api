@@ -64,5 +64,10 @@ router.post(
   authMiddleware.verifyToken,
   internController.timeInHandler
 );
+router.put(
+  "/timeout/:id",
+  authMiddleware.verifyToken,
+  internController.timeOutHandler
+);
 
 module.exports = router;

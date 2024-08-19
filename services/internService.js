@@ -154,16 +154,74 @@ class InternService {
 
   async timeIn(userId, payload) {
     const profileData = await User.findOne({ _id: userId });
-
+    await Intern.updateOne(
+      { _id: profileData.profile },
+      { $set: { isClockIn: true } }
+    );
+    // const existingRecord = await DailyTimeRecord.findOne({
+    //   internId: profileData.profile,
+    //   date: payload.date,
+    // });
+    // console.log(existingRecord);
     // console.log(profileData.profile);
     const internProfile = await Intern.findOne(profileData.profile);
-    console.log(internProfile);
+    const applicationInfo = await InternApplication.findOne(
+      internProfile.acceptedInternship
+    );
 
-    const newTimeIn = new DailyTimeRecord({});
+    const existingRecord = await DailyTimeRecord.findOne({
+      internId: profileData.profile,
+      jobId: applicationInfo.internVacancy,
+      date: payload.date.toString(),
+    });
+    // console.log(existingRecord);
+    if (existingRecord) {
+      return {
+        errorMessage: "You already Time in today",
+      };
+    }
 
-    // const newTimeIn = new DailyTimeRecord({});
-    // await newTimeIn.save();
-    // return newTimeIn;
+    const newTimeIn = new DailyTimeRecord({
+      internId: applicationInfo.internId,
+      companyId: applicationInfo.hteId,
+      jobId: applicationInfo.internVacancy,
+      timeIn: payload.timeIn,
+      timeInLocation: payload.timeInLocation,
+      date: payload.date,
+    });
+    await newTimeIn.save();
+
+    internProfile.dailyTimeRecords.push(newTimeIn._id);
+    await internProfile.save();
+    return newTimeIn;
+  }
+  async timeOut(userId, payload, dtrId) {
+    let totalHours = 0;
+    const profileData = await User.findOne({ _id: userId });
+    const internProfile = await Intern.findOne(profileData.profile);
+
+    console.log(internProfile.workedHours);
+    const dtrData = await DailyTimeRecord.findOne({ internId:profileData.profile, });
+    // const updatedDTR = await DailyTimeRecord.findOne({ _id: dtrId });
+    // console.log(updatedDTR);
+
+    (updatedDTR.timeOut = payload.timeOut),
+      (updatedDTR.timeOutLocation = payload.timeOutLocation),
+      await updatedDTR.save();
+    console.log(updatedDTR.totalHours);
+    totalHours =internProfile.workedHours + updatedDTR.totalHours;
+    await Intern.updateOne(
+      { _id: profileData.profile },
+      {
+        $set: {
+          isClockIn: false,
+          workedHours: totalHours,
+        },
+      }
+    );
+
+    console.log(updatedDTR);
+    return updatedDTR;
   }
 }
 
