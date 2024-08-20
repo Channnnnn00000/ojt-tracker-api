@@ -221,6 +221,9 @@ class HteController {
       });
     }
   }
+  getLoggedClockInInterns(req,res) {
+    
+  }
 }
 
 module.exports = new HteController();

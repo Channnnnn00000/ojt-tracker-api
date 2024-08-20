@@ -14,6 +14,12 @@ const hteSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  location: {
+    type: {
+      lat: { type: Number },
+      long: { type: Number },
+    },
+  },
   hasMoa: {
     type: String,
     default: 'false',
