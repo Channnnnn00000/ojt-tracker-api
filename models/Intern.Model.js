@@ -39,6 +39,12 @@ const internSchema = new mongoose.Schema({
       ref: "DailyTimeRecord",
     },
   ],
+  isEvaluationReady: 
+    {
+      type: Boolean,
+      default: false
+    },
+
   acceptedInternship: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Application",

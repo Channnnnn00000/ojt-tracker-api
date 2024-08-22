@@ -221,7 +221,25 @@ class HteController {
       });
     }
   }
-  getLoggedClockInInterns(req,res) {
+  async getOnlineInterns(req,res) {
+    try {
+      const onlineInterns = await hteService.getOnlineIntern(
+        req.user.userId,
+      );
+
+      if(onlineInterns) {
+        return res.status(200).json({
+          content: onlineInterns
+        });
+      }
+      res.status(400).json({
+        message: "No data found",
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
     
   }
 }

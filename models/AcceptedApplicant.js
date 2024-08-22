@@ -5,6 +5,21 @@ const acceptedApplicantSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Application",
   },
+  hteId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "HTE",
+  },
+  internId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Intern",
+  },
+  internVacancy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InternVacancy",
+  },
+  department: {
+    type: String,
+  },
   jobTitle: {
     type: String,
   },
@@ -12,9 +27,7 @@ const acceptedApplicantSchema = new mongoose.Schema({
     type: String,
   },
 
-  companyName: {
-    type: String,
-  },
+
 
   createdAt: {
     type: String,

@@ -21,7 +21,7 @@ router.get(
   hteController.getListOfInternship
 );
 router.get(
-  "/list/accepted",
+  "/applicants/accepted",
   authMiddleware.verifyToken,
   hteController.getlistOfAcceptedInterns
 );
@@ -44,6 +44,11 @@ router.get(
   "/applicants/list",
   authMiddleware.verifyToken,
   hteController.getListOfApplicant
+);
+router.get(
+  "/internship/online",
+  authMiddleware.verifyToken,
+  hteController.getOnlineInterns
 );
 // router.get(
 //   "/applicants/approved",
