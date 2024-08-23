@@ -136,12 +136,24 @@ class InternService {
       { $set: { isInternshipReady: true, acceptedInternship: applicationId } }
     );
     console.log(updateResults);
-
+    const applicationData = await InternApplication.findOne({_id: applicationId})
+    const jobData = await InternVacancy.findOne({_id: applicationData.internVacancy})
+    const internData = await Intern.findOne({_id: applicationData.internId})
     const updatedData = await InternApplication.updateOne(
       { _id: applicationId },
       { $set: { status: "Accepted", remarks: "Intern for deployment" } }
     );
-
+    const acceptedIntern = new AcceptedApplicant({
+      applicationId: applicationData._id,
+      hteId: applicationData.hteId,
+      internId: applicationData.internId,
+      internId: applicationData.internId,
+      jobTitle: jobData.title,
+      name:internData.fullName,
+      department: internData.department,
+      
+    })
+    await acceptedIntern.save()
     return updatedData;
   }
   async getTotalHours(userID) {
@@ -154,10 +166,9 @@ class InternService {
 
   async timeIn(userId, payload) {
     const profileData = await User.findOne({ _id: userId });
-    await Intern.updateOne(
-      { _id: profileData.profile },
-      { $set: { isClockIn: true } }
-    );
+    
+  
+
     // const existingRecord = await DailyTimeRecord.findOne({
     //   internId: profileData.profile,
     //   date: payload.date,
@@ -190,7 +201,10 @@ class InternService {
       date: payload.date,
     });
     await newTimeIn.save();
-
+    await Intern.updateOne(
+      { _id: profileData.profile },
+      { $set: { isClockIn: true } }
+    );
     internProfile.dailyTimeRecords.push(newTimeIn._id);
     await internProfile.save();
     return newTimeIn;
@@ -203,11 +217,7 @@ class InternService {
     console.log(internProfile.workedHours);
     const dtrData = await DailyTimeRecord.findOne({ internId:profileData.profile,date:payload.date });
     console.log(dtrData._id);
-    // if(dtrData) {
-    //   return {
-    //     message: 'Record Found'
-    //   }
-    // }
+
     const updatedDTR = await DailyTimeRecord.findOne({_id: dtrData._id});
     console.log(updatedDTR);
 
@@ -215,6 +225,9 @@ class InternService {
       (updatedDTR.timeOutLocation = payload.timeOutLocation),
       await updatedDTR.save();
     console.log(updatedDTR.totalHours);
+    if(updatedDTR.totalHours > 8) {
+      updatedDTR.totalHours = 8
+    }
     totalHours =internProfile.workedHours + updatedDTR.totalHours;
     await Intern.updateOne(
       { _id: profileData.profile },
@@ -228,6 +241,15 @@ class InternService {
 
     console.log(updatedDTR);
     return updatedDTR;
+  }
+  async logLocation(userId,payload) {
+    const userData = await User.findOne({_id: userId})
+    const updatedDataLocation = await Intern.updateOne(
+      { _id: userData.profile },
+      { $set: { currentLocation: payload,} }
+    );
+    return updatedDataLocation;
+
   }
 }
 

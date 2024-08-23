@@ -3,9 +3,10 @@ const HTE = require("../models/HTE.Model");
 const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const InternApplication = require("../models/InternApplication.Model");
-
+const DailyTimeRecord = require('../models/DailyTimeRecord.Model')
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
+const AcceptedApplicant = require("../models/AcceptedApplicant");
 
 class HTEService {
   async loginUser(username, password) {
@@ -78,6 +79,7 @@ class HTEService {
           department: internInfo.department,
           status: element.status,
           remarks: element.remarks,
+          hoursWorked: internInfo.workedHours
         };
         return applicationListObj;
       })
@@ -189,43 +191,63 @@ class HTEService {
     return await HTE.find().populate("internVacancy").exec();
   }
   async getInternshipAccepted(id) {
-    let applicationArr = [];
+    let acceptedApplicant = [];
     const profileData = await User.findById({ _id: id });
+    // To ensure you only get accepted applicants with one company
+    const listOfAcceptedIntern = await AcceptedApplicant.find({hteId: profileData.profile})
+    const results = await Promise.all(
+      listOfAcceptedIntern.map(async (element) => {
+        console.log(element);
+        
+        const internData = await Intern.findOne({_id: element.internId})
 
-    const listOfAcceptedInterns = await InternApplication.find({
-      hteId: profileData.profile,
-      status: "Accepted",
-    });
-
-    // console.log(listOfAcceptedInterns);
-
-    // const results = await Promise.all(
-    listOfAcceptedInterns.map(async (element) => {
-      const internInfo = await Intern.findOne({ _id: element.internId });
-      // const jobInfo = await InternshipVacancy.findOne({
-      //   _id: element.internVacancy,
-      // });
-      console.log(internInfo.fullName);
-
-      // const applicationListObj = {
-      //   applicationId: element._id,
-      //   jobId: element.internVacancy,
-      //   internId: element.internId,
-      //   hteId: element.hteId,
-      //   title: jobInfo.title,
-      //   applicantName: internInfo.fullName,
-      //   department: internInfo.department,
-      //   status: element.status,
-      //   remarks: element.remarks,
-      // };
-      // return applicationListObj;
-    });
-    // );
-    // applicationArr.push(...results);
-    // console.log(applicationArr);
-
-    // return applicationArr;
+        const acceptedApplicantObj = {
+          applicationId: element.applicationId,
+          hteId: element.hteId,
+          internId: element.internId,
+          name: internData.fullName,
+          department: internData.department,
+          workedHours: Math.trunc(internData.workedHours),
+          isClockIn: internData.isClockIn,
+          dailyTimeRecords: internData.dailyTimeRecords,
+          jobTitle: element.jobTitle,
+          evaluationStatus: internData.isEvaluationReady
+        }
+        return acceptedApplicantObj;
+        
+      })
+    )
+    acceptedApplicant.push(...results)
+    console.log(acceptedApplicant);
+    return acceptedApplicant;
+  
   }
+  async getOnlineIntern(userId) {
+    let onlineInternArr = [];
+    const userData = await User.find({_id: userId})
+    const profileData = await HTE.findOne(userData.profile)
+
+    let today = new Date().toLocaleDateString()
+    const getOnlineIntern = await DailyTimeRecord.find({companyId: profileData._id, date: today, timeOut: {$eq:null}})
+    console.log(getOnlineIntern);
+    const results = await Promise.all(
+      getOnlineIntern.map(async (element) => {
+        const internInfo = await Intern.findOne({_id: element.internId})
+
+        // Obj Polling intern location data
+        const onlineObj = {
+          name: internInfo.fullName,
+          timeIn: element.timeIn.toLocaleTimeString(),
+          timeInLocation: element.timeInLocation,
+          currentLocation: internInfo.currentLocation
+        }
+        return onlineObj
+      })
+    )
+    onlineInternArr.push(...results)
+    return onlineInternArr
+  }
+ 
 }
 
 module.exports = new HTEService();
