@@ -166,6 +166,8 @@ class InternService {
 
   async timeIn(userId, payload) {
     const profileData = await User.findOne({ _id: userId });
+    
+  
 
     // const existingRecord = await DailyTimeRecord.findOne({
     //   internId: profileData.profile,
@@ -239,6 +241,15 @@ class InternService {
 
     console.log(updatedDTR);
     return updatedDTR;
+  }
+  async logLocation(userId,payload) {
+    const userData = await User.findOne({_id: userId})
+    const updatedDataLocation = await Intern.updateOne(
+      { _id: userData.profile },
+      { $set: { currentLocation: payload,} }
+    );
+    return updatedDataLocation;
+
   }
 }
 

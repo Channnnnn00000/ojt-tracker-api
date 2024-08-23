@@ -188,6 +188,22 @@ class InternController {
       });
     }
   }
+  async getCurrentLocationHandler(req, res){
+    try {
+      const resultsLocation = await internService.logLocation(req.user.userId, req.body)
+
+      if(resultsLocation) {
+        res.status(200).json({
+          content: resultsLocation
+        })
+      }
+    }catch(err) {
+      res.status(500).json({
+        status: false,
+        message: err.message,
+      });
+    }
+  }
 }
 
 module.exports = new InternController();

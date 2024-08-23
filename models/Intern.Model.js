@@ -26,6 +26,13 @@ const internSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  currentLocation: {
+    type: {
+      lat: { type: Number, required: true, },
+      long: { type: Number, required: true,},
+    },
+    default: null,
+  },
   appliedInternships: [
     {
       index: true,

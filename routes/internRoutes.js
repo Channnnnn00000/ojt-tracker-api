@@ -70,4 +70,6 @@ router.put(
   internController.timeOutHandler
 );
 
+router.put('/currentlocation', authMiddleware.verifyToken, internController.getCurrentLocationHandler)
+
 module.exports = router;
