@@ -226,24 +226,28 @@ class HTEService {
     let onlineInternArr = [];
     const userData = await User.find({_id: userId})
     const profileData = await HTE.findOne(userData.profile)
-    console.log(profileData._id);
 
     let today = new Date().toLocaleDateString()
     const getOnlineIntern = await DailyTimeRecord.find({companyId: profileData._id, date: today, timeOut: {$eq:null}})
     console.log(getOnlineIntern);
     const results = await Promise.all(
       getOnlineIntern.map(async (element) => {
+        const internInfo = await Intern.findOne({_id: element.internId})
 
-
-        console.log(element.timeIn.toLocaleTimeString());
-
-        // Polling intern location data
-     
-        
+        // Obj Polling intern location data
+        const onlineObj = {
+          name: internInfo.fullName,
+          timeIn: element.timeIn.toLocaleTimeString(),
+          timeInLocation: element.timeInLocation,
+          currentLocation: internInfo.currentLocation
+        }
+        return onlineObj
       })
     )
-
+    onlineInternArr.push(...results)
+    return onlineInternArr
   }
+ 
 }
 
 module.exports = new HTEService();
