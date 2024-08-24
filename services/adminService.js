@@ -2,7 +2,8 @@ const HTE = require("../models/HTE.Model");
 const Admin = require("../models/Admin.Model");
 const Coordinator = require("../models/Coordinator.Model");
 const User = require("../models/User.Model");
-const Intern = require("../models/Intern.Model");
+const Intern = require("../models/Intern.Model")
+const DepartmentList = require('../models/Department.Model');
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 
@@ -71,15 +72,16 @@ class AdminService {
       password: hashedPassword,
       email: payload.email,
       role: payload.role,
-      profile: new Coordinator({
-        assignedCourse: payload.assignedCourse,
-        firstname: payload.firstname,
-        middlename: payload.middlename,
-        lastname: payload.lastname,
-        contact: payload.contactNumber,
-        address: payload.address,
-      }),
     });
+    await newUser.save();
+
+    const newCoor = new Coordinator({
+      fullName: payload.fullName,
+      contact: payload.contactNumber,
+      department: payload.department
+    })
+    await newCoor.save()
+    newUser.profile = newCoor._id
     await newUser.save();
   }
   async registerIntern(payload) {
@@ -163,6 +165,34 @@ class AdminService {
   }
   async removeIntern(id) {
     return await Intern.findByIdAndDelete(id);
+  }
+
+  // fetching, adding, Department model to frontend
+  async getDepartmentList() {
+    return await DepartmentList.find();
+
+  }
+  async addDepartment(payload) {
+
+    const newDepartment = new DepartmentList(payload)
+    await newDepartment.save()
+    return newDepartment;
+
+  }
+  async updateDepartment(departmentId,payload) {
+    const updatedData = await DepartmentList.findByIdAndUpdate(departmentId, payload, {
+      new: true,
+      runValidators: true,
+    })
+
+    return updatedData;
+
+  }
+  async deleteDepartment(departmentId) {
+    const updatedData = await DepartmentList.findByIdAndDelete(departmentId)
+
+    return updatedData;
+
   }
 }
 

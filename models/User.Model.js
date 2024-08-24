@@ -13,9 +13,9 @@ const userSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["active", "inactive", "suspended"],
+    enum: ["Active", "Inactive", "Suspended"],
     required: true,
-    default: "active",
+    default: "Active",
   },
   profile: {
     // Different profiles based on the role

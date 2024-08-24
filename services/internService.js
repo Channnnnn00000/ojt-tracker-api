@@ -251,6 +251,25 @@ class InternService {
     return updatedDataLocation;
 
   }
+  async getAttendance(userId) {
+    let attendanceArr = [];
+    const profileData = await User.findById({ _id: userId });
+    const attendanceList = await DailyTimeRecord.find({internId: profileData.profile})
+    const results = await Promise.all(
+
+      attendanceList.map(async(element) => {
+        const attendanceObj = {
+          date: element.date,
+          timeIn: element.timeIn.toLocaleTimeString(),
+          timeOut: element.timeOut.toLocaleTimeString(),
+        }
+        return attendanceObj
+      })
+    )
+    attendanceArr.push(...results)
+    return attendanceArr;
+
+  }
 }
 
 module.exports = new InternService();

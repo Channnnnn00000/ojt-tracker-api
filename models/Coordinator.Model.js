@@ -1,43 +1,18 @@
 const mongoose = require("mongoose");
 
 const coordinatorSchema = new mongoose.Schema({
-  // username: {
-  //   type: String,
-  //   required: true,
-  // },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
-  assignedCourse: {
+
+  fullName: {
     type: String,
     required: true,
-    default: "BSIT",
-  },
-  firstname: {
-    type: String,
-    required: true,
-    default: "Coor",
-  },
-  middlename: {
-    type: String,
-    required: true,
-    default: "Coor",
-  },
-  lastname: {
-    type: String,
-    required: true,
-    default: "Coor",
   },
   contact: {
     type: Number,
     required: true,
-    default: 12345,
   },
-  address: {
+  department: {
     type: String,
     required: true,
-    default: "Coor Address here",
   },
   // sex: {
   //   type: String,

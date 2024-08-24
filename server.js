@@ -5,6 +5,7 @@ const cors = require("cors");
 const hteRoutes = require("./routes/hteRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const internRoutes = require("./routes/internRoutes");
+const coorRoutes = require("./routes/coorRoutes");
 const dtrRoutes = require("./routes/dtrRoutes");
 const path = require("path");
 require("./config/database");
@@ -31,6 +32,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/", adminRoutes);
 app.use("/api/v1/", dtrRoutes);
 app.use("/api/v1/hte", hteRoutes);
+app.use("/api/v1/coor", coorRoutes);
 app.use("/api/v1/intern", internRoutes);
 
 app.listen(process.env.PORT || 4000, () => {

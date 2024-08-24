@@ -44,4 +44,10 @@ router.delete("/intern/:id", adminController.removeIntern);
 router.post("/admin/login", adminController.login);
 router.post("/admin/logout", adminController.logout);
 
+// Fetching department list to frontend
+router.get("/admin/departmentlist", authMiddleware.verifyToken, adminController.fetchDepartmentList);
+router.post("/admin/departmentlist", authMiddleware.verifyToken, adminController.addDepartment);
+router.put("/admin/departmentlist/:id", authMiddleware.verifyToken, adminController.updateDepartment);
+router.delete("/admin/departmentlist/:id", authMiddleware.verifyToken, adminController.deleteDepartment);
+
 module.exports = router;

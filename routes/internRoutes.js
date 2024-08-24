@@ -69,6 +69,11 @@ router.put(
   authMiddleware.verifyToken,
   internController.timeOutHandler
 );
+router.get(
+  "/attendance",
+  authMiddleware.verifyToken,
+  internController.getAttendance
+);
 
 router.put('/currentlocation', authMiddleware.verifyToken, internController.getCurrentLocationHandler)
 

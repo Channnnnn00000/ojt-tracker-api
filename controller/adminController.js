@@ -308,6 +308,61 @@ class AdminController {
       });
     }
   }
+  async fetchDepartmentList(req, res) {
+    try {
+      const results = await adminService.getDepartmentList()
+      res.status(201).json({
+        message: "Success fetching",
+        content: results
+      });
+    }catch(error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+   
+  }
+  async addDepartment(req, res) {
+    try {
+      const results = await adminService.addDepartment(req.body)
+      res.status(201).json({
+        message: "Added Department",
+        content: results
+      });
+    }catch(error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+   
+  }
+  async updateDepartment(req, res) {
+    try {
+      const results = await adminService.updateDepartment(req.params.id,req.body)
+      res.status(201).json({
+        message: "Update Success!",
+        content: results
+      });
+    }catch(error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+   
+  }
+  async deleteDepartment(req, res) {
+    try {
+   await adminService.deleteDepartment(req.params.id)
+      res.status(201).json({
+        message: "Delete Success!",
+      });
+    }catch(error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+   
+  }
 
   // async login(req, res) {
   //   const { username, password } = req.body;

@@ -45,7 +45,7 @@ const dtrSchema = new mongoose.Schema({
   timeInLocation: {
     type: {
       lat: { type: Number, required: true },
-      long: { type: Number, required: true },
+      lng: { type: Number, required: true },
     },
   },
   timeOut: {
@@ -55,7 +55,7 @@ const dtrSchema = new mongoose.Schema({
   timeOutLocation: {
     type: {
       lat: { type: Number },
-      long: { type: Number },
+      lng: { type: Number },
     },
     default: null,
   },

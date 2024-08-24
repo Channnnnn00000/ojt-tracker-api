@@ -29,7 +29,7 @@ const internSchema = new mongoose.Schema({
   currentLocation: {
     type: {
       lat: { type: Number, required: true, },
-      long: { type: Number, required: true,},
+      lng: { type: Number, required: true,},
     },
     default: null,
   },

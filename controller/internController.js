@@ -191,10 +191,11 @@ class InternController {
   async getCurrentLocationHandler(req, res){
     try {
       const resultsLocation = await internService.logLocation(req.user.userId, req.body)
+      
 
       if(resultsLocation) {
         res.status(200).json({
-          content: resultsLocation
+          content: resultsLocation.acknowledged
         })
       }
     }catch(err) {
@@ -203,6 +204,22 @@ class InternController {
         message: err.message,
       });
     }
+  }
+  async getAttendance(req, res){
+    try {
+      const response = await internService.getAttendance(req.user.userId)
+      if(response) {
+        res.status(200).json({
+          content: response
+        })
+      }
+    }catch(err) {
+      res.status(500).json({
+        status: false,
+        message: err.message,
+      });
+    }
+   
   }
 }
 
