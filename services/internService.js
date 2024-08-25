@@ -7,7 +7,7 @@ const AcceptedApplicant = require("../models/AcceptedApplicant");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const DailyTimeRecord = require("../models/DailyTimeRecord.Model");
-
+const moment = require('moment-timezone');
 class InternService {
   async loginIntern(username, password) {
     const user = await User.findOne({ username });
@@ -264,10 +264,15 @@ class InternService {
       //     timeOut: element.timeOut.toLocaleTimeString(),
       //   }
       attendanceList.map(async(element) => {
+        const utcDateIn = element.timeIn;
+        const utcDateOut = element.timeIn;
+        const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
+        const phtDateTimeOut = moment.utc(utcDateOut).tz('Asia/Manila').format('h:mm:ss A');
+        
         const attendanceObj = {
           date: element.date,
-          timeIn: element.timeIn,
-          timeOut: element.timeOut,
+          timeIn: phtDateTimeIn,
+          timeOut: phtDateTimeOut
         }
         return attendanceObj
       })
