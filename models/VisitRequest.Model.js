@@ -17,6 +17,14 @@ const visitRequestSchema = new mongoose.Schema({
   department: {
     type: String,
   },
+  status: {
+    type: String,
+    enum:['Pending','Granted','Rejected'],
+    default: 'Pending'
+  },
+  remarks: {
+    type: String
+  },
 
   createdAt: {
     type: String,

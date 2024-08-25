@@ -4,7 +4,7 @@ const internSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: true,
-    default: "intern",
+
   },
   department: {
     type: String,

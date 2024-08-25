@@ -61,21 +61,21 @@ class HTEService {
     const listOfApplicants = await InternApplication.find({
       hteId: profileData.profile,
     });
+    console.log(listOfApplicants);
+    
     const results = await Promise.all(
       listOfApplicants.map(async (element) => {
         const internInfo = await Intern.findOne({ _id: element.internId });
         const jobInfo = await InternshipVacancy.findOne({
           _id: element.internVacancy,
         });
-        console.log(jobInfo);
-
         const applicationListObj = {
           applicationId: element._id,
           jobId: element.internVacancy,
           internId: element.internId,
           hteId: element.hteId,
           title: jobInfo.title,
-          applicantName: internInfo.fullName,
+          name: internInfo.fullName,
           department: internInfo.department,
           status: element.status,
           remarks: element.remarks,
@@ -120,7 +120,7 @@ class HTEService {
         const applicantsObj = {
           internId: element.internId._id,
           applicationId: element._id.toString(),
-          name: element.internId.fullName,
+          fullName: element.internId.fullName,
           department: element.internId.department,
           appliedInternships: element.internId.appliedInternships,
           jobTitle: element.internVacancy.title,
