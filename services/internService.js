@@ -265,7 +265,7 @@ class InternService {
       //   }
       attendanceList.map(async(element) => {
         const utcDateIn = element.timeIn;
-        const utcDateOut = element.timeIn;
+        const utcDateOut = element.timeOut;
         const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
         const phtDateTimeOut = moment.utc(utcDateOut).tz('Asia/Manila').format('h:mm:ss A');
         
