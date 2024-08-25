@@ -7,6 +7,7 @@ const DailyTimeRecord = require('../models/DailyTimeRecord.Model')
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const AcceptedApplicant = require("../models/AcceptedApplicant");
+const moment = require('moment-timezone');
 
 class HTEService {
   async loginUser(username, password) {
@@ -235,9 +236,13 @@ class HTEService {
         const internInfo = await Intern.findOne({_id: element.internId})
 
         // Obj Polling intern location data
+        const utcDateIn = element.timeIn;
+        const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
+
+
         const onlineObj = {
           name: internInfo.fullName,
-          timeIn: element.timeIn.toLocaleTimeString(),
+          timeIn: phtDateTimeIn,
           timeInLocation: element.timeInLocation,
           currentLocation: internInfo.currentLocation
         }
