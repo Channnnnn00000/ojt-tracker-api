@@ -257,11 +257,17 @@ class InternService {
     const attendanceList = await DailyTimeRecord.find({internId: profileData.profile})
     const results = await Promise.all(
 
+      // attendanceList.map(async(element) => {
+      //   const attendanceObj = {
+      //     date: element.date,
+      //     timeIn: element.timeIn.toLocaleTimeString(),
+      //     timeOut: element.timeOut.toLocaleTimeString(),
+      //   }
       attendanceList.map(async(element) => {
         const attendanceObj = {
           date: element.date,
-          timeIn: element.timeIn.toLocaleTimeString(),
-          timeOut: element.timeOut.toLocaleTimeString(),
+          timeIn: element.timeIn,
+          timeOut: element.timeOut,
         }
         return attendanceObj
       })
