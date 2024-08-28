@@ -5,7 +5,14 @@ const visitRequestSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "HTE",
   },
+  coorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Coordinator",
+  },
   requestorName: {
+    type: String,
+  },
+  requesteeName: {
     type: String,
   },
   scheduledDate: {
@@ -22,10 +29,6 @@ const visitRequestSchema = new mongoose.Schema({
     enum:['Pending','Granted','Rejected'],
     default: 'Pending'
   },
-  remarks: {
-    type: String
-  },
-
   createdAt: {
     type: String,
     default: getDateValue(),

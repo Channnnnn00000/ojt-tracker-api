@@ -50,6 +50,25 @@ class CoorController {
       });
     }
   }
+  async getVisitationRequest(req, res) {
+    try {
+      const requestData = await coorService.fetchRequestList(req.user.userId);
+      if (requestData) {
+        return res.status(204).json({
+          message: "Request Success!",
+          content: "No request sent",
+        });
+      }
+      res.status(201).json({
+        message: "Success!",
+        content: requestData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new CoorController();

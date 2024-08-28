@@ -20,6 +20,11 @@ router.post(
   authMiddleware.verifyToken,
   coorController.sendVisitationRequest
 );
+router.get(
+  "/requests",
+  authMiddleware.verifyToken,
+  coorController.getVisitationRequest
+);
 
 
 module.exports = router;

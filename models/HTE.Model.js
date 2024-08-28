@@ -17,7 +17,7 @@ const hteSchema = new mongoose.Schema({
   location: {
     type: {
       lat: { type: Number },
-      long: { type: Number },
+      lng: { type: Number },
     },
     default: null
   },

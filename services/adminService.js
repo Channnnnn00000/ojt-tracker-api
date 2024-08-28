@@ -57,6 +57,7 @@ class AdminService {
       name: payload.name,
       contact: payload.contactNumber,
       address: payload.address,
+      location: payload.mapLocation,
       hasMoa: payload.hasMoa,
 
     });
