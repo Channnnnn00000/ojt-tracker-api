@@ -19,12 +19,25 @@ class CoorService {
     return internsList;
   }
   async sendVisitationRequest (payload) {
+    const coorData = await Coor.findOne({_id: payload.coorId})
     const requestData = new VisitRequest(payload)
+
     await requestData.save()
+
+    coorData.requestList.push(requestData._id)
+    await coorData.save()
+    console.log(requestData);
+    
+    return requestData;
   }
   async fetchHteList() {
     const hteList = await HTE.find()
     return hteList
+  }
+  async fetchHteItemList(hteId) {
+    const hteList = await HTE.findOne({_id: hteId})
+    return hteList;
+ 
   }
   async fetchRequestList(coorId) {
     const profileId = await User.findOne({_id: coorId})
@@ -32,6 +45,18 @@ class CoorService {
     console.log(requestList)
     return requestList;
 
+  }
+  async setRequiredHours(internId,payload) {
+    console.log(internId);
+    console.log(payload);
+    
+    const setHours = await Intern.updateOne({_id: internId}, {
+      $set:{ requiredHours:payload.hours}
+    })
+    
+    console.log(setHours);
+    return setHours;
+    
   }
  
 }

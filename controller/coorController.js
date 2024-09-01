@@ -31,15 +31,25 @@ class CoorController {
     }
     
   }
+  async getHteItemList(req, res) {
+    try {
+     const itemHte =  await coorService.fetchHteItemList()
+      if (listOfHte) {
+        return res.status(201).json({
+          message: "Request Success!",
+          content: itemHte,
+        });
+      }
+    }catch(error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+    
+  }
   async sendVisitationRequest(req, res) {
     try {
       const requestData = await coorService.sendVisitationRequest(req.body);
-      if (requestData) {
-        return res.status(204).json({
-          message: "Request Success!",
-          content: "No request sent",
-        });
-      }
       res.status(201).json({
         message: "Success!",
         content: requestData,
@@ -62,6 +72,19 @@ class CoorController {
       res.status(201).json({
         message: "Success!",
         content: requestData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async setRequiredHours(req, res) {
+    try {
+      const response = await coorService.setRequiredHours(req.params.id, req.body);
+      res.status(201).json({
+        message: "Success!",
+        content: response,
       });
     } catch (error) {
       res.status(500).json({

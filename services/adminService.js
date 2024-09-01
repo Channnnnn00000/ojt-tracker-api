@@ -2,11 +2,12 @@ const HTE = require("../models/HTE.Model");
 const Admin = require("../models/Admin.Model");
 const Coordinator = require("../models/Coordinator.Model");
 const User = require("../models/User.Model");
-const Intern = require("../models/Intern.Model")
-const DepartmentList = require('../models/Department.Model');
+const Intern = require("../models/Intern.Model");
+const DepartmentList = require("../models/Department.Model");
+const DailyTimeRecord = require('../models/DailyTimeRecord.Model.js')
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
-
+const moment = require('moment-timezone');
 class AdminService {
   // Authentication
   async loginAdmin(username, password) {
@@ -17,9 +18,8 @@ class AdminService {
   }
   // Get information of current logged in user
   async getLoggedInUser(id) {
-    const userInfo = await User.findOne({_id: id}).populate('profile').exec()
+    const userInfo = await User.findOne({ _id: id }).populate("profile").exec();
     return userInfo;
-
   }
   // Registering the accounts
   async registerAdmin(payload) {
@@ -44,6 +44,8 @@ class AdminService {
     await newUser.save();
   }
   async registerHTE(payload) {
+    console.log(payload);
+    
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
       username: payload.username,
@@ -55,11 +57,10 @@ class AdminService {
 
     const profile = new HTE({
       name: payload.name,
-      contact: payload.contactNumber,
+      contactNumber: payload.contactNumber,
       address: payload.address,
       location: payload.mapLocation,
       hasMoa: payload.hasMoa,
-
     });
     await profile.save();
 
@@ -79,10 +80,10 @@ class AdminService {
     const newCoor = new Coordinator({
       fullName: payload.fullName,
       contact: payload.contactNumber,
-      department: payload.department
-    })
-    await newCoor.save()
-    newUser.profile = newCoor._id
+      department: payload.department,
+    });
+    await newCoor.save();
+    newUser.profile = newCoor._id;
     await newUser.save();
   }
   async registerIntern(payload) {
@@ -97,7 +98,8 @@ class AdminService {
     await newUser.save();
     const internProfile = new Intern({
       fullName: payload.fullName,
-      department: payload.department
+      department: payload.department,
+      contact: payload.contact
     });
     await internProfile.save();
 
@@ -108,14 +110,14 @@ class AdminService {
   //Viewing the users
 
   async getAllUsers() {
-    return await User.find().populate('profile').exec();
+    return await User.find().populate("profile").exec();
   }
 
   async getAdmin() {
-    return await User.find({ role: "Admin" }).populate('profile').exec();
+    return await User.find({ role: "Admin" }).populate("profile").exec();
   }
   async getHTE() {
-    return await User.find({ role: "HTE" }).populate('profile').exec();
+    return await User.find({ role: "HTE" }).populate("profile").exec();
   }
   async getCoor() {
     return await User.find({ role: "Coordinator" }).exec();
@@ -155,45 +157,178 @@ class AdminService {
   }
 
   // Removing Users
-  async removeAdmin(id) {
-    return await Admin.findByIdAndDelete(id);
+  async removeAccount(id) {
+    const profileData = await User.findOne({ _id: id });
+    if (profileData.role === "Coordinator") {
+      await User.findByIdAndDelete(profileData._id);
+      await Coordinator.findByIdAndDelete(profileData.profile);
+      return {
+        message: "Succesfully Deleted",
+      };
+    }
+    if (profileData.role === "Intern") {
+      await User.findByIdAndDelete(profileData._id);
+      await Intern.findByIdAndDelete(profileData.profile);
+      return {
+        message: "Succesfully Deleted",
+      };
+    }
+    if (profileData.role === "HTE") {
+      await User.findByIdAndDelete(profileData._id);
+      await HTE.findByIdAndDelete(profileData.profile);
+      return {
+        message: "Succesfully Deleted",
+      };
+    }
+    if (profileData.role === "Admin") {
+      await User.findByIdAndDelete(profileData._id);
+      await Admin.findByIdAndDelete(profileData.profile);
+      return {
+        message: "Succesfully Deleted",
+      };
+    }
   }
-  async removeHTE(id) {
-    return await HTE.findByIdAndDelete(id);
+  // Getting User Information for update
+  async getUserInformation(id) {
+    const userData = await User.findOne({ _id: id }).populate("profile");
+    return userData;
   }
-  async removeCoor(id) {
-    return await Coordinator.findByIdAndDelete(id);
-  }
-  async removeIntern(id) {
-    return await Intern.findByIdAndDelete(id);
+  // Updating the User Information Coor
+  async updateUserInfo(id, payload) {
+    console.log(payload);
+    console.log("id to update" + id);
+    const userData = await User.findOne({ _id: id });
+    console.log(userData.profile);
+    console.log(userData.role);
+
+    if (userData.role === "Coordinator") {
+      const updatedUser = await User.updateOne(
+        { _id: id },
+        {
+          $set: { email: payload.email },
+        }
+      );
+      console.log(updatedUser);
+
+      const updatedProfile = await Coordinator.updateOne(
+        { _id: userData.profile.toString() },
+        {
+          $set: {
+            fullName: payload.fullname,
+            contact: payload.contact,
+            department: payload.department,
+          },
+        }
+      );
+    }
+    if (userData.role === "HTE") {
+      const updatedUser = await User.updateOne(
+        { _id: id },
+        {
+          $set: { email: payload.email },
+        }
+      );
+      console.log(updatedUser);
+
+      const updatedProfile = await HTE.updateOne(
+        { _id: userData.profile.toString() },
+        {
+          $set: {
+            name: payload.name,
+            address: payload.address,
+            contactNumber: payload.contactNumber,
+            location: payload.location,
+            hasMoa: payload.hasMoa,
+          },
+        }
+      );
+      console.log(updatedProfile);
+      
+    }
+    if (userData.role === "Intern") {
+      const updatedUser = await User.updateOne(
+        { _id: id },
+        {
+          $set: { email: payload.email },
+        }
+      );
+      console.log(updatedUser);
+
+      const updatedProfile = await Intern.updateOne(
+        { _id: userData.profile.toString() },
+        {
+          $set: {
+            fullName: payload.name,
+            contact: payload.contact,
+            requiredHours: payload.requiredHours,
+            department: payload.department
+          },
+        }
+      );
+      console.log(updatedProfile);
+      
+    }
   }
 
   // fetching, adding, Department model to frontend
   async getDepartmentList() {
     return await DepartmentList.find();
-
   }
   async addDepartment(payload) {
-
-    const newDepartment = new DepartmentList(payload)
-    await newDepartment.save()
+    const newDepartment = new DepartmentList(payload);
+    await newDepartment.save();
     return newDepartment;
-
   }
-  async updateDepartment(departmentId,payload) {
-    const updatedData = await DepartmentList.findByIdAndUpdate(departmentId, payload, {
-      new: true,
-      runValidators: true,
-    })
+  async updateDepartment(departmentId, payload) {
+    const updatedData = await DepartmentList.findByIdAndUpdate(
+      departmentId,
+      payload,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     return updatedData;
-
   }
   async deleteDepartment(departmentId) {
-    const updatedData = await DepartmentList.findByIdAndDelete(departmentId)
+    const updatedData = await DepartmentList.findByIdAndDelete(departmentId);
 
     return updatedData;
+  }
 
+  // Fetching Intern List CRUD
+  async getListOnInterns() {
+    return await Intern.find();
+  }
+  async getDTRLogs(internId) {
+    let attendanceArr = [];
+    const attendanceList = await DailyTimeRecord.find({internId: internId})
+    const results = await Promise.all(
+
+      // attendanceList.map(async(element) => {
+      //   const attendanceObj = {
+      //     date: element.date,
+      //     timeIn: element.timeIn.toLocaleTimeString(),
+      //     timeOut: element.timeOut.toLocaleTimeString(),
+      //   }
+      attendanceList.map(async(element) => {
+        const utcDateIn = element.timeIn;
+        const utcDateOut = element.timeOut;
+        const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
+        const phtDateTimeOut = moment.utc(utcDateOut).tz('Asia/Manila').format('h:mm:ss A');
+        
+        const attendanceObj = {
+          date: element.date,
+          timeIn: phtDateTimeIn,
+          timeOut: phtDateTimeOut
+        }
+        return attendanceObj
+      })
+    )
+    attendanceArr.push(...results)
+    return attendanceArr;
+    
   }
 }
 

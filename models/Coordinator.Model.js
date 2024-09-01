@@ -14,47 +14,12 @@ const coordinatorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // sex: {
-  //   type: String,
-  //   required: true,
-  //   default: "Male",
-  // },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   unique: true,
-  //   default: "Coor@coor.com",
-  // },
-  // birthday: {
-  //   type: String,
-  //   required: true,
-  //   default: "Coor",
-  // },
-  // contactNumber: {
-  //   type: Number,
-  //   required: true,
-  //   default: 12345,
-  // },
-  // province: {
-  //   type: String,
-  //   required: true,
-  //   default: "Coor",
-  // },
-  // city: {
-  //   type: String,
-  //   required: true,
-  //   default: "Coor",
-  // },
-  // brgy: {
-  //   type: String,
-  //   required: true,
-  //   default: "Coor",
-  // },
-  // street: {
-  //   type: String,
-  //   required: true,
-  //   default: "Coor",
-  // },
+  requestList: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "VisitRequest",
+    }
+  ],
 
   createdAt: {
     type: String,

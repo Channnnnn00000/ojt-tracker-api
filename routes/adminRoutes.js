@@ -3,7 +3,6 @@ const router = express.Router();
 const adminController = require("../controller/adminController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-
 // Getting info of current users
 router.get(
   "/active",
@@ -19,7 +18,8 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getInternUsers
 );
-router.get("/users",authMiddleware.verifyToken, adminController.getAllUsers);
+// Fetching the users
+router.get("/users", authMiddleware.verifyToken, adminController.getAllUsers);
 
 // Registration
 router.post("/user", adminController.userRegistration);
@@ -35,19 +35,46 @@ router.patch("/coor/:id", adminController.updateCoor);
 router.patch("/intern/:id", adminController.updateIntern);
 
 // Removing
-router.delete("/admin/:id", adminController.removeAdmin);
-router.delete("/hte/:id", adminController.removeHTE);
-router.delete("/coor/:id", adminController.removeCoor);
-router.delete("/intern/:id", adminController.removeIntern);
+router.delete("/accounts/:id", adminController.removeAccount);
+router.get("/accounts/:id", adminController.getAccountInfo);
+router.patch("/accounts/:id", adminController.updateAccountInfo);
 
 // Authentication
 router.post("/admin/login", adminController.login);
 router.post("/admin/logout", adminController.logout);
 
-// Fetching department list to frontend
-router.get("/admin/departmentlist", authMiddleware.verifyToken, adminController.fetchDepartmentList);
-router.post("/admin/departmentlist", authMiddleware.verifyToken, adminController.addDepartment);
-router.put("/admin/departmentlist/:id", authMiddleware.verifyToken, adminController.updateDepartment);
-router.delete("/admin/departmentlist/:id", authMiddleware.verifyToken, adminController.deleteDepartment);
+// Fetching department list to frontend CRUD
+router.get(
+  "/admin/departmentlist",
+  authMiddleware.verifyToken,
+  adminController.fetchDepartmentList
+);
+router.post(
+  "/admin/departmentlist",
+  authMiddleware.verifyToken,
+  adminController.addDepartment
+);
+router.put(
+  "/admin/departmentlist/:id",
+  authMiddleware.verifyToken,
+  adminController.updateDepartment
+);
+router.delete(
+  "/admin/departmentlist/:id",
+  authMiddleware.verifyToken,
+  adminController.deleteDepartment
+);
+
+// Fetching Inters list to frontend
+router.get(
+  "/admin/internlist",
+  authMiddleware.verifyToken,
+  adminController.getInternsList
+);
+router.get(
+  "/admin/dtrlogs/:id",
+  authMiddleware.verifyToken,
+  adminController.getDTRLogs
+);
 
 module.exports = router;

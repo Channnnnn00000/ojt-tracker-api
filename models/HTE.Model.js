@@ -8,7 +8,7 @@ const hteSchema = new mongoose.Schema({
   },
   contactNumber: {
     type: Number,
-    // required: true,
+    required: true,
   },
   address: {
     type: String,

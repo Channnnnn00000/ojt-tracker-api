@@ -34,17 +34,15 @@ class AdminController {
   async checkUserLoggedIn(req, res) {
     console.log(req.user.userId);
     try {
-      const userInfo = await adminService.getLoggedInUser(req.user.userId)
+      const userInfo = await adminService.getLoggedInUser(req.user.userId);
       res.status(200).json({
-        content: userInfo
-      })
-    }catch (error) {
+        content: userInfo,
+      });
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
-  
-
   }
   // Registration of each role
 
@@ -260,9 +258,9 @@ class AdminController {
   }
 
   // Removing users
-  async removeAdmin(req, res) {
+  async removeAccount(req, res) {
     try {
-      await adminService.removeAdmin(req.params.id);
+      await adminService.removeAccount(req.params.id);
       res.status(201).json({
         message: "Successfully Deleted!",
       });
@@ -272,11 +270,12 @@ class AdminController {
       });
     }
   }
-  async removeHTE(req, res) {
+  async getAccountInfo(req, res) {
     try {
-      await adminService.removeHTE(req.params.id);
+      const data = await adminService.getUserInformation(req.params.id);
       res.status(201).json({
-        message: "Successfully Deleted!",
+        message: "Success!",
+        content: data,
       });
     } catch (error) {
       res.status(500).json({
@@ -284,11 +283,15 @@ class AdminController {
       });
     }
   }
-  async removeCoor(req, res) {
+  async updateAccountInfo(req, res) {
+    console.log(req.body);
+    console.log(req.params.id);
+
     try {
-      await adminService.removeCoor(req.params.id);
+      const data = await adminService.updateUserInfo(req.params.id, req.body);
       res.status(201).json({
-        message: "Successfully Deleted!",
+        message: "Success!",
+        content: data,
       });
     } catch (error) {
       res.status(500).json({
@@ -296,94 +299,93 @@ class AdminController {
       });
     }
   }
-  async removeIntern(req, res) {
-    try {
-      await adminService.removeIntern(req.params.id);
-      res.status(201).json({
-        message: "Successfully Deleted!",
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: error.message,
-      });
-    }
-  }
+
+  //#region  Department List
   async fetchDepartmentList(req, res) {
     try {
-      const results = await adminService.getDepartmentList()
+      const results = await adminService.getDepartmentList();
       res.status(201).json({
         message: "Success fetching",
-        content: results
+        content: results,
       });
-    }catch(error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
-   
   }
   async addDepartment(req, res) {
     try {
-      const results = await adminService.addDepartment(req.body)
+      const results = await adminService.addDepartment(req.body);
       res.status(201).json({
         message: "Added Department",
-        content: results
+        content: results,
       });
-    }catch(error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
-   
   }
   async updateDepartment(req, res) {
     try {
-      const results = await adminService.updateDepartment(req.params.id,req.body)
+      const results = await adminService.updateDepartment(
+        req.params.id,
+        req.body
+      );
       res.status(201).json({
         message: "Update Success!",
-        content: results
+        content: results,
       });
-    }catch(error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
-   
   }
   async deleteDepartment(req, res) {
     try {
-   await adminService.deleteDepartment(req.params.id)
+      await adminService.deleteDepartment(req.params.id);
       res.status(201).json({
         message: "Delete Success!",
       });
-    }catch(error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
-   
   }
 
-  // async login(req, res) {
-  //   const { username, password } = req.body;
-  //   try {
-  //     const token = await authService.loginUser(username, password);
-  //     if (!token)
-  //       return res.status(401).json({ message: "Invalid credentials" });
+  //#endregion
+  //#region Interns List
+  async getInternsList(req, res) {
+    try {
+      const data = await adminService.getListOnInterns();
+      res.status(201).json({
+        message: "Success!",
+        content: data
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getDTRLogs(req, res) {
+    try {
+      const data = await adminService.getDTRLogs(req.params.id);
+      res.status(201).json({
+        message: "Success!",
+        content: data
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 
-  //     //   res.cookie("jwt", token, {
-  //     //     httpOnly: true,
-  //     //     secure: true,
-  //     //     sameSite: "none",
-  //     //   });
-  //     res.setHeader("Authorization", `Bearer ${token}`);
-  //     res.json({ token });
-  //   } catch (error) {
-  //     res.status(500).json({
-  //       message: error.message,
-  //     });
-  //   }
-  // }
+  //#endregion
 }
 
 module.exports = new AdminController();

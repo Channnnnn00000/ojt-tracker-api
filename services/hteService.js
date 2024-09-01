@@ -252,7 +252,34 @@ class HTEService {
     onlineInternArr.push(...results)
     return onlineInternArr
   }
- 
+  async getListingItem(listingId) {
+    try {
+      const listingData = await InternshipVacancy.findOne({_id: listingId})
+      console.log(listingData);
+      
+      return listingData;
+
+    }catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async updateListingItem(listingId, payload) {
+    const updatedProfile = await InternshipVacancy.updateOne(
+      { _id: listingId },
+      {
+        $set: {
+          title: payload.title,
+          requirements: payload.requirements,
+          slots: payload.slots,
+          status: payload.status,
+          location: payload.location,
+        },
+      }
+    );
+    console.log(updatedProfile);
+  }
 }
 
 module.exports = new HTEService();

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const jwtUtils = require("../utils/jwtUtils")
+const jwtUtils = require("../utils/jwtUtils");
 const { Schema } = mongoose;
 
 const userSchema = new mongoose.Schema({
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   profile: {
     // Different profiles based on the role
     type: mongoose.Schema.Types.ObjectId,
-    refPath:'role'
+    refPath: "role",
   },
   createdAt: {
     type: String,

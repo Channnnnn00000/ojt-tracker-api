@@ -10,6 +10,10 @@ const internSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  contact: {
+    type: Number,
+    required: true,
+  },
   workedHours: {
     type: Number,
     default: 0,

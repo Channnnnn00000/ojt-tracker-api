@@ -21,6 +21,16 @@ router.get(
   hteController.getListOfInternship
 );
 router.get(
+  "/list/:id",
+  authMiddleware.verifyToken,
+  hteController.getListingItem
+);
+router.patch(
+  "/list/:id",
+  authMiddleware.verifyToken,
+  hteController.updateListingItem
+);
+router.get(
   "/applicants/accepted",
   authMiddleware.verifyToken,
   hteController.getlistOfAcceptedInterns

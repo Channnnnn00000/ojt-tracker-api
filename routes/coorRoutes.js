@@ -15,8 +15,13 @@ router.get(
   authMiddleware.verifyToken,
   coorController.getHteList
 );
+router.get(
+  "/hte/:id",
+  authMiddleware.verifyToken,
+  coorController.getHteItemList
+);
 router.post(
-  "/interns",
+  "/request",
   authMiddleware.verifyToken,
   coorController.sendVisitationRequest
 );
@@ -24,6 +29,11 @@ router.get(
   "/requests",
   authMiddleware.verifyToken,
   coorController.getVisitationRequest
+);
+router.patch(
+  "/set/:id",
+  authMiddleware.verifyToken,
+  coorController.setRequiredHours
 );
 
 

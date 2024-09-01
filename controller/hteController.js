@@ -241,6 +241,34 @@ class HteController {
     }
     
   }
+  async getListingItem(req,res) {
+    try {
+      const data = await hteService.getListingItem(req.params.id)
+      return res.status(201).json({
+        status: "Success",
+        content: data,
+      });
+
+    }catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async updateListingItem(req,res) {
+    try {
+      const data = await hteService.updateListingItem(req.params.id, req.body)
+      return res.status(201).json({
+        status: "Update success",
+        content: data,
+      });
+
+    }catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new HteController();
