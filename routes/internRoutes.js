@@ -74,7 +74,16 @@ router.get(
   authMiddleware.verifyToken,
   internController.getAttendance
 );
+router.delete(
+  "/remove/:id",
+  authMiddleware.verifyToken,
+  internController.removeApplicationData
+);
 
-router.put('/currentlocation', authMiddleware.verifyToken, internController.getCurrentLocationHandler)
+router.put(
+  "/currentlocation",
+  authMiddleware.verifyToken,
+  internController.getCurrentLocationHandler
+);
 
 module.exports = router;

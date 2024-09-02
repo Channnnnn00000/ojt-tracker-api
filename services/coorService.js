@@ -19,6 +19,14 @@ class CoorService {
     return internsList;
   }
   async sendVisitationRequest (payload) {
+    // query to visit request table if theres an exisiting request that is pending
+    const existingRequestData = await VisitRequest.findOne({hteId: payload.hteId, coorId: payload.coorId, status:'Pending'})
+    
+    if(existingRequestData) {
+      return {
+        errorMessage:'Pending Request Found'
+      }
+    }
     const coorData = await Coor.findOne({_id: payload.coorId})
     const requestData = new VisitRequest(payload)
 

@@ -172,7 +172,7 @@ class InternController {
     try {
       const response = await internService.timeOut(
         req.user.userId,
-        req.body,
+        req.body
         // req.params.id
       );
       if (response) {
@@ -188,38 +188,56 @@ class InternController {
       });
     }
   }
-  async getCurrentLocationHandler(req, res){
+  async getCurrentLocationHandler(req, res) {
     try {
-      const resultsLocation = await internService.logLocation(req.user.userId, req.body)
-      
+      const resultsLocation = await internService.logLocation(
+        req.user.userId,
+        req.body
+      );
 
-      if(resultsLocation) {
+      if (resultsLocation) {
         res.status(200).json({
-          content: resultsLocation.acknowledged
-        })
+          content: resultsLocation.acknowledged,
+        });
       }
-    }catch(err) {
+    } catch (err) {
       res.status(500).json({
         status: false,
         message: err.message,
       });
     }
   }
-  async getAttendance(req, res){
+  async getAttendance(req, res) {
     try {
-      const response = await internService.getAttendance(req.user.userId)
-      if(response) {
+      const response = await internService.getAttendance(req.user.userId);
+      if (response) {
         res.status(200).json({
-          content: response
-        })
+          content: response,
+        });
       }
-    }catch(err) {
+    } catch (err) {
       res.status(500).json({
         status: false,
         message: err.message,
       });
     }
-   
+  }
+  async removeApplicationData(req, res) {
+    try {
+      const resultsLocation = await internService.removeApplication(
+        req.user.userId,
+        req.params.id
+      );
+
+      res.status(200).json({
+        content: resultsLocation,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: false,
+        message: err.message,
+      });
+    }
   }
 }
 

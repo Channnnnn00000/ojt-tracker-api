@@ -13,6 +13,11 @@ router.put(
   authMiddleware.verifyToken,
   hteController.approvedApplicant
 );
+router.patch(
+  "/application/:applicationId/reject",
+  authMiddleware.verifyToken,
+  hteController.rejectApplicant
+);
 router.get("/profile", hteController.getProfile);
 // User id will remove when we apply the authorization middleware
 router.get(

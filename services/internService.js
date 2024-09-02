@@ -7,7 +7,7 @@ const AcceptedApplicant = require("../models/AcceptedApplicant");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const DailyTimeRecord = require("../models/DailyTimeRecord.Model");
-const moment = require('moment-timezone');
+const moment = require("moment-timezone");
 class InternService {
   async loginIntern(username, password) {
     const user = await User.findOne({ username });
@@ -136,9 +136,13 @@ class InternService {
       { $set: { isInternshipReady: true, acceptedInternship: applicationId } }
     );
     console.log(updateResults);
-    const applicationData = await InternApplication.findOne({_id: applicationId})
-    const jobData = await InternVacancy.findOne({_id: applicationData.internVacancy})
-    const internData = await Intern.findOne({_id: applicationData.internId})
+    const applicationData = await InternApplication.findOne({
+      _id: applicationId,
+    });
+    const jobData = await InternVacancy.findOne({
+      _id: applicationData.internVacancy,
+    });
+    const internData = await Intern.findOne({ _id: applicationData.internId });
     const updatedData = await InternApplication.updateOne(
       { _id: applicationId },
       { $set: { status: "Accepted", remarks: "Intern for deployment" } }
@@ -149,11 +153,10 @@ class InternService {
       internId: applicationData.internId,
       internId: applicationData.internId,
       jobTitle: jobData.title,
-      name:internData.fullName,
+      name: internData.fullName,
       department: internData.department,
-      
-    })
-    await acceptedIntern.save()
+    });
+    await acceptedIntern.save();
     return updatedData;
   }
   async getTotalHours(userID) {
@@ -166,8 +169,6 @@ class InternService {
 
   async timeIn(userId, payload) {
     const profileData = await User.findOne({ _id: userId });
-    
-  
 
     // const existingRecord = await DailyTimeRecord.findOne({
     //   internId: profileData.profile,
@@ -215,20 +216,23 @@ class InternService {
     const internProfile = await Intern.findOne(profileData.profile);
 
     console.log(internProfile.workedHours);
-    const dtrData = await DailyTimeRecord.findOne({ internId:profileData.profile,date:payload.date });
+    const dtrData = await DailyTimeRecord.findOne({
+      internId: profileData.profile,
+      date: payload.date,
+    });
     console.log(dtrData._id);
 
-    const updatedDTR = await DailyTimeRecord.findOne({_id: dtrData._id});
+    const updatedDTR = await DailyTimeRecord.findOne({ _id: dtrData._id });
     console.log(updatedDTR);
 
     (updatedDTR.timeOut = payload.timeOut),
       (updatedDTR.timeOutLocation = payload.timeOutLocation),
       await updatedDTR.save();
     console.log(updatedDTR.totalHours);
-    if(updatedDTR.totalHours > 8) {
-      updatedDTR.totalHours = 8
+    if (updatedDTR.totalHours > 8) {
+      updatedDTR.totalHours = 8;
     }
-    totalHours =internProfile.workedHours + updatedDTR.totalHours;
+    totalHours = internProfile.workedHours + updatedDTR.totalHours;
     await Intern.updateOne(
       { _id: profileData.profile },
       {
@@ -242,44 +246,52 @@ class InternService {
     console.log(updatedDTR);
     return updatedDTR;
   }
-  async logLocation(userId,payload) {
-    const userData = await User.findOne({_id: userId})
+  async logLocation(userId, payload) {
+    const userData = await User.findOne({ _id: userId });
     const updatedDataLocation = await Intern.updateOne(
       { _id: userData.profile },
-      { $set: { currentLocation: payload,} }
+      { $set: { currentLocation: payload } }
     );
     return updatedDataLocation;
-
   }
   async getAttendance(userId) {
     let attendanceArr = [];
     const profileData = await User.findById({ _id: userId });
-    const attendanceList = await DailyTimeRecord.find({internId: profileData.profile})
+    const attendanceList = await DailyTimeRecord.find({
+      internId: profileData.profile,
+    });
     const results = await Promise.all(
-
       // attendanceList.map(async(element) => {
       //   const attendanceObj = {
       //     date: element.date,
       //     timeIn: element.timeIn.toLocaleTimeString(),
       //     timeOut: element.timeOut.toLocaleTimeString(),
       //   }
-      attendanceList.map(async(element) => {
+      attendanceList.map(async (element) => {
         const utcDateIn = element.timeIn;
         const utcDateOut = element.timeOut;
-        const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
-        const phtDateTimeOut = moment.utc(utcDateOut).tz('Asia/Manila').format('h:mm:ss A');
-        
+        const phtDateTimeIn = moment
+          .utc(utcDateIn)
+          .tz("Asia/Manila")
+          .format("h:mm:ss A");
+        const phtDateTimeOut = moment
+          .utc(utcDateOut)
+          .tz("Asia/Manila")
+          .format("h:mm:ss A");
+
         const attendanceObj = {
           date: element.date,
           timeIn: phtDateTimeIn,
-          timeOut: phtDateTimeOut
-        }
-        return attendanceObj
+          timeOut: phtDateTimeOut,
+        };
+        return attendanceObj;
       })
-    )
-    attendanceArr.push(...results)
+    );
+    attendanceArr.push(...results);
     return attendanceArr;
-
+  }
+  async removeApplication(userId, applicationId) {
+    await InternApplication.findByIdAndDelete({ _id: applicationId });
   }
 }
 

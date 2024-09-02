@@ -140,6 +140,15 @@ class HTEService {
   async approvingApplication(userId, applicationId, res) {
     let newArr = [];
     const application = await InternApplication.findById(applicationId);
+// Check if the applicant or intern is already accepted other application offer by the hte
+    const internData = await Intern.findOne({_id: application.internId.toString()})
+    console.log('====================================');
+    console.log(internData.isInternshipReady);
+    console.log('====================================');
+    if(internData.isInternshipReady){
+      return 'Intern is not available'
+    }
+    
     if (!application) {
       return res.status(404).json({ message: "Application not found" });
     }
@@ -164,11 +173,6 @@ class HTEService {
 
     await vacancyData.save();
 
-    // const internData = await Intern.findById(application.internId);
-    // internData.acceptedInternships.push(application.internVacancy);
-    // internData.approvedInternships = internData.approvedInternships.filter(item => item.id === application.internVacancy);
-    // await internData.save();
-
     const updateResult = await InternApplication.updateOne(
       { _id: applicationId },
       { $set: { status: "Approved", remarks: "Intern's review" } }
@@ -178,14 +182,18 @@ class HTEService {
         .status(400)
         .json({ message: "Failed to update application status" });
     }
-    // const acceptedApplicant = new AcceptedApplicant({
-    //   applicationId: applicationId,
-    //   jobId: application.internVacancy,
-    //   internId: application.internId,
-    //   hteId: application.hteId,
-    //   acceptedDate: new Date(),
-    // });
-    // await acceptedApplicant.save();
+  }
+
+  async rejectApplication(userId, applicationId) {
+    const updateResult = await InternApplication.updateOne(
+      { _id: applicationId },
+      { $set: { status: "Rejected"  } }
+    );
+    if (updateResult.nModified === 0) {
+      return res
+        .status(400)
+        .json({ message: "Failed to update application status" });
+    }
   }
 
   async getProfile() {

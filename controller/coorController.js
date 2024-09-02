@@ -50,6 +50,12 @@ class CoorController {
   async sendVisitationRequest(req, res) {
     try {
       const requestData = await coorService.sendVisitationRequest(req.body);
+      console.log(requestData);
+      if(requestData.errorMessage) {
+        return res.status(400).json({
+          content: requestData.errorMessage,
+        });
+      }
       res.status(201).json({
         message: "Success!",
         content: requestData,

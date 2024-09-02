@@ -130,9 +130,32 @@ class HteController {
         req.user.userId,
         req.params.applicationId
       );
+      console.log(listOfApplications);
+      if(listOfApplications === 'Intern is not available'){
+        return res.status(400).json({
+          message: "Error!",
+          content: listOfApplications,
+        });
+      }
       res.status(201).json({
         message: "Success!",
-        data: listOfApplications,
+        content: listOfApplications,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async rejectApplicant(req, res) {
+    try {
+      const response = await hteService.rejectApplication(
+        req.user.userId,
+        req.params.applicationId
+      );
+      res.status(201).json({
+        message: "Success!",
+        content: response,
       });
     } catch (error) {
       res.status(500).json({
