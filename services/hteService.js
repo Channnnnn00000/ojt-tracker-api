@@ -3,11 +3,12 @@ const HTE = require("../models/HTE.Model");
 const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const InternApplication = require("../models/InternApplication.Model");
-const DailyTimeRecord = require('../models/DailyTimeRecord.Model')
+const DailyTimeRecord = require("../models/DailyTimeRecord.Model");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const AcceptedApplicant = require("../models/AcceptedApplicant");
-const moment = require('moment-timezone');
+const VisitRequest = require("../models/VisitRequest.Model");
+const moment = require("moment-timezone");
 
 class HTEService {
   async loginUser(username, password) {
@@ -63,7 +64,7 @@ class HTEService {
       hteId: profileData.profile,
     });
     console.log(listOfApplicants);
-    
+
     const results = await Promise.all(
       listOfApplicants.map(async (element) => {
         const internInfo = await Intern.findOne({ _id: element.internId });
@@ -80,7 +81,7 @@ class HTEService {
           department: internInfo.department,
           status: element.status,
           remarks: element.remarks,
-          hoursWorked: internInfo.workedHours
+          hoursWorked: internInfo.workedHours,
         };
         return applicationListObj;
       })
@@ -140,15 +141,17 @@ class HTEService {
   async approvingApplication(userId, applicationId, res) {
     let newArr = [];
     const application = await InternApplication.findById(applicationId);
-// Check if the applicant or intern is already accepted other application offer by the hte
-    const internData = await Intern.findOne({_id: application.internId.toString()})
-    console.log('====================================');
+    // Check if the applicant or intern is already accepted other application offer by the hte
+    const internData = await Intern.findOne({
+      _id: application.internId.toString(),
+    });
+    console.log("====================================");
     console.log(internData.isInternshipReady);
-    console.log('====================================');
-    if(internData.isInternshipReady){
-      return 'Intern is not available'
+    console.log("====================================");
+    if (internData.isInternshipReady) {
+      return "Intern is not available";
     }
-    
+
     if (!application) {
       return res.status(404).json({ message: "Application not found" });
     }
@@ -187,7 +190,7 @@ class HTEService {
   async rejectApplication(userId, applicationId) {
     const updateResult = await InternApplication.updateOne(
       { _id: applicationId },
-      { $set: { status: "Rejected"  } }
+      { $set: { status: "Rejected" } }
     );
     if (updateResult.nModified === 0) {
       return res
@@ -203,12 +206,14 @@ class HTEService {
     let acceptedApplicant = [];
     const profileData = await User.findById({ _id: id });
     // To ensure you only get accepted applicants with one company
-    const listOfAcceptedIntern = await AcceptedApplicant.find({hteId: profileData.profile})
+    const listOfAcceptedIntern = await AcceptedApplicant.find({
+      hteId: profileData.profile,
+    });
     const results = await Promise.all(
       listOfAcceptedIntern.map(async (element) => {
         console.log(element);
-        
-        const internData = await Intern.findOne({_id: element.internId})
+
+        const internData = await Intern.findOne({ _id: element.internId });
 
         const acceptedApplicantObj = {
           applicationId: element.applicationId,
@@ -220,54 +225,57 @@ class HTEService {
           isClockIn: internData.isClockIn,
           dailyTimeRecords: internData.dailyTimeRecords,
           jobTitle: element.jobTitle,
-          evaluationStatus: internData.isEvaluationReady
-        }
+          evaluationStatus: internData.isEvaluationReady,
+        };
         return acceptedApplicantObj;
-        
       })
-    )
-    acceptedApplicant.push(...results)
+    );
+    acceptedApplicant.push(...results);
     console.log(acceptedApplicant);
     return acceptedApplicant;
-  
   }
   async getOnlineIntern(userId) {
     let onlineInternArr = [];
-    const userData = await User.find({_id: userId})
-    const profileData = await HTE.findOne(userData.profile)
+    const userData = await User.find({ _id: userId });
+    const profileData = await HTE.findOne(userData.profile);
 
-    let today = new Date().toLocaleDateString()
-    const getOnlineIntern = await DailyTimeRecord.find({companyId: profileData._id, date: today, timeOut: {$eq:null}})
+    let today = new Date().toLocaleDateString();
+    const getOnlineIntern = await DailyTimeRecord.find({
+      companyId: profileData._id,
+      date: today,
+      timeOut: { $eq: null },
+    });
     console.log(getOnlineIntern);
     const results = await Promise.all(
       getOnlineIntern.map(async (element) => {
-        const internInfo = await Intern.findOne({_id: element.internId})
+        const internInfo = await Intern.findOne({ _id: element.internId });
 
         // Obj Polling intern location data
         const utcDateIn = element.timeIn;
-        const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
-
+        const phtDateTimeIn = moment
+          .utc(utcDateIn)
+          .tz("Asia/Manila")
+          .format("h:mm:ss A");
 
         const onlineObj = {
           name: internInfo.fullName,
           timeIn: phtDateTimeIn,
           timeInLocation: element.timeInLocation,
-          currentLocation: internInfo.currentLocation
-        }
-        return onlineObj
+          currentLocation: internInfo.currentLocation,
+        };
+        return onlineObj;
       })
-    )
-    onlineInternArr.push(...results)
-    return onlineInternArr
+    );
+    onlineInternArr.push(...results);
+    return onlineInternArr;
   }
   async getListingItem(listingId) {
     try {
-      const listingData = await InternshipVacancy.findOne({_id: listingId})
+      const listingData = await InternshipVacancy.findOne({ _id: listingId });
       console.log(listingData);
-      
-      return listingData;
 
-    }catch (error) {
+      return listingData;
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
@@ -287,6 +295,24 @@ class HTEService {
       }
     );
     console.log(updatedProfile);
+  }
+  async getFetchRequest(userId) {
+    const userData = await User.findOne({ _id: userId });
+    return await VisitRequest.find({ hteId: userData.profile.toString() });
+  }
+  async acceptVisitRequest(userId, requestId) {
+    const acceptResult = await VisitRequest.updateOne(
+      { _id: requestId },
+      { $set: { status: "Accepted" } }
+    );
+    return acceptResult;
+  }
+  async rejectVisitRequest(userId, requestId) {
+    const rejectResult = await VisitRequest.updateOne(
+      { _id: requestId },
+      { $set: { status: "Rejected" } }
+    );
+    return rejectResult;
   }
 }
 

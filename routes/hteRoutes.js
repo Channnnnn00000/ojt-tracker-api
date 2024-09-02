@@ -76,4 +76,22 @@ router.delete("/delete/:id", hteController.deleteInternship);
 // Authentication
 router.post("/login", hteController.login);
 
+// Request
+
+router.get(
+  "/requests",
+  authMiddleware.verifyToken,
+  hteController.fetchVisitRequest
+);
+router.patch(
+  "/requests/:id",
+  authMiddleware.verifyToken,
+  hteController.acceptVisitRequest
+);
+router.patch(
+  "/requests/reject/:id",
+  authMiddleware.verifyToken,
+  hteController.rejectVisitRequest
+);
+
 module.exports = router;
