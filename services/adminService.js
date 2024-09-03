@@ -4,10 +4,10 @@ const Coordinator = require("../models/Coordinator.Model");
 const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const DepartmentList = require("../models/Department.Model");
-const DailyTimeRecord = require('../models/DailyTimeRecord.Model.js')
+const DailyTimeRecord = require("../models/DailyTimeRecord.Model.js");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
-const moment = require('moment-timezone');
+const moment = require("moment-timezone");
 class AdminService {
   // Authentication
   async loginAdmin(username, password) {
@@ -45,7 +45,7 @@ class AdminService {
   }
   async registerHTE(payload) {
     console.log(payload);
-    
+
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
       username: payload.username,
@@ -99,7 +99,7 @@ class AdminService {
     const internProfile = new Intern({
       fullName: payload.fullName,
       department: payload.department,
-      contact: payload.contact
+      contact: payload.contact,
     });
     await internProfile.save();
 
@@ -243,7 +243,6 @@ class AdminService {
         }
       );
       console.log(updatedProfile);
-      
     }
     if (userData.role === "Intern") {
       const updatedUser = await User.updateOne(
@@ -261,12 +260,11 @@ class AdminService {
             fullName: payload.name,
             contact: payload.contact,
             requiredHours: payload.requiredHours,
-            department: payload.department
+            department: payload.department,
           },
         }
       );
       console.log(updatedProfile);
-      
     }
   }
 
@@ -303,32 +301,40 @@ class AdminService {
   }
   async getDTRLogs(internId) {
     let attendanceArr = [];
-    const attendanceList = await DailyTimeRecord.find({internId: internId})
+    const attendanceList = await DailyTimeRecord.find({ internId: internId });
     const results = await Promise.all(
-
-      // attendanceList.map(async(element) => {
-      //   const attendanceObj = {
-      //     date: element.date,
-      //     timeIn: element.timeIn.toLocaleTimeString(),
-      //     timeOut: element.timeOut.toLocaleTimeString(),
-      //   }
-      attendanceList.map(async(element) => {
+      attendanceList.map(async (element) => {
         const utcDateIn = element.timeIn;
         const utcDateOut = element.timeOut;
-        const phtDateTimeIn = moment.utc(utcDateIn).tz('Asia/Manila').format('h:mm:ss A');
-        const phtDateTimeOut = moment.utc(utcDateOut).tz('Asia/Manila').format('h:mm:ss A');
-        
+        const phtDateTimeIn = moment
+          .utc(utcDateIn)
+          .tz("Asia/Manila")
+          .format("h:mm:ss A");
+        const phtDateTimeOut = moment
+          .utc(utcDateOut)
+          .tz("Asia/Manila")
+          .format("h:mm:ss A");
+
         const attendanceObj = {
           date: element.date,
           timeIn: phtDateTimeIn,
-          timeOut: phtDateTimeOut
-        }
-        return attendanceObj
+          timeOut: phtDateTimeOut,
+        };
+        return attendanceObj;
       })
-    )
-    attendanceArr.push(...results)
+    );
+    attendanceArr.push(...results);
     return attendanceArr;
-    
+  }
+  async resetInternsDevice(internId) {
+    return await Intern.updateOne(
+      { _id: internId },
+      {
+        $set: {
+          sessionCode: null,
+        },
+      }
+    );
   }
 }
 

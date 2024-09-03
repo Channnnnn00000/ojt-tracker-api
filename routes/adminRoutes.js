@@ -76,5 +76,10 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getDTRLogs
 );
+router.patch(
+  "/admin/resetdevice/:id",
+  authMiddleware.verifyToken,
+  adminController.reseDeviceRestriction
+);
 
 module.exports = router;

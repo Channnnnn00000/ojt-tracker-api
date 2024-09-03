@@ -2,11 +2,36 @@ const internService = require("../services/internService");
 
 class InternController {
   async login(req, res) {
-    const { username, password } = req.body;
+    const { username, password, sessionCode } = req.body;
+
     try {
-      const token = await internService.loginIntern(username, password);
+      const token = await internService.loginIntern(
+        username,
+        password,
+        sessionCode
+      );
+      console.log("====================================");
+      console.log(token);
+      console.log("====================================");
       if (!token)
         return res.status(401).json({ message: "Invalid credentials" });
+      if (token.message) {
+        return res.status(401).json({
+          message: "Failed Login",
+          content: token.message,
+        });
+      }
+      if (token.token) {
+        res.cookie("jwt", token.token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        });
+        return res.status(201).json({
+          message: "Login Success",
+          content: token.codeRestriction,
+        });
+      }
 
       res.cookie("jwt", token, {
         httpOnly: true,
@@ -14,7 +39,9 @@ class InternController {
         sameSite: "none",
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
-      return res.status(201).json({ message: "Login Success" });
+      return res.status(201).json({
+        message: "Login Success",
+      });
     } catch (error) {
       res.status(500).json({
         message: error.message,

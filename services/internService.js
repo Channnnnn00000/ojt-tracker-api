@@ -8,9 +8,33 @@ const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const DailyTimeRecord = require("../models/DailyTimeRecord.Model");
 const moment = require("moment-timezone");
+const crypto = require("crypto");
 class InternService {
-  async loginIntern(username, password) {
+  async loginIntern(username, password, sessionCode) {
+    const generateSessionCode = () => crypto.randomBytes(32).toString("hex");
     const user = await User.findOne({ username });
+    const intern = await Intern.findOne({ _id: user.profile.toString() });
+    console.log(intern);
+    console.log(sessionCode);
+    if (user.role === "Intern") {
+      if (intern.sessionCode) {
+        if (intern.sessionCode !== sessionCode) {
+          console.log("not equal to the save device");
+          return { message: "Login not allowed from this device." };
+        }
+      } else {
+        console.log("saving sessiong here");
+
+        intern.sessionCode = generateSessionCode();
+        await intern.save();
+        const isMatch = await bcrypt.compare(password, user.password);
+        return {
+          token: isMatch ? jwtUtils.generateToken(user._id) : null,
+          codeRestriction: intern.sessionCode,
+        };
+      }
+    }
+
     if (!user) return null;
     const isMatch = await bcrypt.compare(password, user.password);
     return isMatch ? jwtUtils.generateToken(user._id) : null;
