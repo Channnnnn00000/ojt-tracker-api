@@ -11,7 +11,7 @@ router.get(
 );
 // Getting Route
 router.get("/admin", authMiddleware.verifyToken, adminController.getAdminUsers);
-router.get("/hte", adminController.getHteUsers);
+// router.get("/hte", adminController.getHteUsers);
 router.get("/coor", authMiddleware.verifyToken, adminController.getCoorUsers);
 router.get(
   "/intern",
@@ -80,6 +80,18 @@ router.patch(
   "/admin/resetdevice/:id",
   authMiddleware.verifyToken,
   adminController.reseDeviceRestriction
+);
+
+// HTE List
+router.get(
+  "/admin/hte",
+  authMiddleware.verifyToken,
+  adminController.getHTEList
+);
+router.get(
+  "/admin/hte/:id",
+  authMiddleware.verifyToken,
+  adminController.getHTEInternshipLists
 );
 
 module.exports = router;
