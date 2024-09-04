@@ -5,6 +5,7 @@ const User = require("../models/User.Model");
 const Intern = require("../models/Intern.Model");
 const DepartmentList = require("../models/Department.Model");
 const DailyTimeRecord = require("../models/DailyTimeRecord.Model.js");
+const InternVacancy = require("../models/InternVacancy.Model.js");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const moment = require("moment-timezone");
@@ -336,6 +337,15 @@ class AdminService {
       }
     );
   }
+  // Fetching HTE List CRUD
+  async getListOfHTE() {
+    return await HTE.find();
+  }
+  async getInternshipsList(id) {
+    return await InternVacancy.find({ hte: id });
+  }
+  // Fetching Coordinator
+  async getListOfCoordinator() {}
 }
 
 module.exports = new AdminService();

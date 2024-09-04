@@ -56,7 +56,7 @@ class HTEService {
 
   // View only all internship application with Pending Status
 
-  // View only all internship application
+  // View only all internship application you own
   async getAllInternshipApplication(id) {
     let applicationArr = [];
     const profileData = await User.findById({ _id: id });
@@ -134,7 +134,7 @@ class HTEService {
     );
     // return internShipItem;
     applicationArr.push(...results);
-    // console.log(applicationArr);
+    console.log(applicationArr);
 
     return applicationArr;
   }

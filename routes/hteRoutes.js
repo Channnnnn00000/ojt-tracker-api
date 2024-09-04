@@ -41,7 +41,7 @@ router.get(
   hteController.getlistOfAcceptedInterns
 );
 router.get(
-  "/list/:jobId",
+  "/list/applicants/:jobId",
   authMiddleware.verifyToken,
   hteController.getSingleInternship
 );

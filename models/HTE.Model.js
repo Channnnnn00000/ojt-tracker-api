@@ -4,7 +4,6 @@ const hteSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-
   },
   contactNumber: {
     type: Number,
@@ -19,11 +18,11 @@ const hteSchema = new mongoose.Schema({
       lat: { type: Number },
       lng: { type: Number },
     },
-    default: null
+    default: null,
   },
   hasMoa: {
     type: String,
-    default: 'false',
+    default: "false",
   },
   moaAttachement: {
     type: String,
@@ -58,8 +57,6 @@ function getDateValue() {
 
   return (finaldate = `${month} ${day}, ${year}`);
 }
-
-
 
 const HTE = mongoose.model("HTE", hteSchema);
 module.exports = HTE;

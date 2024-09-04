@@ -399,6 +399,34 @@ class AdminController {
   }
 
   //#endregion
+  //#region HTE List
+  async getHTEList(req, res) {
+    try {
+      const data = await adminService.getListOfHTE();
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getHTEInternshipLists(req, res) {
+    try {
+      const data = await adminService.getInternshipsList(req.params.id);
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  //#endregion
 }
 
 module.exports = new AdminController();

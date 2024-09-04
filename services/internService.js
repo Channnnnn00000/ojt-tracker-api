@@ -13,6 +13,9 @@ class InternService {
   async loginIntern(username, password, sessionCode) {
     const generateSessionCode = () => crypto.randomBytes(32).toString("hex");
     const user = await User.findOne({ username });
+    if (!user) {
+      return { message: "Account not found" };
+    }
     const intern = await Intern.findOne({ _id: user.profile.toString() });
     console.log(intern);
     console.log(sessionCode);
