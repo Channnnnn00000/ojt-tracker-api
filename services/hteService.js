@@ -9,7 +9,8 @@ const bcrypt = require("bcryptjs");
 const AcceptedApplicant = require("../models/AcceptedApplicant");
 const VisitRequest = require("../models/VisitRequest.Model");
 const moment = require("moment-timezone");
-const Evaluation = require("../models/Evaluation.Model")
+const Evaluation = require("../models/Evaluation.Model");
+const Coordinator = require("../models/Coordinator.Model");
 
 class HTEService {
   async loginUser(username, password) {
@@ -364,6 +365,49 @@ class HTEService {
   internData.evaluationResults = newEvaluation._id,
   await internData.save()
   return newEvaluation
+  }
+  async getHteEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const hteData = await HTE.findOne({ _id: userData.profile.toString() }).exec();
+    if(!hteData){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find({ hteId: hteData }).exec();
+    return evaluationData
+  }
+  async getInternEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const internData = await Intern.findOne({ _id: userData.profile.toString() }).exec();
+    if(!internData){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find({ internId: internData }).exec();
+    return evaluationData
+  }
+  async getCoorEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const coorData = await Coordinator.findOne({ _id: userData.profile.toString() }).exec();
+    if(!coorData){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find({ department: coorData.department }).exec();
+    return evaluationData
+  }
+  async getAdminEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    if(userData.role !== "Admin"){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find().exec();
+    return evaluationData
   }
 }
 

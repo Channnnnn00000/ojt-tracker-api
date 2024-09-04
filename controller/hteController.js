@@ -346,6 +346,62 @@ class HteController {
       });
     }
   }
+  async getHteEvaluation(req, res) {
+    try {
+      const responseData = await hteService.getHteEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchHteEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getInternEvaluation(req, res) {
+    try {
+      const responseData = await hteService.getInternEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchInternEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getCoorEvaluation(req, res) {
+    try {
+      const responseData = await hteService.getCoorEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchCoorEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getAdminEvaluation(req, res) {
+    try {
+      const responseData = await hteService.getAdminEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchAdminEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new HteController();
