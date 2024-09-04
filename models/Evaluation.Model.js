@@ -18,6 +18,92 @@ const EvaluationSchema = new mongoose.Schema({
   internName: {
     type: String,
   },
+  hostTrainingEstablishment: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  contactNumber: {
+    type: Number,
+  },
+  hteEvaluator: {
+    type: String,
+  },
+  position: {
+    type: String,
+  },
+  trainingPeriod: {
+    type: String,
+  },
+  numberOfHoursRendered: {
+    type: String,
+  },
+  Q1: {
+    type: Number,
+  },
+  Q2: {
+    type: Number,
+  },
+  Q3: {
+    type: Number,
+  },
+  Q4: {
+    type: Number,
+  },
+  Q5: {
+    type: Number,
+  },
+  Q6: {
+    type: Number,
+  },
+  Q7: {
+    type: Number,
+  },
+  Q8: {
+    type: Number,
+  },
+  Q9: {
+    type: Number,
+  },
+  Q10: {
+    type: Number,
+  },
+  Q11: {
+    type: Number,
+  },
+  Q12: {
+    type: Number,
+  },
+  Q13: {
+    type: Number,
+  },
+  Q14: {
+    type: Number,
+  },
+  Q15: {
+    type: Number,
+  },
+  Q16: {
+    type: Number,
+  },
+  Q17: {
+    type: Number,
+  },
+  Q18: {
+    type: Number,
+  },
+  Q19: {
+    type: Number,
+  },
+  Q20: {
+    type: Number,
+  },
+  comment: {
+    type: String,
+  },
+
+
 
 
 
@@ -41,8 +127,8 @@ function getDateValue() {
   return (finaldate = `${month} ${day}, ${year}`);
 }
 
-const AcceptedApplicant = mongoose.model(
-  "AcceptedApplicant",
-  acceptedApplicantSchema
+const Evaluation = mongoose.model(
+  "Evaluation",
+  EvaluationSchema
 );
-module.exports = AcceptedApplicant;
+module.exports = Evaluation;

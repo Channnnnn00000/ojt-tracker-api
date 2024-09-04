@@ -331,6 +331,21 @@ class HteController {
       });
     }
   }
+  async postEvaluation(req, res) {
+    try {
+      const responseData = await hteService.submitEvaluation(
+        req.user.userId, req.params.id, req.body
+      );
+      return res.status(201).json({
+        status: "postEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new HteController();

@@ -94,4 +94,12 @@ router.patch(
   hteController.rejectVisitRequest
 );
 
+// Evaluation
+
+router.post(
+  "/evaluation/:id",
+  authMiddleware.verifyToken,
+  hteController.postEvaluation
+);
+
 module.exports = router;
