@@ -60,6 +60,11 @@ const internSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Application",
   },
+  evaluationResult: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Evaluation",
+  },
+
 
   // approvedInternships: [
   //   {
