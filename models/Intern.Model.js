@@ -44,7 +44,7 @@ const internSchema = new mongoose.Schema({
   evaluationResults: {
     index: true,
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Application",
+    ref: "Evaluation",
   },
   appliedInternships: [
     {
@@ -68,6 +68,7 @@ const internSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Application",
   },
+
 
   // approvedInternships: [
   //   {

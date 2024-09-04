@@ -34,6 +34,10 @@ const hteSchema = new mongoose.Schema({
       ref: "InternVacancy",
     },
   ],
+  evaluationResults: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Evaluation",
+    },
   createdAt: {
     type: String,
     default: getDateValue(),

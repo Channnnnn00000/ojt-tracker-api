@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const AcceptedApplicant = require("../models/AcceptedApplicant");
 const VisitRequest = require("../models/VisitRequest.Model");
 const moment = require("moment-timezone");
+const Evaluation = require("../models/Evaluation.Model")
 
 class HTEService {
   async loginUser(username, password) {
@@ -313,6 +314,56 @@ class HTEService {
       { $set: { status: "Rejected" } }
     );
     return rejectResult;
+  }
+  async submitEvaluation (id,internId,payload) {
+    const userData = await User.findOne({ _id: id }).exec();
+    const hteData = await HTE.findOne({ _id: userData.profile.toString() }).exec();
+    const internData = await Intern.findOne({ _id: internId }).exec();
+
+    if(!internData.isEvaluationReady) {
+      return {
+        message: "This intern is not ready to evaluate"
+      }
+    }
+    const newEvaluation = new Evaluation({
+      hteId: userData.profile.toString(),
+      internId: internId,
+      department: payload.department,
+      hteName: hteData.name,
+      internName: internData.fullName,
+      // hostTrainingEstablishment: hostTrainingEstablishment,
+      address: hteData.address,
+      // contactNumber: contactNumber,
+      hteEvaluator: hteData.name,
+      // position: position,
+      trainingPeriod: internData.requiredHours,
+      numberOfHoursRendered: internData.workedHours,
+      Q1: payload.Q1,
+      Q2: payload.Q2,
+      Q3: payload.Q3,
+      Q4: payload.Q4,
+      Q5: payload.Q5,
+      Q6: payload.Q6,
+      Q7: payload.Q7,
+      Q8: payload.Q8,
+      Q9: payload.Q9,
+      Q10: payload.Q10,
+      Q11: payload.Q11,
+      Q12: payload.Q12,
+      Q13: payload.Q13,
+      Q14: payload.Q14,
+      Q15: payload.Q15,
+      Q16: payload.Q16,
+      Q17: payload.Q17,
+      Q18: payload.Q18,
+      Q19: payload.Q19,
+      Q20: payload.Q20,
+      comment: payload.comment,
+  });
+  await newEvaluation.save();
+  internData.evaluationResults = newEvaluation._id,
+  await internData.save()
+  return newEvaluation
   }
 }
 
