@@ -29,8 +29,8 @@ const visitRequestSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum:['Pending','Granted','Rejected'],
-    default: 'Pending'
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
   },
   createdAt: {
     type: String,
@@ -52,8 +52,5 @@ function getDateValue() {
   return (finaldate = `${month} ${day}, ${year}`);
 }
 
-const VisitRequest = mongoose.model(
-  "VisitRequest",
-  visitRequestSchema
-);
+const VisitRequest = mongoose.model("VisitRequest", visitRequestSchema);
 module.exports = VisitRequest;

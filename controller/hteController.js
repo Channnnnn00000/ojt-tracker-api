@@ -94,11 +94,10 @@ class HteController {
         req.user.userId
       );
 
-        res.status(201).json({
-          message: "Success!",
-          content: listOfApplications,
-        });
-      
+      res.status(201).json({
+        message: "Success!",
+        content: listOfApplications,
+      });
     } catch (error) {
       res.status(500).json({
         message: error.message,
@@ -131,7 +130,7 @@ class HteController {
         req.params.applicationId
       );
       console.log(listOfApplications);
-      if(listOfApplications === 'Intern is not available'){
+      if (listOfApplications === "Intern is not available") {
         return res.status(400).json({
           message: "Error!",
           content: listOfApplications,
@@ -243,15 +242,13 @@ class HteController {
       });
     }
   }
-  async getOnlineInterns(req,res) {
+  async getOnlineInterns(req, res) {
     try {
-      const onlineInterns = await hteService.getOnlineIntern(
-        req.user.userId,
-      );
+      const onlineInterns = await hteService.getOnlineIntern(req.user.userId);
 
-      if(onlineInterns) {
+      if (onlineInterns) {
         return res.status(200).json({
-          content: onlineInterns
+          content: onlineInterns,
         });
       }
       res.status(400).json({
@@ -262,31 +259,73 @@ class HteController {
         message: error.message,
       });
     }
-    
   }
-  async getListingItem(req,res) {
+  async getListingItem(req, res) {
     try {
-      const data = await hteService.getListingItem(req.params.id)
+      const data = await hteService.getListingItem(req.params.id);
       return res.status(201).json({
         status: "Success",
         content: data,
       });
-
-    }catch (error) {
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
   }
-  async updateListingItem(req,res) {
+  async updateListingItem(req, res) {
     try {
-      const data = await hteService.updateListingItem(req.params.id, req.body)
+      const data = await hteService.updateListingItem(req.params.id, req.body);
       return res.status(201).json({
         status: "Update success",
         content: data,
       });
-
-    }catch (error) {
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async fetchVisitRequest(req, res) {
+    try {
+      const responseData = await hteService.getFetchRequest(req.user.userId);
+      return res.status(201).json({
+        status: "Fetch success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async acceptVisitRequest(req, res) {
+    try {
+      const responseData = await hteService.acceptVisitRequest(
+        req.user.userId,
+        req.params.id
+      );
+      return res.status(201).json({
+        status: "Accept success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async rejectVisitRequest(req, res) {
+    try {
+      const responseData = await hteService.rejectVisitRequest(
+        req.user.userId,
+        req.params.id
+      );
+      return res.status(201).json({
+        status: "Reject success",
+        content: responseData,
+      });
+    } catch (error) {
       res.status(500).json({
         message: error.message,
       });

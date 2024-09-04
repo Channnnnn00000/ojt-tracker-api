@@ -4,7 +4,6 @@ const internSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: true,
-
   },
   department: {
     type: String,
@@ -32,10 +31,20 @@ const internSchema = new mongoose.Schema({
   },
   currentLocation: {
     type: {
-      lat: { type: Number, required: true, },
-      lng: { type: Number, required: true,},
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true },
     },
     default: null,
+  },
+  sessionCode: {
+    type: String,
+    default: null,
+  },
+
+  evaluationResults: {
+    index: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Application",
   },
   appliedInternships: [
     {
@@ -50,11 +59,10 @@ const internSchema = new mongoose.Schema({
       ref: "DailyTimeRecord",
     },
   ],
-  isEvaluationReady: 
-    {
-      type: Boolean,
-      default: false
-    },
+  isEvaluationReady: {
+    type: Boolean,
+    default: false,
+  },
 
   acceptedInternship: {
     type: mongoose.Schema.Types.ObjectId,

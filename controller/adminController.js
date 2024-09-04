@@ -363,7 +363,7 @@ class AdminController {
       const data = await adminService.getListOnInterns();
       res.status(201).json({
         message: "Success!",
-        content: data
+        content: data,
       });
     } catch (error) {
       res.status(500).json({
@@ -376,7 +376,20 @@ class AdminController {
       const data = await adminService.getDTRLogs(req.params.id);
       res.status(201).json({
         message: "Success!",
-        content: data
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async reseDeviceRestriction(req, res) {
+    try {
+      const data = await adminService.resetInternsDevice(req.params.id);
+      res.status(201).json({
+        message: "Success!",
+        content: data,
       });
     } catch (error) {
       res.status(500).json({
