@@ -348,21 +348,18 @@ class AdminService {
   }
   // Fetching Coordinator
 
-  async getListOfCoordinator() {}
-
-  async getAdminEvalation (userId) {
+  async getAdminEvalation(userId) {
     const userData = await User.findOne({ _id: userId }).exec();
-    if(userData.role !== "Admin"){
-      return{
-        message: "No Available Data"
-      }
+    if (userData.role !== "Admin") {
+      return {
+        message: "No Available Data",
+      };
     }
     const evaluationData = await Evaluation.find().exec();
-    return evaluationData
-
+    return evaluationData;
+  }
   async getListOfCoordinator() {
     return await Coordinator.find().exec();
-
   }
 }
 
