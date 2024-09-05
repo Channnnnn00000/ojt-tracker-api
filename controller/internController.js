@@ -10,15 +10,11 @@ class InternController {
         password,
         sessionCode
       );
-      console.log("====================================");
-      console.log(token);
-      console.log("====================================");
       if (!token)
         return res.status(401).json({ message: "Invalid credentials" });
       if (token.message) {
         return res.status(401).json({
-          message: "Failed Login",
-          content: token.message,
+          message: token.message,
         });
       }
       if (token.token) {
