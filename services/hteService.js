@@ -12,7 +12,6 @@ const moment = require("moment-timezone");
 const Evaluation = require("../models/Evaluation.Model");
 const Coordinator = require("../models/Coordinator.Model");
 
-
 class HTEService {
   async loginUser(username, password) {
     const user = await User.findOne({ username });

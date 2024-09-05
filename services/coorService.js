@@ -74,6 +74,7 @@ class CoorService {
     console.log(setHours);
     return setHours;
   }
+
   async getCoorEvalation(userId) {
     const userData = await User.findOne({ _id: userId }).exec();
     const coorData = await Coor.findOne({
@@ -89,6 +90,7 @@ class CoorService {
     }).exec();
     return evaluationData;
   }
+
   async removeRequest(requestId) {
     console.log(requestId);
 
@@ -102,6 +104,17 @@ class CoorService {
       }
     );
     return doneRequest;
+  }
+  async getCoorEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const coorData = await Coor.findOne({ _id: userData.profile.toString() }).exec();
+    if(!coorData){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find({ department: coorData.department }).exec();
+    return evaluationData
   }
 }
 
