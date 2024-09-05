@@ -10,7 +10,6 @@ const AcceptedApplicant = require("../models/AcceptedApplicant");
 const VisitRequest = require("../models/VisitRequest.Model");
 const moment = require("moment-timezone");
 const Evaluation = require("../models/Evaluation.Model");
-const Evaluation = require("../models/Evaluation.Model");
 const Coordinator = require("../models/Coordinator.Model");
 
 class HTEService {
