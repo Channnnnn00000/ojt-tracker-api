@@ -34,7 +34,7 @@ const internApplicationSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Accepted", "Rejected", "Approved"],
+    enum: ["Pending", "Accepted", "Rejected", "Approved", "Finished"],
     default: "Pending",
   },
   remarks: {

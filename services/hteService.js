@@ -12,6 +12,7 @@ const moment = require("moment-timezone");
 const Evaluation = require("../models/Evaluation.Model");
 const Coordinator = require("../models/Coordinator.Model");
 
+
 class HTEService {
   async loginUser(username, password) {
     const user = await User.findOne({ username });
@@ -309,22 +310,24 @@ class HTEService {
     );
     return acceptResult;
   }
-  async rejectVisitRequest(userId, requestId) {
+  async rejectVisitRequest(userId, requestId, payload) {
     const rejectResult = await VisitRequest.updateOne(
       { _id: requestId },
-      { $set: { status: "Rejected" } }
+      { $set: { status: "Rejected", hteRemarks: payload.hteRemarks } }
     );
     return rejectResult;
   }
-  async submitEvaluation (id,internId,payload) {
+  async submitEvaluation(id, internId, payload) {
     const userData = await User.findOne({ _id: id }).exec();
-    const hteData = await HTE.findOne({ _id: userData.profile.toString() }).exec();
+    const hteData = await HTE.findOne({
+      _id: userData.profile.toString(),
+    }).exec();
     const internData = await Intern.findOne({ _id: internId }).exec();
 
-    if(!internData.isEvaluationReady) {
+    if (!internData.isEvaluationReady) {
       return {
-        message: "This intern is not ready to evaluate"
-      }
+        message: "This intern is not ready to evaluate",
+      };
     }
     const newEvaluation = new Evaluation({
       hteId: userData.profile.toString(),
@@ -360,11 +363,10 @@ class HTEService {
       Q19: payload.Q19,
       Q20: payload.Q20,
       comment: payload.comment,
-  });
-  await newEvaluation.save();
-  internData.evaluationResults = newEvaluation._id,
-  await internData.save()
-  return newEvaluation
+    });
+    await newEvaluation.save();
+    (internData.evaluationResults = newEvaluation._id), await internData.save();
+    return newEvaluation;
   }
   async getHteEvalation (userId) {
     const userData = await User.findOne({ _id: userId }).exec();
