@@ -350,6 +350,7 @@ class AdminService {
   async getListOfCoordinator() {
     return await Coordinator.find().exec();
   }
+
   async getListOfCoordinator() {}
 
   async getAdminEvalation (userId) {
