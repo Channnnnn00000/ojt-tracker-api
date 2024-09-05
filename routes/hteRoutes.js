@@ -101,5 +101,10 @@ router.post(
   authMiddleware.verifyToken,
   hteController.postEvaluation
 );
+router.get(
+  "/getHteEvaluation",
+  authMiddleware.verifyToken,
+  hteController.getHteEvaluation
+)
 
 module.exports = router;

@@ -30,6 +30,13 @@ router.patch(
   authMiddleware.verifyToken,
   coorController.setRequiredHours
 );
+
+router.get(
+  "/getCoorEvaluation",
+  authMiddleware.verifyToken,
+  coorController.getCoorEvaluation
+)
+
 router.delete(
   "/requests/:id",
   authMiddleware.verifyToken,
@@ -40,5 +47,6 @@ router.patch(
   authMiddleware.verifyToken,
   coorController.doneRequest
 );
+
 
 module.exports = router;

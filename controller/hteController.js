@@ -349,6 +349,20 @@ class HteController {
       });
     }
   }
+  async getHteEvaluation(req, res) {
+    try {
+      const responseData = await hteService.getHteEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchHteEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new HteController();

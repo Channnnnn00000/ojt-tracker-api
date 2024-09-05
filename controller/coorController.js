@@ -93,6 +93,15 @@ class CoorController {
       });
     }
   }
+
+  async getCoorEvaluation(req, res) {
+    try {
+      const responseData = await coorService.getCoorEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchCoorEvaluation success",
+        content: responseData,
+=======
   async removeRequest(req, res) {
     console.log(req.params.id);
 
