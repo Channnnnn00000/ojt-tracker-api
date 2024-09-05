@@ -426,6 +426,20 @@ class AdminController {
       });
     }
   }
+  async getAdminEvaluation(req, res) {
+    try {
+      const responseData = await adminService.getAdminEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchAdminEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
   //#endregion
 }
 

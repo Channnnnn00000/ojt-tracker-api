@@ -9,6 +9,8 @@ const InternVacancy = require("../models/InternVacancy.Model.js");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const moment = require("moment-timezone");
+const Evaluation = require("../models/Evaluation.Model");
+
 class AdminService {
   // Authentication
   async loginAdmin(username, password) {
@@ -346,6 +348,17 @@ class AdminService {
   }
   // Fetching Coordinator
   async getListOfCoordinator() {}
+
+  async getAdminEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    if(userData.role !== "Admin"){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find().exec();
+    return evaluationData
+  }
 }
 
 module.exports = new AdminService();

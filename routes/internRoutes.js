@@ -85,5 +85,10 @@ router.put(
   authMiddleware.verifyToken,
   internController.getCurrentLocationHandler
 );
+router.get(
+  "/getInternEvaluation",
+  authMiddleware.verifyToken,
+  internController.getInternEvaluation
+)
 
 module.exports = router;

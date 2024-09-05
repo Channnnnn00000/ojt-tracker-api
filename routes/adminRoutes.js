@@ -93,5 +93,10 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getHTEInternshipLists
 );
+router.get(
+  "/getAdminEvaluation",
+  authMiddleware.verifyToken,
+  adminController.getAdminEvaluation
+)
 
 module.exports = router;

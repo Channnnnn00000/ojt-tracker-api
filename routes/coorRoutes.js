@@ -35,6 +35,10 @@ router.patch(
   authMiddleware.verifyToken,
   coorController.setRequiredHours
 );
-
+router.get(
+  "/getCoorEvaluation",
+  authMiddleware.verifyToken,
+  coorController.getCoorEvaluation
+)
 
 module.exports = router;

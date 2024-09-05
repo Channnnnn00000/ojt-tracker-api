@@ -266,6 +266,20 @@ class InternController {
       });
     }
   }
+  async getInternEvaluation(req, res) {
+    try {
+      const responseData = await internService.getInternEvalation( req.user.userId );
+
+      return res.status(201).json({
+        status: "fetchInternEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new InternController();

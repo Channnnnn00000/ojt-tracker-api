@@ -9,6 +9,8 @@ const bcrypt = require("bcryptjs");
 const DailyTimeRecord = require("../models/DailyTimeRecord.Model");
 const moment = require("moment-timezone");
 const crypto = require("crypto");
+const Evaluation = require("../models/Evaluation.Model");
+
 class InternService {
   async loginIntern(username, password, sessionCode) {
     const generateSessionCode = () => crypto.randomBytes(32).toString("hex");
@@ -319,6 +321,17 @@ class InternService {
   }
   async removeApplication(userId, applicationId) {
     await InternApplication.findByIdAndDelete({ _id: applicationId });
+  }
+  async getInternEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const internData = await Intern.findOne({ _id: userData.profile.toString() }).exec();
+    if(!internData){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find({ internId: internData }).exec();
+    return evaluationData
   }
 }
 

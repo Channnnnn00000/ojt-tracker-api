@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const AcceptedApplicant = require("../models/AcceptedApplicant");
 const Coor = require("../models/Coordinator.Model");
 const VisitRequest = require("../models/VisitRequest.Model");
+const Evaluation = require("../models/Evaluation.Model");
 
 class CoorService {
   // Get specific intern depends on the department
@@ -72,6 +73,17 @@ class CoorService {
 
     console.log(setHours);
     return setHours;
+  }
+  async getCoorEvalation (userId) {
+    const userData = await User.findOne({ _id: userId }).exec();
+    const coorData = await Coor.findOne({ _id: userData.profile.toString() }).exec();
+    if(!coorData){
+      return{
+        message: "No Available Data"
+      }
+    }
+    const evaluationData = await Evaluation.find({ department: coorData.department }).exec();
+    return evaluationData
   }
 }
 

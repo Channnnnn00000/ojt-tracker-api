@@ -377,38 +377,6 @@ class HTEService {
     const evaluationData = await Evaluation.find({ hteId: hteData }).exec();
     return evaluationData
   }
-  async getInternEvalation (userId) {
-    const userData = await User.findOne({ _id: userId }).exec();
-    const internData = await Intern.findOne({ _id: userData.profile.toString() }).exec();
-    if(!internData){
-      return{
-        message: "No Available Data"
-      }
-    }
-    const evaluationData = await Evaluation.find({ internId: internData }).exec();
-    return evaluationData
-  }
-  async getCoorEvalation (userId) {
-    const userData = await User.findOne({ _id: userId }).exec();
-    const coorData = await Coordinator.findOne({ _id: userData.profile.toString() }).exec();
-    if(!coorData){
-      return{
-        message: "No Available Data"
-      }
-    }
-    const evaluationData = await Evaluation.find({ department: coorData.department }).exec();
-    return evaluationData
-  }
-  async getAdminEvalation (userId) {
-    const userData = await User.findOne({ _id: userId }).exec();
-    if(userData.role !== "Admin"){
-      return{
-        message: "No Available Data"
-      }
-    }
-    const evaluationData = await Evaluation.find().exec();
-    return evaluationData
-  }
 }
 
 module.exports = new HTEService();
