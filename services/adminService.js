@@ -345,7 +345,9 @@ class AdminService {
     return await InternVacancy.find({ hte: id });
   }
   // Fetching Coordinator
-  async getListOfCoordinator() {}
+  async getListOfCoordinator() {
+    return await Coordinator.find().exec();
+  }
 }
 
 module.exports = new AdminService();

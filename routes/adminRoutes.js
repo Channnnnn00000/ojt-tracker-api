@@ -94,4 +94,11 @@ router.get(
   adminController.getHTEInternshipLists
 );
 
+// Coor List
+router.get(
+  "/admin/coor",
+  authMiddleware.verifyToken,
+  adminController.getCoordinatorList
+);
+
 module.exports = router;
