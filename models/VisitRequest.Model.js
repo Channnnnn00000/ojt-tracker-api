@@ -24,12 +24,17 @@ const visitRequestSchema = new mongoose.Schema({
   department: {
     type: String,
   },
-  remarks: {
+  coorRemarks: {
     type: String,
+    default: null,
+  },
+  hteRemarks: {
+    type: String,
+    default: null,
   },
   status: {
     type: String,
-    enum: ["Pending", "Accepted", "Rejected"],
+    enum: ["Pending", "Accepted", "Rejected", "Done"],
     default: "Pending",
   },
   createdAt: {

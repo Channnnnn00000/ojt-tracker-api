@@ -347,6 +347,9 @@ class AdminService {
     return await InternVacancy.find({ hte: id });
   }
   // Fetching Coordinator
+  async getListOfCoordinator() {
+    return await Coordinator.find().exec();
+  }
   async getListOfCoordinator() {}
 
   async getAdminEvalation (userId) {

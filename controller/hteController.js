@@ -319,7 +319,8 @@ class HteController {
     try {
       const responseData = await hteService.rejectVisitRequest(
         req.user.userId,
-        req.params.id
+        req.params.id,
+        req.body
       );
       return res.status(201).json({
         status: "Reject success",
@@ -334,7 +335,9 @@ class HteController {
   async postEvaluation(req, res) {
     try {
       const responseData = await hteService.submitEvaluation(
-        req.user.userId, req.params.id, req.body
+        req.user.userId,
+        req.params.id,
+        req.body
       );
       return res.status(201).json({
         status: "postEvaluation success",

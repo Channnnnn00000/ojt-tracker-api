@@ -22,7 +22,7 @@ class CoorService {
     return internsList;
   }
   async sendVisitationRequest(payload) {
-    const statuses = ["Pending", "Accepted"];
+    const statuses = ["Pending", "Accepted", "Done"];
     // query to visit request table if theres an exisiting request that is pending
     const existingRequestData = await VisitRequest.findOne({
       hteId: payload.hteId,
@@ -73,6 +73,20 @@ class CoorService {
 
     console.log(setHours);
     return setHours;
+  }
+  async removeRequest(requestId) {
+    console.log(requestId);
+
+    return await VisitRequest.findByIdAndDelete({ _id: requestId });
+  }
+  async doneRequest(requestId) {
+    const doneRequest = await VisitRequest.updateOne(
+      { _id: requestId },
+      {
+        $set: { status: "Done" },
+      }
+    );
+    return doneRequest;
   }
   async getCoorEvalation (userId) {
     const userData = await User.findOne({ _id: userId }).exec();

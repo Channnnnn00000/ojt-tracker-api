@@ -69,7 +69,6 @@ const internSchema = new mongoose.Schema({
     ref: "Application",
   },
 
-
   // approvedInternships: [
   //   {
   //     type: mongoose.Schema.Types.ObjectId,

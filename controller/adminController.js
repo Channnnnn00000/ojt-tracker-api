@@ -441,6 +441,22 @@ class AdminController {
     }
   }
   //#endregion
+  //#region Coordinator List
+  async getCoordinatorList(req, res) {
+    try {
+      const data = await adminService.getListOfCoordinator();
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  //#endregion
 }
 
 module.exports = new AdminController();

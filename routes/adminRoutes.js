@@ -99,4 +99,11 @@ router.get(
   adminController.getAdminEvaluation
 )
 
+// Coor List
+router.get(
+  "/admin/coor",
+  authMiddleware.verifyToken,
+  adminController.getCoordinatorList
+);
+
 module.exports = router;
