@@ -288,6 +288,22 @@ class InternController {
       });
     }
   }
+  async updateInternInformation(req, res) {
+    console.log(req.body);
+    console.log(req.params.id);
+    console.log(req.user.userId);
+    try {
+      const response = await internService.updateInternInformation(
+        req.user.userId,
+        req.body
+      );
+      return res.status(201).json(response);
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new InternController();

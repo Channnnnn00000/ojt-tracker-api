@@ -371,6 +371,31 @@ class InternService {
   async getApplicationInfo(applicationId) {
     return await InternApplication.findOne({ _id: applicationId });
   }
+  async updateInternInformation(userId, payload) {
+    console.log(userId);
+    console.log(payload);
+
+    const userData = await User.findOne({ _id: userId });
+    const userDataUpdated = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          email: payload.email,
+        },
+      }
+    );
+    console.log(userDataUpdated);
+    const internData = await Intern.updateOne(
+      { _id: userData.profile.toString() },
+      {
+        $set: {
+          contact: payload.contact,
+          address: payload.address,
+        },
+      }
+    );
+    console.log(internData);
+  }
 }
 
 module.exports = new InternService();

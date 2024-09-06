@@ -95,5 +95,10 @@ router.get(
   authMiddleware.verifyToken,
   internController.getApplicationInfo
 );
+router.patch(
+  "/update/information",
+  authMiddleware.verifyToken,
+  internController.updateInternInformation
+);
 
 module.exports = router;

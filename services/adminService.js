@@ -103,6 +103,7 @@ class AdminService {
       fullName: payload.fullName,
       department: payload.department,
       contact: payload.contact,
+      address: payload.address,
     });
     await internProfile.save();
 
@@ -364,7 +365,6 @@ class AdminService {
   }
   async getListOfCoordinator() {
     return await Coordinator.find().exec();
-
   }
 }
 
