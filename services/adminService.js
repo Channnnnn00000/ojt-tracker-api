@@ -93,7 +93,7 @@ class AdminService {
     console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
-      username: payload.username + "@dhvsu.edu.ph",
+      username: payload.username ,
       password: hashedPassword,
       email: payload.email,
       role: payload.role,
