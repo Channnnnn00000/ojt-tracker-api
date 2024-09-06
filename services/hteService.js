@@ -378,6 +378,51 @@ class HTEService {
     const evaluationData = await Evaluation.find({ hteId: hteData }).exec();
     return evaluationData
   }
+  async updateHTEInformation(userId, payload) {
+    console.log(userId);
+    console.log(payload);
+
+    const userData = await User.findOne({ _id: userId });
+    const userDataUpdated = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          email: payload.email,
+        },
+      }
+    );
+    console.log(userDataUpdated);
+    const internData = await HTE.updateOne(
+      { _id: userData.profile.toString() },
+      {
+        $set: {
+          contact: payload.contact,
+          address: payload.address,
+          location: payload.location
+        },
+      }
+    );
+    console.log(internData);
+  }
+  async changeHtePassword(userId, payload) {
+    const userData = await User.findOne({ _id: userId });
+    const {oldpass, newpass} = payload;
+
+    const isMatch = await bcrypt.compare(oldpass, userData.password);
+    console.log(isMatch);
+    if(!isMatch) return null
+
+    const hashedPassword = await bcrypt.hash(newpass, 12);
+    const passwordUpdated = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          password: hashedPassword,
+        },
+      }
+    );
+    return passwordUpdated;
+  }
 }
 
 module.exports = new HTEService();

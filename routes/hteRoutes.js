@@ -107,4 +107,15 @@ router.get(
   hteController.getHteEvaluation
 )
 
+router.patch(
+  "/update/information",
+  authMiddleware.verifyToken,
+  hteController.updateHteInformation
+);
+router.patch(
+  "/password/change",
+  authMiddleware.verifyToken,
+  hteController.changePassword
+);
+
 module.exports = router;
