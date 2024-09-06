@@ -20,10 +20,16 @@ const internApplicationSchema = new mongoose.Schema({
   resumeFile: {
     type: String,
   },
-  endorsementPath: {
+  parentConsentFile: {
     type: String,
   },
-  eformFile: {
+  parentConsentPath: {
+    type: String,
+  },
+  internEndorsementPath: {
+    type: String,
+  },
+  internEndorsementFile: {
     type: String,
   },
   moaPath: {
@@ -32,6 +38,26 @@ const internApplicationSchema = new mongoose.Schema({
   moaFile: {
     type: String,
   },
+
+  firstEndorsementFormPath: {
+    type: String,
+  },
+  firstEndorsementFormFile: {
+    type: String,
+  },
+  certificationFormPath: {
+    type: String,
+  },
+  certificationFormFile: {
+    type: String,
+  },
+  internshipAgreementPath: {
+    type: String,
+  },
+  internshipAgreementFile: {
+    type: String,
+  },
+
   status: {
     type: String,
     enum: ["Pending", "Accepted", "Rejected", "Approved", "Finished"],

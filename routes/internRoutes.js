@@ -89,6 +89,11 @@ router.get(
   "/getInternEvaluation",
   authMiddleware.verifyToken,
   internController.getInternEvaluation
-)
+);
+router.get(
+  "/application/:id",
+  authMiddleware.verifyToken,
+  internController.getApplicationInfo
+);
 
 module.exports = router;

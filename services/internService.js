@@ -108,14 +108,45 @@ class InternService {
     }
     // New object to save in InternApplication Collection
     if (payload.length >= 2) {
+      console.log(payload[0].filename);
+      console.log(payload[1].filename);
       const newApplication = new InternApplication({
         hteId: vacancyData.hte,
         internId: userData.profile,
         internVacancy: jobId,
+
         resumePath: "http://localhost:4000/img/" + payload[0].filename,
         resumeFile: payload[0].filename,
-        moaPath: "http://localhost:4000/img/" + payload[1].filename,
-        moaFile: payload[1].filename,
+
+        parentConsentPath: payload[1]?.filename
+          ? `http://localhost:4000/img/${payload[1].filename}`
+          : null,
+        parentConsentFile: payload[1]?.filename || null,
+
+        internEndorsementPath: payload[2]?.filename
+          ? `http://localhost:4000/img/${payload[2].filename}`
+          : null,
+        internEndorsementFile: payload[2]?.filename || null,
+
+        moaPath: payload[3]?.filename
+          ? `http://localhost:4000/img/${payload[3].filename}`
+          : null,
+        moaFile: payload[3]?.filename || null,
+
+        firstEndorsementFormPath: payload[4]?.filename
+          ? `http://localhost:4000/img/${payload[4].filename}`
+          : null,
+        firstEndorsementFormFile: payload[4]?.filename || null,
+
+        certificationFormPath: payload[5]?.filename
+          ? `http://localhost:4000/img/${payload[5].filename}`
+          : null,
+        certificationFormFile: payload[5]?.filename || null,
+
+        internshipAgreementPath: payload[6]?.filename
+          ? `http://localhost:4000/img/${payload[6].filename}`
+          : null,
+        internshipAgreementFile: payload[6]?.filename || null,
       });
       await newApplication.save();
       vacancyData.applicants.push(newApplication._id);
@@ -322,16 +353,23 @@ class InternService {
   async removeApplication(userId, applicationId) {
     await InternApplication.findByIdAndDelete({ _id: applicationId });
   }
-  async getInternEvalation (userId) {
+  async getInternEvalation(userId) {
     const userData = await User.findOne({ _id: userId }).exec();
-    const internData = await Intern.findOne({ _id: userData.profile.toString() }).exec();
-    if(!internData){
-      return{
-        message: "No Available Data"
-      }
+    const internData = await Intern.findOne({
+      _id: userData.profile.toString(),
+    }).exec();
+    if (!internData) {
+      return {
+        message: "No Available Data",
+      };
     }
-    const evaluationData = await Evaluation.find({ internId: internData }).exec();
-    return evaluationData
+    const evaluationData = await Evaluation.find({
+      internId: internData,
+    }).exec();
+    return evaluationData;
+  }
+  async getApplicationInfo(applicationId) {
+    return await InternApplication.findOne({ _id: applicationId });
   }
 }
 

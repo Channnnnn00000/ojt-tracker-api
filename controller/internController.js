@@ -264,12 +264,24 @@ class InternController {
   }
   async getInternEvaluation(req, res) {
     try {
-      const responseData = await internService.getInternEvalation( req.user.userId );
+      const responseData = await internService.getInternEvalation(
+        req.user.userId
+      );
 
       return res.status(201).json({
         status: "fetchInternEvaluation success",
         content: responseData,
       });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getApplicationInfo(req, res) {
+    try {
+      const response = await internService.getApplicationInfo(req.params.id);
+      return res.status(201).json(response);
     } catch (error) {
       res.status(500).json({
         message: error.message,
