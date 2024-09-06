@@ -100,5 +100,10 @@ router.patch(
   authMiddleware.verifyToken,
   internController.updateInternInformation
 );
+router.patch(
+  "/password/change",
+  authMiddleware.verifyToken,
+  internController.changePassword
+);
 
 module.exports = router;

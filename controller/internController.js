@@ -304,6 +304,27 @@ class InternController {
       });
     }
   }
+  async changePassword(req, res) {
+    try {
+      const response = await internService.changeInternPassword(
+        req.user.userId,
+        req.body,
+        res
+      );
+      if(response === null) 
+        {
+          return res.status(400).json({
+            content:'Old password not much'
+          })
+        }
+      return res.status(201).json(response);
+
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new InternController();

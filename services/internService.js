@@ -396,6 +396,25 @@ class InternService {
     );
     console.log(internData);
   }
+  async changeInternPassword(userId, payload) {
+    const userData = await User.findOne({ _id: userId });
+    const {oldpass, newpass} = payload;
+
+    const isMatch = await bcrypt.compare(oldpass, userData.password);
+    console.log(isMatch);
+    if(!isMatch) return null
+
+    const hashedPassword = await bcrypt.hash(newpass, 12);
+    const passwordUpdated = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          password: hashedPassword,
+        },
+      }
+    );
+    return passwordUpdated;
+  }
 }
 
 module.exports = new InternService();
