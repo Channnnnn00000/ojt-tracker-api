@@ -29,10 +29,15 @@ class InternService {
         }
       } else {
         console.log("saving sessiong here");
-
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch){
+          return {
+            message:'Wrong password. Please Try again'
+          }
+        }
         intern.sessionCode = generateSessionCode();
         await intern.save();
-        const isMatch = await bcrypt.compare(password, user.password);
+
         return {
           token: isMatch ? jwtUtils.generateToken(user._id) : null,
           codeRestriction: intern.sessionCode,
