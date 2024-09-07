@@ -228,6 +228,7 @@ class HTEService {
           dailyTimeRecords: internData.dailyTimeRecords,
           jobTitle: element.jobTitle,
           evaluationStatus: internData.isEvaluationReady,
+          sessionCode: internData.sessionCode,
         };
         return acceptedApplicantObj;
       })
