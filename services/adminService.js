@@ -10,6 +10,8 @@ const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const moment = require("moment-timezone");
 const Evaluation = require("../models/Evaluation.Model");
+const Application = require("../models/InternApplication.Model.js");
+const VisitRequest = require("../models/VisitRequest.Model.js");
 
 class AdminService {
   // Authentication
@@ -93,7 +95,7 @@ class AdminService {
     console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
-      username: payload.username ,
+      username: payload.username,
       password: hashedPassword,
       email: payload.email,
       role: payload.role,
@@ -365,6 +367,21 @@ class AdminService {
   }
   async getListOfCoordinator() {
     return await Coordinator.find().exec();
+  }
+
+  // Fetching Application List
+  async getListOfApplications() {
+    return await Application.find().exec();
+  }
+
+  // Fetching Visit Request List
+  async getListOfRequest() {
+    return await VisitRequest.find().exec();
+  }
+
+  // Fetching Listing of HTE
+  async getListOfVacancy() {
+    return await InternVacancy.find().exec();
   }
 }
 

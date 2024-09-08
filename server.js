@@ -9,6 +9,7 @@ const internRoutes = require("./routes/internRoutes");
 const coorRoutes = require("./routes/coorRoutes");
 const dtrRoutes = require("./routes/dtrRoutes");
 const resetRoutes = require("./routes/resetPasswordRoutes");
+const announceRoutes = require('./routes/announceRoutes')
 const path = require("path");
 require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -31,6 +32,7 @@ app.options("*", cors());
 app.use(morgan("dev"));
 // app.use("/auth", authroutes);
 // app.use("/auth", useRoutes);
+app.use("/api/v1/announcement", announceRoutes);
 app.use("/api/v1/", resetRoutes);
 app.use("/api/v1/", adminRoutes);
 app.use("/api/v1/", dtrRoutes);

@@ -428,7 +428,9 @@ class AdminController {
   }
   async getAdminEvaluation(req, res) {
     try {
-      const responseData = await adminService.getAdminEvalation( req.user.userId );
+      const responseData = await adminService.getAdminEvalation(
+        req.user.userId
+      );
 
       return res.status(201).json({
         status: "fetchAdminEvaluation success",
@@ -457,6 +459,52 @@ class AdminController {
   }
 
   //#endregion
+
+  // #region Application List
+  async getApplicationList(req, res) {
+    try {
+      const data = await adminService.getListOfApplications();
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  // #endregion
+  // #region Request List
+  async getRequestList(req, res) {
+    try {
+      const data = await adminService.getListOfRequest();
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getRequestListOfVacancy(req, res) {
+    try {
+      const data = await adminService.getListOfVacancy();
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+
+  // #endregion
 }
 
 module.exports = new AdminController();

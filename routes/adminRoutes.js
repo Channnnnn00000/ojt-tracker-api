@@ -97,13 +97,32 @@ router.get(
   "/getAdminEvaluation",
   authMiddleware.verifyToken,
   adminController.getAdminEvaluation
-)
+);
 
 // Coor List
 router.get(
   "/admin/coor",
   authMiddleware.verifyToken,
   adminController.getCoordinatorList
+);
+
+// Application List
+router.get(
+  "/admin/application",
+  authMiddleware.verifyToken,
+  adminController.getApplicationList
+);
+// Request List
+router.get(
+  "/admin/request/list",
+  authMiddleware.verifyToken,
+  adminController.getRequestList
+);
+// Vacancy List
+router.get(
+  "/admin/vacancy",
+  authMiddleware.verifyToken,
+  adminController.getRequestListOfVacancy
 );
 
 module.exports = router;
