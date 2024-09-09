@@ -105,5 +105,10 @@ router.patch(
   authMiddleware.verifyToken,
   internController.changePassword
 );
+router.get(
+  "/hte/information/:id",
+  authMiddleware.verifyToken,
+  internController.getHteInformation
+);
 
 module.exports = router;

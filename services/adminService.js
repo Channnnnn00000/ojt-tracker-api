@@ -12,6 +12,7 @@ const moment = require("moment-timezone");
 const Evaluation = require("../models/Evaluation.Model");
 const Application = require("../models/InternApplication.Model.js");
 const VisitRequest = require("../models/VisitRequest.Model.js");
+const Conversation = require("../models/Conversation.js");
 
 class AdminService {
   // Authentication
@@ -36,6 +37,19 @@ class AdminService {
       role: payload.role,
     });
     await newUser.save();
+    const getCurrentUser = await User.findOne({
+      username: newUser.username,
+    });
+
+    if (getCurrentUser.conversation.length < 1) {
+      const NewConversation = new Conversation({});
+
+      await NewConversation.save();
+
+      getCurrentUser.conversation.push(NewConversation);
+
+      await getCurrentUser.save();
+    }
 
     const profileAdmin = new Admin({
       firstname: payload.firstname,
@@ -59,6 +73,19 @@ class AdminService {
       role: payload.role,
     });
     await newUser.save();
+    const getCurrentUser = await User.findOne({
+      username: newUser.username,
+    });
+
+    if (getCurrentUser.conversation.length < 1) {
+      const NewConversation = new Conversation({});
+
+      await NewConversation.save();
+
+      getCurrentUser.conversation.push(NewConversation);
+
+      await getCurrentUser.save();
+    }
 
     const profile = new HTE({
       name: payload.name,
@@ -81,6 +108,19 @@ class AdminService {
       role: payload.role,
     });
     await newUser.save();
+    const getCurrentUser = await User.findOne({
+      username: newUser.username,
+    });
+
+    if (getCurrentUser.conversation.length < 1) {
+      const NewConversation = new Conversation({});
+
+      await NewConversation.save();
+
+      getCurrentUser.conversation.push(NewConversation);
+
+      await getCurrentUser.save();
+    }
 
     const newCoor = new Coordinator({
       fullName: payload.fullName,
@@ -101,6 +141,19 @@ class AdminService {
       role: payload.role,
     });
     await newUser.save();
+    const getCurrentUser = await User.findOne({
+      username: newUser.username,
+    });
+
+    if (getCurrentUser.conversation.length < 1) {
+      const NewConversation = new Conversation({});
+
+      await NewConversation.save();
+
+      getCurrentUser.conversation.push(NewConversation);
+
+      await getCurrentUser.save();
+    }
     const internProfile = new Intern({
       fullName: payload.fullName,
       department: payload.department,
@@ -377,6 +430,13 @@ class AdminService {
   // Fetching Visit Request List
   async getListOfRequest() {
     return await VisitRequest.find().exec();
+  }
+  async getListOfRequest() {
+    return await VisitRequest.find().exec();
+  }
+  async getCoorRequestList(coorId) {
+    const requestCoorList = await VisitRequest.find({ coorId: coorId });
+    return requestCoorList;
   }
 
   // Fetching Listing of HTE

@@ -457,6 +457,19 @@ class AdminController {
       });
     }
   }
+  async getCoordinatorRequest(req, res) {
+    try {
+      const data = await adminService.getListOfCoordinatorRequest();
+      res.status(201).json({
+        message: "Success list of request!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 
   //#endregion
 
@@ -490,7 +503,20 @@ class AdminController {
       });
     }
   }
-  async getRequestListOfVacancy(req, res) {
+  async getCoorRequestList(req, res) {
+    try {
+      const data = await adminService.getCoorRequestList(req.params.id);
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getListOfVacancy(req, res) {
     try {
       const data = await adminService.getListOfVacancy();
       res.status(201).json({

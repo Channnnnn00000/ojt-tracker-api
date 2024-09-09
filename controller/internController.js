@@ -10,9 +10,9 @@ class InternController {
         password,
         sessionCode
       );
-      console.log('====================================');
+      console.log("====================================");
       console.log(token);
-      console.log('====================================');
+      console.log("====================================");
       if (!token)
         return res.status(401).json({ message: "Invalid credentials" });
       if (token.message) {
@@ -21,9 +21,9 @@ class InternController {
         });
       }
       if (token.token) {
-        console.log('====================================');
+        console.log("====================================");
         console.log(token.token);
-        console.log('====================================');
+        console.log("====================================");
         res.cookie("jwt", token.token, {
           httpOnly: true,
           secure: true,
@@ -317,14 +317,22 @@ class InternController {
         req.body,
         res
       );
-      if(response === null) 
-        {
-          return res.status(400).json({
-            content:'Old password not much'
-          })
-        }
+      if (response === null) {
+        return res.status(400).json({
+          content: "Old password not much",
+        });
+      }
       return res.status(201).json(response);
-
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getHteInformation(req, res) {
+    try {
+      const response = await internService.getHteInformation(req.params.id);
+      return res.status(201).json(response);
     } catch (error) {
       res.status(500).json({
         message: error.message,

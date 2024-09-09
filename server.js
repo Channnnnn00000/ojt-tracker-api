@@ -9,7 +9,9 @@ const internRoutes = require("./routes/internRoutes");
 const coorRoutes = require("./routes/coorRoutes");
 const dtrRoutes = require("./routes/dtrRoutes");
 const resetRoutes = require("./routes/resetPasswordRoutes");
-const announceRoutes = require('./routes/announceRoutes')
+const announceRoutes = require("./routes/announceRoutes");
+const conversationRoute = require("./routes/conversationRoute");
+const messageRoute = require("./routes/messageRoute");
 const path = require("path");
 require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -24,7 +26,11 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://ojtrackingsystem.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://ojtrackingsystem.vercel.app",
+      "ws://localhost:8900",
+    ],
     credentials: true,
   })
 );
@@ -32,6 +38,10 @@ app.options("*", cors());
 app.use(morgan("dev"));
 // app.use("/auth", authroutes);
 // app.use("/auth", useRoutes);
+
+app.use("/api/v1/", conversationRoute);
+app.use("/api/v1/", messageRoute);
+
 app.use("/api/v1/announcement", announceRoutes);
 app.use("/api/v1/", resetRoutes);
 app.use("/api/v1/", adminRoutes);

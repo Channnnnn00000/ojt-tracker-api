@@ -18,6 +18,7 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getInternUsers
 );
+router.get("/hte", authMiddleware.verifyToken, adminController.getHteUsers);
 // Fetching the users
 router.get("/users", authMiddleware.verifyToken, adminController.getAllUsers);
 
@@ -118,11 +119,16 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getRequestList
 );
+router.get(
+  "/admin/request/:id",
+  authMiddleware.verifyToken,
+  adminController.getCoorRequestList
+);
 // Vacancy List
 router.get(
   "/admin/vacancy",
   authMiddleware.verifyToken,
-  adminController.getRequestListOfVacancy
+  adminController.getListOfVacancy
 );
 
 module.exports = router;

@@ -30,16 +30,18 @@ class InternService {
       } else {
         console.log("saving sessiong here");
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch){
+        if (!isMatch) {
           return {
-            message:'Wrong password. Please Try again'
-          }
+            message: "Wrong password. Please Try again",
+          };
         }
         intern.sessionCode = generateSessionCode();
         await intern.save();
 
         return {
-          token: isMatch ? jwtUtils.generateToken(user._id) : null,
+          token: isMatch
+            ? jwtUtils.generateToken(user._id, user.username)
+            : null,
           codeRestriction: intern.sessionCode,
         };
       }
@@ -47,7 +49,7 @@ class InternService {
 
     if (!user) return null;
     const isMatch = await bcrypt.compare(password, user.password);
-    return isMatch ? jwtUtils.generateToken(user._id) : null;
+    return isMatch ? jwtUtils.generateToken(user._id, user.username) : null;
   }
   async getInternInformation(id) {
     const userData = await User.findOne({ _id: id }).exec();
@@ -403,11 +405,11 @@ class InternService {
   }
   async changeInternPassword(userId, payload) {
     const userData = await User.findOne({ _id: userId });
-    const {oldpass, newpass} = payload;
+    const { oldpass, newpass } = payload;
 
     const isMatch = await bcrypt.compare(oldpass, userData.password);
     console.log(isMatch);
-    if(!isMatch) return null
+    if (!isMatch) return null;
 
     const hashedPassword = await bcrypt.hash(newpass, 12);
     const passwordUpdated = await User.updateOne(
@@ -419,6 +421,9 @@ class InternService {
       }
     );
     return passwordUpdated;
+  }
+  async getHteInformation(hteId) {
+    return await HTE.findOne({ _id: hteId });
   }
 }
 
