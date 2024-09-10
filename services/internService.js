@@ -85,7 +85,7 @@ class InternService {
           DateApplied: element.createdAt,
           jobTitle: jobInfo.title,
           status: element.status,
-          company: hteInfo.name,
+          company: hteInfo.fullName,
         };
         return applicationObj;
       })

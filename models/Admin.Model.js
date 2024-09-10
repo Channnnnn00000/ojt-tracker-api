@@ -9,21 +9,12 @@ const adminSchema = new mongoose.Schema({
   //   type: String,
   //   required: true,
   // },
-  firstname: {
+  fullName: {
     type: String,
     required: true,
     default: "Admin",
   },
-  middlename: {
-    type: String,
-    required: true,
-    default: "Admin",
-  },
-  lastname: {
-    type: String,
-    required: true,
-    default: "Admin",
-  },
+
   // sex: {
   //   type: String,
   //   required: true,

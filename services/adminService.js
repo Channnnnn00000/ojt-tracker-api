@@ -52,9 +52,7 @@ class AdminService {
     }
 
     const profileAdmin = new Admin({
-      firstname: payload.firstname,
-      middlename: payload.middlename,
-      lastname: payload.lastname,
+      fullName: payload.fullName,
     });
 
     await profileAdmin.save();
@@ -88,7 +86,7 @@ class AdminService {
     }
 
     const profile = new HTE({
-      name: payload.name,
+      fullName: payload.fullName,
       contactNumber: payload.contactNumber,
       address: payload.address,
       location: payload.mapLocation,
