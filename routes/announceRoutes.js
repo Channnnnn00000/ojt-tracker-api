@@ -9,6 +9,11 @@ router.post(
   authMiddleware.verifyToken,
   announcementController.addAnnouncement
 );
+router.patch(
+  "/announcement/update/:id",
+  authMiddleware.verifyToken,
+  announcementController.updateAnnouncement
+);
 router.get(
   "/view",
   authMiddleware.verifyToken,
