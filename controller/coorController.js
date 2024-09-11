@@ -153,6 +153,21 @@ class CoorController {
       });
     }
   }
+  async updateMoa(req, res) {
+
+    try {
+      const responseData = await coorService.updateMOA(req.params.id,req.file);
+
+      return res.status(201).json({
+        status: "fetchCoorEvaluation success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new CoorController();

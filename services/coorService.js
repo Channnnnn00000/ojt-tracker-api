@@ -116,6 +116,21 @@ class CoorService {
     const evaluationData = await Evaluation.find({ department: coorData.department }).exec();
     return evaluationData
   }
+  async updateMOA(hteId,payload) {
+    console.log(payload);
+    console.log(hteId);
+    
+    
+    const updateMOA = await HTE.updateOne(
+      { _id: hteId },
+      {
+        $set: {     
+           moaAttachement: "http://localhost:4000/img/" + payload.filename,
+          hasMoa: payload.filename, },
+      }
+    );
+    return updateMOA;
+  }
 }
 
 module.exports = new CoorService();

@@ -292,8 +292,8 @@ class InternService {
     const updatedDTR = await DailyTimeRecord.findOne({ _id: dtrData._id });
     console.log(updatedDTR);
 
-    (updatedDTR.timeOut = payload.timeOut),
-      (updatedDTR.timeOutLocation = payload.timeOutLocation),
+    updatedDTR.timeOut = payload.timeOut
+      updatedDTR.timeOutLocation = payload.timeOutLocation
       await updatedDTR.save();
     console.log(updatedDTR.totalHours);
     if (updatedDTR.totalHours > 8) {
@@ -309,7 +309,16 @@ class InternService {
         },
       }
     );
-
+    if(internProfile.requiredHours >= internProfile.workedHours) {
+      await Intern.updateOne(
+        { _id: profileData.profile },
+        {
+          $set: {
+            isEvaluationReady: true,
+          },
+        }
+      );
+    }
     console.log(updatedDTR);
     return updatedDTR;
   }
