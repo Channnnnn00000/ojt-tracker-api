@@ -314,7 +314,7 @@ class InternService {
         { _id: profileData.profile },
         {
           $set: {
-            isEvaluationReady: true,
+            isEvaluationReady: 'Ready',
           },
         }
       );

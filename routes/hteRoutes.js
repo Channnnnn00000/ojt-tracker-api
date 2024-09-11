@@ -117,5 +117,15 @@ router.patch(
   authMiddleware.verifyToken,
   hteController.changePassword
 );
+router.get(
+  "/info/:id",
+  authMiddleware.verifyToken,
+  hteController.getInternsData
+);
+router.post(
+  "/evaluation/:id",
+  authMiddleware.verifyToken,
+  hteController.postEvaluation
+);
 
 module.exports = router;

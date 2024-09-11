@@ -18,9 +18,6 @@ const EvaluationSchema = new mongoose.Schema({
   internName: {
     type: String,
   },
-  hostTrainingEstablishment: {
-    type: String,
-  },
   address: {
     type: String,
   },
@@ -33,7 +30,10 @@ const EvaluationSchema = new mongoose.Schema({
   position: {
     type: String,
   },
-  trainingPeriod: {
+  startDate: {
+    type: String,
+  },
+  endDate: {
     type: String,
   },
   numberOfHoursRendered: {
@@ -99,13 +99,17 @@ const EvaluationSchema = new mongoose.Schema({
   Q20: {
     type: Number,
   },
+  totalScore: {
+    type: Number
+  },
+  
+  verbalInterpretation: {
+    type: String
+  },
+
   comment: {
     type: String,
   },
-
-
-
-
 
   createdAt: {
     type: String,

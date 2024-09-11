@@ -335,9 +335,7 @@ class HteController {
   async postEvaluation(req, res) {
     try {
       const responseData = await hteService.submitEvaluation(
-        req.user.userId,
-        req.params.id,
-        req.body
+        req.params.id,req.body
       );
       return res.status(201).json({
         status: "postEvaluation success",
@@ -393,6 +391,19 @@ class HteController {
         }
       return res.status(201).json(response);
 
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+  async getInternsData(req, res) {
+    try {
+      const response = await hteService.getInternsData(
+        req.params.id,
+      
+      );
+      return res.status(201).json(response);
     } catch (error) {
       res.status(500).json({
         message: error.message,

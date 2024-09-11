@@ -64,8 +64,9 @@ const internSchema = new mongoose.Schema({
     },
   ],
   isEvaluationReady: {
-    type: Boolean,
-    default: false,
+        type: String,
+    enum: ["Not Ready", "Ready", "Finished"],
+    default:'Not Ready'
   },
 
   acceptedInternship: {
