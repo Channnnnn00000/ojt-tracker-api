@@ -243,6 +243,8 @@ class HTEService {
     const profileData = await HTE.findOne(userData.profile);
 
     let today = new Date().toLocaleDateString();
+    // const phDateToday = moment.utc(today).tz("Asia/Manila")
+    // .format("h:mm:ss A");
     const getOnlineIntern = await DailyTimeRecord.find({
       companyId: profileData._id,
       date: today,
@@ -329,19 +331,21 @@ class HTEService {
         },
       }
     );
+    const applicationDataUpdated = await InternApplication.updateOne(
+      { internId: internId, status:'Accepted' },
+      {
+        $set: {
+          status: 'Finished',
+        },
+      }
+    );
+    console.log(applicationDataUpdated)
     console.log(userDataUpdated)
     return newEvaluation;
   }
-  async getHteEvalation (userId) {
-    const userData = await User.findOne({ _id: userId }).exec();
-    const hteData = await HTE.findOne({ _id: userData.profile.toString() }).exec();
-    if(!hteData){
-      return{
-        message: "No Available Data"
-      }
-    }
-    const evaluationData = await Evaluation.find({ hteId: hteData }).exec();
-    return evaluationData
+  async getHteEvaluationItem (internId) {
+    return await Evaluation.findOne({ internId:internId }).exec();
+ 
   }
   async updateHTEInformation(userId, payload) {
     console.log(userId);

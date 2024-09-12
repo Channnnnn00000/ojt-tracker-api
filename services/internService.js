@@ -72,6 +72,7 @@ class InternService {
     const applicationInfo = await InternApplication.find({
       internId: userInfo.profile,
     });
+
     const results = await Promise.all(
       applicationInfo.map(async (element) => {
         const jobInfo = await InternVacancy.findOne({

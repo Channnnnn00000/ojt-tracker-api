@@ -35,8 +35,8 @@ const internSchema = new mongoose.Schema({
   },
   currentLocation: {
     type: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true },
+      lat: { type: Number,  },
+      lng: { type: Number, },
     },
     default: null,
   },

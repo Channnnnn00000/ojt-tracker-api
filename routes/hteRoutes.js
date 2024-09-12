@@ -128,4 +128,9 @@ router.post(
   hteController.postEvaluation
 );
 
+router.get('/view/evaluation/:id',
+  authMiddleware.verifyToken,
+  hteController.getHteEvaluation
+)
+
 module.exports = router;

@@ -130,5 +130,10 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getListOfVacancy
 );
+router.get(
+  "/admin/evaluation/:id",
+  authMiddleware.verifyToken,
+  adminController.getListOfEvaluated
+);
 
 module.exports = router;

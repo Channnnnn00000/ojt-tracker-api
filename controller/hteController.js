@@ -349,10 +349,10 @@ class HteController {
   }
   async getHteEvaluation(req, res) {
     try {
-      const responseData = await hteService.getHteEvalation( req.user.userId );
+      const responseData = await hteService.getHteEvaluationItem(req.params.id);
 
       return res.status(201).json({
-        status: "fetchHteEvaluation success",
+        status: "fetch HteEvaluation success",
         content: responseData,
       });
     } catch (error) {

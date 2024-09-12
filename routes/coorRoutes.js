@@ -64,9 +64,9 @@ router.patch(
   coorController.doneRequest
 );
 router.get(
-  "/getCoorEvaluation",
+  "/evaluation",
   authMiddleware.verifyToken,
-  coorController.getCoorEvaluation
+  coorController.getInternEvaluation
 )
 
 module.exports = router;

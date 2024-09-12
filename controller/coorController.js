@@ -168,6 +168,21 @@ class CoorController {
       });
     }
   }
+  async getInternEvaluation(req, res) {
+
+    try {
+      const responseData = await coorService.getInternsEvaluated(req.user.userId);
+
+      return res.status(201).json({
+        status: "Fetch Intern Evaluation Success",
+        content: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new CoorController();

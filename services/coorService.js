@@ -131,6 +131,12 @@ class CoorService {
     );
     return updateMOA;
   }
+  async getInternsEvaluated(coorId) {
+    const coorData = await User.findOne({_id:coorId}).populate('profile').exec()
+    const internEvaluation = await Evaluation.find({department: coorData.profile.department})
+
+    return internEvaluation;
+  }
 }
 
 module.exports = new CoorService();

@@ -90,7 +90,7 @@ class AdminService {
       contactNumber: payload.contactNumber,
       address: payload.address,
       location: payload.mapLocation,
-      hasMoa: payload.hasMoa,
+      // hasMoa: payload.hasMoa,
     });
     await profile.save();
 
@@ -440,6 +440,9 @@ class AdminService {
   // Fetching Listing of HTE
   async getListOfVacancy() {
     return await InternVacancy.find().exec();
+  }
+  async getInternsEvaluated(internId) {
+    return await Evaluation.findOne({internId: internId}) 
   }
 }
 

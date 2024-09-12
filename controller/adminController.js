@@ -529,6 +529,19 @@ class AdminController {
       });
     }
   }
+  async getListOfEvaluated(req, res) {
+    try {
+      const data = await adminService.getInternsEvaluated(req.params.id);
+      res.status(201).json({
+        message: "Success!",
+        content: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 
   // #endregion
 }

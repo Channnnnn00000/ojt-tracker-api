@@ -10,9 +10,6 @@ class InternController {
         password,
         sessionCode
       );
-      console.log("====================================");
-      console.log(token);
-      console.log("====================================");
       if (!token)
         return res.status(401).json({ message: "Invalid credentials" });
       if (token.message) {
@@ -21,9 +18,6 @@ class InternController {
         });
       }
       if (token.token) {
-        console.log("====================================");
-        console.log(token.token);
-        console.log("====================================");
         res.cookie("jwt", token.token, {
           httpOnly: true,
           secure: true,
@@ -67,7 +61,6 @@ class InternController {
   }
   async getVacancy(req, res) {
     try {
-      // const listOfVacancy = await internService.getVacancy(req.user.userId);
       const listOfVacancy = await internService.getVacancy();
       res.status(201).json({
         message: "Success!",
