@@ -310,7 +310,7 @@ class InternService {
         },
       }
     );
-    if(internProfile.requiredHours >= internProfile.workedHours) {
+    if(internProfile.workedHours >= internProfile.requiredHours) {
       await Intern.updateOne(
         { _id: profileData.profile },
         {
