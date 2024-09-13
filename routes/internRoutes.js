@@ -110,5 +110,10 @@ router.get(
   authMiddleware.verifyToken,
   internController.getHteInformation
 );
+router.get(
+  "/results/evaluation",
+  authMiddleware.verifyToken,
+  internController.getEvaluationResults
+);
 
 module.exports = router;

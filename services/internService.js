@@ -435,6 +435,13 @@ class InternService {
   async getHteInformation(hteId) {
     return await HTE.findOne({ _id: hteId });
   }
+  async getEvaluationResults(userId) {
+    const userData = await User.findOne({_id: userId})
+    const evalResults =  await Evaluation.findOne({ internId: userData.profile });
+    console.log(evalResults);
+    return evalResults;
+    
+  }
 }
 
 module.exports = new InternService();
