@@ -125,7 +125,8 @@ class CoorService {
       { _id: hteId },
       {
         $set: {     
-           moaAttachement: "http://localhost:4000/img/" + payload.filename,
+           moaAttachement: "https://ojt-tracker-api.onrender.com/img/" + payload.filename,
+          //  moaAttachement: "http://localhost:4000/img/" + payload.filename,
           hasMoa: payload.filename, },
       }
     );

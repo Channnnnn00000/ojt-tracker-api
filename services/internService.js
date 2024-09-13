@@ -127,33 +127,50 @@ class InternService {
         resumeFile: payload[0].filename,
 
         parentConsentPath: payload[1]?.filename
-          ? `http://localhost:4000/img/${payload[1].filename}`
+          ? `https://ojt-tracker-api.onrender.com/img/${payload[1].filename}`
           : null,
+        // parentConsentPath: payload[1]?.filename
+        //   ? `http://localhost:4000/img/${payload[1].filename}`
+        //   : null,
         parentConsentFile: payload[1]?.filename || null,
 
         internEndorsementPath: payload[2]?.filename
-          ? `http://localhost:4000/img/${payload[2].filename}`
-          : null,
+          ? `https://ojt-tracker-api.onrender.com/img/${payload[2].filename}` : null,
+        // internEndorsementPath: payload[2]?.filename
+        //   ? `http://localhost:4000/img/${payload[2].filename}` : null,
         internEndorsementFile: payload[2]?.filename || null,
 
         moaPath: payload[3]?.filename
-          ? `http://localhost:4000/img/${payload[3].filename}`
+          ? `https://ojt-tracker-api.onrender.com/img/${payload[3].filename}`
           : null,
+        // moaPath: payload[3]?.filename
+        //   ? `http://localhost:4000/img/${payload[3].filename}`
+        //   : null,
         moaFile: payload[3]?.filename || null,
 
         firstEndorsementFormPath: payload[4]?.filename
-          ? `http://localhost:4000/img/${payload[4].filename}`
+          ? `https://ojt-tracker-api.onrender.com/img/${payload[4].filename}`
           : null,
+        // firstEndorsementFormPath: payload[4]?.filename
+        //   ? `http://localhost:4000/img/${payload[4].filename}`
+        //   : null,
         firstEndorsementFormFile: payload[4]?.filename || null,
 
         certificationFormPath: payload[5]?.filename
-          ? `http://localhost:4000/img/${payload[5].filename}`
+          ? `https://ojt-tracker-api.onrender.com/img/${payload[5].filename}`
           : null,
+        // certificationFormPath: payload[5]?.filename
+        //   ? `http://localhost:4000/img/${payload[5].filename}`
+        //   : null,
         certificationFormFile: payload[5]?.filename || null,
 
         internshipAgreementPath: payload[6]?.filename
-          ? `http://localhost:4000/img/${payload[6].filename}`
+          ? `https://ojt-tracker-api.onrender.com/img/${payload[6].filename}`
           : null,
+
+        // internshipAgreementPath: payload[6]?.filename
+        //   ? `http://localhost:4000/img/${payload[6].filename}`
+        //   : null,
         internshipAgreementFile: payload[6]?.filename || null,
       });
       await newApplication.save();
@@ -169,7 +186,8 @@ class InternService {
         hteId: vacancyData.hte,
         internId: userData.profile,
         internVacancy: jobId,
-        resumePath: "http://localhost:4000/img/" + payload[0].filename,
+        resumePath: "https://ojt-tracker-api.onrender.com/img/" + payload[0].filename,
+        // resumePath: "http://localhost:4000/img/" + payload[0].filename,
         resumeFile: payload[0].filename,
       });
       await newApplication.save();
