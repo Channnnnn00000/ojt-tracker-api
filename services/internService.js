@@ -286,7 +286,7 @@ class InternService {
     await newTimeIn.save();
     await Intern.updateOne(
       { _id: profileData.profile },
-      { $set: { isClockIn: true } }
+      { $set: { isClockIn: true,currentLocation:payload.timeInLocation } }
     );
     internProfile.dailyTimeRecords.push(newTimeIn._id);
     await internProfile.save();
