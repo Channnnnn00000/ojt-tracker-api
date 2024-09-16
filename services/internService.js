@@ -123,7 +123,10 @@ class InternService {
         internId: userData.profile,
         internVacancy: jobId,
 
-        resumePath: "http://localhost:4000/img/" + payload[0].filename,
+        // resumePath: "http://localhost:4000/img/" + payload[0].filename,
+        resumePath: payload[0]?.filename
+        ? `https://ojt-tracker-api.onrender.com/img/${payload[0].filename}`
+        : null,
         resumeFile: payload[0].filename,
 
         parentConsentPath: payload[1]?.filename
@@ -255,13 +258,6 @@ class InternService {
 
   async timeIn(userId, payload) {
     const profileData = await User.findOne({ _id: userId });
-
-    // const existingRecord = await DailyTimeRecord.findOne({
-    //   internId: profileData.profile,
-    //   date: payload.date,
-    // });
-    // console.log(existingRecord);
-    // console.log(profileData.profile);
     const internProfile = await Intern.findOne(profileData.profile);
     const applicationInfo = await InternApplication.findOne(
       internProfile.acceptedInternship
@@ -328,15 +324,18 @@ class InternService {
         },
       }
     );
-    if(internProfile.workedHours >= internProfile.requiredHours) {
-      await Intern.updateOne(
-        { _id: profileData.profile },
+    const internData = await Intern.findOne(profileData.profile);
+    if(internData.workedHours >= internData.requiredHours) {
+      const updated = await Intern.updateOne(
+        { _id: profileData.profile.toString() },
         {
           $set: {
-            isEvaluationReady: 'Ready',
+            isEvaluationReady:'Ready',
           },
         }
       );
+
+      
     }
     console.log(updatedDTR);
     return updatedDTR;
@@ -424,8 +423,17 @@ class InternService {
       { _id: userData.profile.toString() },
       {
         $set: {
+          firstName: payload.firstName,
+          middleInitial: payload.middleInitial,
+          lastName: payload.lastName,
           contact: payload.contact,
-          address: payload.address,
+          age: payload.age,
+          birthday: payload.birthday,
+          street: payload.street,
+          brgy: payload.brgy,
+          municipality: payload.municipality,
+          province: payload.province,
+          zipcode: payload.zipcode,
         },
       }
     );

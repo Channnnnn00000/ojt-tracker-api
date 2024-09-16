@@ -79,7 +79,7 @@ class HTEService {
           internId: element.internId,
           hteId: element.hteId,
           title: jobInfo.title,
-          name: internInfo.fullName,
+          name: internInfo.firstName + " " + internInfo.lastName,
           department: internInfo.department,
           status: element.status,
           remarks: element.remarks,
@@ -124,7 +124,7 @@ class HTEService {
         const applicantsObj = {
           internId: element.internId._id,
           applicationId: element._id.toString(),
-          fullName: element.internId.fullName,
+          fullName: `${element.internId.firstName} ${element.internId.lastName}`,
           department: element.internId.department,
           appliedInternships: element.internId.appliedInternships,
           jobTitle: element.internVacancy.title,
@@ -221,7 +221,7 @@ class HTEService {
           applicationId: element.applicationId,
           hteId: element.hteId,
           internId: element.internId,
-          name: internData.fullName,
+          name: internData.firstName + " " + internData.lastName,
           department: internData.department,
           workedHours: Math.trunc(internData.workedHours),
           isClockIn: internData.isClockIn,
@@ -263,7 +263,8 @@ class HTEService {
           .format("h:mm:ss A");
 
         const onlineObj = {
-          name: internInfo.fullName,
+          internId: internInfo._id,
+          name: internInfo.firstName + internInfo.lastName,
           timeIn: phtDateTimeIn,
           timeInLocation: element.timeInLocation,
           currentLocation: internInfo.currentLocation,

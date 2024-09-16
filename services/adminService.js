@@ -13,6 +13,7 @@ const Evaluation = require("../models/Evaluation.Model");
 const Application = require("../models/InternApplication.Model.js");
 const VisitRequest = require("../models/VisitRequest.Model.js");
 const Conversation = require("../models/Conversation.js");
+const sendEmail = require("../utils/email/sendEmail");
 
 class AdminService {
   // Authentication
@@ -130,6 +131,17 @@ class AdminService {
     await newUser.save();
   }
   async registerIntern(payload) {
+   await sendEmail(
+      payload.email,
+      "Internship Credentials",
+      {
+        fullName:payload.fullName,
+        username: payload.username,
+        password: payload.password,
+      },
+      "./template/userCredentials.handlebars"
+    );
+
     console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
@@ -153,10 +165,10 @@ class AdminService {
       await getCurrentUser.save();
     }
     const internProfile = new Intern({
-      fullName: payload.fullName,
+      // fullName: payload.fullName,
       department: payload.department,
-      contact: payload.contact,
-      address: payload.address,
+      // contact: payload.contact,
+      // address: payload.address,
     });
     await internProfile.save();
 

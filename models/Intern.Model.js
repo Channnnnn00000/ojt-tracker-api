@@ -1,21 +1,63 @@
 const mongoose = require("mongoose");
 
 const internSchema = new mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true,
-  },
+
   department: {
     type: String,
     required: true,
   },
+  firstName: {
+    type: String,
+    default: null,
+  },
+  middleInitial: {
+    type: String,
+    default: null,
+  },
+  lastName: {
+    type: String,
+    
+    default: null,
+  },
   contact: {
     type: Number,
-    required: true,
+    
+    default: null,
   },
-  address: {
+  age: {
+    type: Number,
+    
+    default: null,
+  },
+  birthday: {
     type: String,
-    required: true,
+    
+    default: null,
+  },
+  street: {
+    type: String,
+    
+    default: null,
+  },
+  brgy: {
+    type: String,
+    
+    default: null,
+  },
+  municipality: {
+    type: String,
+    
+    default: null,
+  },
+  province: {
+    type: String,
+    
+    default: null,
+  },
+  zipcode: {
+    type: String,
+    
+    default: null,
   },
   workedHours: {
     type: Number,
@@ -74,67 +116,8 @@ const internSchema = new mongoose.Schema({
     ref: "Application",
   },
 
-  // approvedInternships: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "InternVacancy",
-  //   },
-  // ],
-  // acceptedInternships: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "InternVacancy",
-  //   },
-  // ],
+  
 
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   default: "intern",
-  // },
-  // age: {
-  //   type: Number,
-  //   required: true,
-  //   default: 20,
-  // },
-
-  // sex: {
-  //   type: String,
-  //   required: true,
-  //   default: "Male",
-  // },
-
-  // birthday: {
-  //   type: String,
-  //   required: true,
-  //   default: "intern",
-  // },
-  // contactNumber: {
-  //   type: Number,
-  //   required: true,
-  //   default: 12345,
-  // },
-  // province: {
-  //   type: String,
-  //   required: true,
-  //   default: "intern",
-  // },
-  // municipality: {
-  //   type: String,
-  //   required: true,
-  //   default: "intern",
-  // },
-  // province: {
-  //   type: String,
-  //   required: true,
-  //   default: "intern",
-  // },
-  // applicationList: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Application",
-  //   },
-  // ],
   createdAt: {
     type: String,
     default: getDateValue(),
