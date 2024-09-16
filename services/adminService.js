@@ -135,7 +135,7 @@ class AdminService {
       payload.email,
       "Internship Credentials",
       {
-        fullName:payload.fullName,
+        // fullName:payload.fullName,
         username: payload.username,
         password: payload.password,
       },
