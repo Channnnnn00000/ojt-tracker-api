@@ -406,9 +406,6 @@ class InternService {
     return await InternApplication.findOne({ _id: applicationId });
   }
   async updateInternInformation(userId, payload) {
-    console.log(userId);
-    console.log(payload);
-
     const userData = await User.findOne({ _id: userId });
     const userDataUpdated = await User.updateOne(
       { _id: userId },
@@ -434,10 +431,10 @@ class InternService {
           municipality: payload.municipality,
           province: payload.province,
           zipcode: payload.zipcode,
+          isProfileComplete:true
         },
       }
     );
-    console.log(internData);
   }
   async changeInternPassword(userId, payload) {
     const userData = await User.findOne({ _id: userId });

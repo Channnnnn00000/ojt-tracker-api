@@ -67,6 +67,10 @@ const internSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  isProfileComplete: {
+    type:Boolean,
+    default: false
+  },
   isInternshipReady: {
     type: Boolean,
     default: false,
