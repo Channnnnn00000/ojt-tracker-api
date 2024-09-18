@@ -20,7 +20,7 @@ class InternController {
       if (token.token) {
         res.cookie("jwt", token.token, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           sameSite: "none",
         });
         return res.status(201).json({
@@ -31,7 +31,7 @@ class InternController {
 
       res.cookie("jwt", token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: "none",
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
