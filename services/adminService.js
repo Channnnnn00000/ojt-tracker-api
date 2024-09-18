@@ -166,6 +166,8 @@ class AdminService {
     }
     const internProfile = new Intern({
       // fullName: payload.fullName,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
       department: payload.department,
       // contact: payload.contact,
       // address: payload.address,
