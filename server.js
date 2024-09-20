@@ -14,6 +14,7 @@ const conversationRoute = require("./routes/conversationRoute");
 const messageRoute = require("./routes/messageRoute");
 const path = require("path");
 require("./config/database");
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 app.use(cookieParser());

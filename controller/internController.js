@@ -22,6 +22,7 @@ class InternController {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          path: '/',
         });
         return res.status(201).json({
           message: "Login Success",
@@ -33,6 +34,7 @@ class InternController {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        path: '/',
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
       return res.status(201).json({
