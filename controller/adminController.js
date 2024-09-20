@@ -100,10 +100,17 @@ class AdminController {
   async getAllUsers(req, res) {
     try {
       const listOfUsers = await adminService.getAllUsers();
-      if (listOfUsers.length === 0) {
+      const responseArray = listOfUsers.map(obj => {
+        // Create a shallow copy of the object excluding 'age'
+        const { age, ...rest } = obj;
+        return rest;
+      });
+    
+
+      if (responseArray.length === 0) {
         return res.status(201).json({
           message: "Request Success!",
-          content: listOfUsers,
+          content: 'No content',
         });
       }
       return res.status(201).json({

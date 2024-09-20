@@ -9,8 +9,24 @@ const hteSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  address: {
+  street: {
     type: String,
+    
+    default: null,
+  },
+  brgy: {
+    type: String,
+    
+    default: null,
+  },
+  municipality: {
+    type: String,
+    
+    default: null,
+  },
+  province: {
+    type: String,
+    
     default: null,
   },
   location: {

@@ -20,7 +20,7 @@ const internSchema = new mongoose.Schema({
     default: null,
   },
   contact: {
-    type: Number,
+    type: String,
     
     default: null,
   },
@@ -54,11 +54,7 @@ const internSchema = new mongoose.Schema({
     
     default: null,
   },
-  zipcode: {
-    type: String,
-    
-    default: null,
-  },
+
   workedHours: {
     type: Number,
     default: 0,

@@ -122,9 +122,15 @@ class AdminService {
     }
 
     const newCoor = new Coordinator({
-      fullName: payload.fullName,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
       contact: payload.contactNumber,
       department: payload.department,
+      street: payload.street,
+      brgy: payload.brgy,
+      municipality: payload.municipality,
+      province: payload.province,
+
     });
     await newCoor.save();
     newUser.profile = newCoor._id;
@@ -141,8 +147,6 @@ class AdminService {
       },
       "./template/userCredentials.handlebars"
     );
-
-    console.log(payload.password);
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
       username: payload.username,
@@ -165,10 +169,10 @@ class AdminService {
       await getCurrentUser.save();
     }
     const internProfile = new Intern({
-      // fullName: payload.fullName,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
       department: payload.department,
-      // contact: payload.contact,
-      // address: payload.address,
+
     });
     await internProfile.save();
 
@@ -179,7 +183,9 @@ class AdminService {
   //Viewing the users
 
   async getAllUsers() {
-    return await User.find().populate("profile").exec();
+    const response =  await User.find().populate("profile").exec()
+    return response;
+
   }
 
   async getAdmin() {
@@ -283,9 +289,14 @@ class AdminService {
         { _id: userData.profile.toString() },
         {
           $set: {
-            fullName: payload.fullname,
-            contact: payload.contact,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            contact: payload.contactNumber,
             department: payload.department,
+            street: payload.street,
+            brgy: payload.brgy,
+            municipality: payload.municipality,
+            province: payload.province,
           },
         }
       );
@@ -326,9 +337,15 @@ class AdminService {
         { _id: userData.profile.toString() },
         {
           $set: {
-            fullName: payload.name,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
             contact: payload.contact,
-            requiredHours: payload.requiredHours,
+            province: payload.province,
+            municipality: payload.municipality,
+            brgy: payload.brgy,
+            street: payload.street,
+            middleInitial: payload.middleInitial,
+            // requiredHours: updateInfo.requiredHours,
             department: payload.department,
           },
         }

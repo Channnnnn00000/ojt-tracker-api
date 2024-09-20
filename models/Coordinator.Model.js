@@ -2,9 +2,14 @@ const mongoose = require("mongoose");
 
 const coordinatorSchema = new mongoose.Schema({
 
-  fullName: {
+  firstName: {
     type: String,
-    required: true,
+    default: null,
+  },
+  lastName: {
+    type: String,
+    
+    default: null,
   },
   contact: {
     type: Number,
@@ -13,6 +18,26 @@ const coordinatorSchema = new mongoose.Schema({
   department: {
     type: String,
     required: true,
+  },
+  street: {
+    type: String,
+    
+    default: null,
+  },
+  brgy: {
+    type: String,
+    
+    default: null,
+  },
+  municipality: {
+    type: String,
+    
+    default: null,
+  },
+  province: {
+    type: String,
+    
+    default: null,
   },
   requestList: [
     {
