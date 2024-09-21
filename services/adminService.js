@@ -88,8 +88,11 @@ class AdminService {
 
     const profile = new HTE({
       fullName: payload.fullName,
-      contactNumber: payload.contactNumber,
-      address: payload.address,
+      contactNumber: payload.contact,
+      street: payload.street,
+      brgy: payload.brgy,
+      municipality: payload.municipality,
+      province: payload.province,
       location: payload.mapLocation,
       // hasMoa: payload.hasMoa,
     });
