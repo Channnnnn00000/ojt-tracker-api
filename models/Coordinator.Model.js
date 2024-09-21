@@ -8,7 +8,6 @@ const coordinatorSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    
     default: null,
   },
   contact: {
@@ -17,11 +16,10 @@ const coordinatorSchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: true,
+
   },
   street: {
     type: String,
-    
     default: null,
   },
   brgy: {
