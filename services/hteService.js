@@ -321,32 +321,30 @@ class HTEService {
     return rejectResult;
   }
   async submitEvaluation(internId, payload) {
-
     const newEvaluation = new Evaluation(payload);
     await newEvaluation.save();
     const userDataUpdated = await Intern.updateOne(
       { _id: internId },
       {
         $set: {
-          isEvaluationReady: 'Finished',
+          isEvaluationReady: "Finished",
         },
       }
     );
     const applicationDataUpdated = await InternApplication.updateOne(
-      { internId: internId, status:'Accepted' },
+      { internId: internId, status: "Accepted" },
       {
         $set: {
-          status: 'Finished',
+          status: "Finished",
         },
       }
     );
-    console.log(applicationDataUpdated)
-    console.log(userDataUpdated)
+    console.log(applicationDataUpdated);
+    console.log(userDataUpdated);
     return newEvaluation;
   }
-  async getHteEvaluationItem (internId) {
-    return await Evaluation.findOne({ internId:internId }).exec();
- 
+  async getHteEvaluationItem(internId) {
+    return await Evaluation.findOne({ internId: internId }).exec();
   }
   async updateHTEInformation(userId, payload) {
     console.log(userId);
@@ -368,7 +366,7 @@ class HTEService {
         $set: {
           contact: payload.contact,
           address: payload.address,
-          location: payload.location
+          location: payload.location,
         },
       }
     );
@@ -376,11 +374,11 @@ class HTEService {
   }
   async changeHtePassword(userId, payload) {
     const userData = await User.findOne({ _id: userId });
-    const {oldpass, newpass} = payload;
+    const { oldpass, newpass } = payload;
 
     const isMatch = await bcrypt.compare(oldpass, userData.password);
     console.log(isMatch);
-    if(!isMatch) return null
+    if (!isMatch) return null;
 
     const hashedPassword = await bcrypt.hash(newpass, 12);
     const passwordUpdated = await User.updateOne(
@@ -394,8 +392,10 @@ class HTEService {
     return passwordUpdated;
   }
   async getInternsData(id) {
-    return await Intern.findOne({_id:id }).populate('dailyTimeRecords')
+    return await Intern.findOne({ _id: id }).populate("dailyTimeRecords");
   }
+  // Trigger when the intern not clock out
+  async updateTimeOutData() {}
 }
 
 module.exports = new HTEService();

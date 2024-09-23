@@ -105,36 +105,44 @@ class CoorService {
     );
     return doneRequest;
   }
-  async getCoorEvalation (userId) {
+  async getCoorEvalation(userId) {
     const userData = await User.findOne({ _id: userId }).exec();
-    const coorData = await Coor.findOne({ _id: userData.profile.toString() }).exec();
-    if(!coorData){
-      return{
-        message: "No Available Data"
-      }
+    const coorData = await Coor.findOne({
+      _id: userData.profile.toString(),
+    }).exec();
+    if (!coorData) {
+      return {
+        message: "No Available Data",
+      };
     }
-    const evaluationData = await Evaluation.find({ department: coorData.department }).exec();
-    return evaluationData
+    const evaluationData = await Evaluation.find({
+      department: coorData.department,
+    }).exec();
+    return evaluationData;
   }
-  async updateMOA(hteId,payload) {
+  async updateMOA(hteId, payload) {
     console.log(payload);
     console.log(hteId);
-    
-    
+
     const updateMOA = await HTE.updateOne(
       { _id: hteId },
       {
-        $set: {     
-           moaAttachement: "https://ojt-tracker-api.onrender.com/img/" + payload.filename,
+        $set: {
+          moaAttachement: "https://ojttracker.site/img/" + payload.filename,
           //  moaAttachement: "http://localhost:4000/img/" + payload.filename,
-          hasMoa: payload.filename, },
+          hasMoa: payload.filename,
+        },
       }
     );
     return updateMOA;
   }
   async getInternsEvaluated(coorId) {
-    const coorData = await User.findOne({_id:coorId}).populate('profile').exec()
-    const internEvaluation = await Evaluation.find({department: coorData.profile.department})
+    const coorData = await User.findOne({ _id: coorId })
+      .populate("profile")
+      .exec();
+    const internEvaluation = await Evaluation.find({
+      department: coorData.profile.department,
+    });
 
     return internEvaluation;
   }

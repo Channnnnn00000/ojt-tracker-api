@@ -133,14 +133,13 @@ class AdminService {
       brgy: payload.brgy,
       municipality: payload.municipality,
       province: payload.province,
-
     });
     await newCoor.save();
     newUser.profile = newCoor._id;
     await newUser.save();
   }
   async registerIntern(payload) {
-   await sendEmail(
+    await sendEmail(
       payload.email,
       "Internship Credentials",
       {
@@ -176,7 +175,6 @@ class AdminService {
       firstName: payload.firstName,
       lastName: payload.lastName,
       department: payload.department,
-
     });
     await internProfile.save();
 
@@ -187,9 +185,8 @@ class AdminService {
   //Viewing the users
 
   async getAllUsers() {
-    const response =  await User.find().populate("profile").exec()
+    const response = await User.find().populate("profile").exec();
     return response;
-
   }
 
   async getAdmin() {
@@ -202,7 +199,7 @@ class AdminService {
     return await User.find({ role: "Coordinator" }).exec();
   }
   async getIntern() {
-    return await User.find({ role: "Intern" }).exec();
+    return await User.find({ role: "Intern" }).populate("profile").exec();
   }
 
   // Update Section
@@ -318,11 +315,13 @@ class AdminService {
         { _id: userData.profile.toString() },
         {
           $set: {
-            name: payload.name,
-            address: payload.address,
+            fullName: payload.name,
+            street: payload.street,
+            brgy: payload.brgy,
+            municipality: payload.municipality,
+            province: payload.province,
             contactNumber: payload.contactNumber,
             location: payload.location,
-            hasMoa: payload.hasMoa,
           },
         }
       );
@@ -406,9 +405,10 @@ class AdminService {
           .format("h:mm:ss A");
 
         const attendanceObj = {
+          dtrId: element._id,
           date: element.date,
           timeIn: phtDateTimeIn,
-          timeOut: phtDateTimeOut,
+          timeOut: phtDateTimeOut === null ? null : phtDateTimeOut,
         };
         return attendanceObj;
       })
@@ -475,7 +475,7 @@ class AdminService {
     return await InternVacancy.find().exec();
   }
   async getInternsEvaluated(internId) {
-    return await Evaluation.findOne({internId: internId}) 
+    return await Evaluation.findOne({ internId: internId });
   }
 }
 

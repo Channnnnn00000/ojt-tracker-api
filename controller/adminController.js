@@ -297,7 +297,7 @@ class AdminController {
     try {
       const data = await adminService.updateUserInfo(req.params.id, req.body);
       res.status(201).json({
-        message: "Success!",
+        message: "Update Success!",
         content: data,
       });
     } catch (error) {

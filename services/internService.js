@@ -125,12 +125,12 @@ class InternService {
 
         // resumePath: "http://localhost:4000/img/" + payload[0].filename,
         resumePath: payload[0]?.filename
-        ? `https://ojt-tracker-api.onrender.com/img/${payload[0].filename}`
-        : null,
+          ? `https://ojttracker.site/img/${payload[0].filename}`
+          : null,
         resumeFile: payload[0].filename,
 
         parentConsentPath: payload[1]?.filename
-          ? `https://ojt-tracker-api.onrender.com/img/${payload[1].filename}`
+          ? `https://ojttracker.site/img/${payload[1].filename}`
           : null,
         // parentConsentPath: payload[1]?.filename
         //   ? `http://localhost:4000/img/${payload[1].filename}`
@@ -138,13 +138,14 @@ class InternService {
         parentConsentFile: payload[1]?.filename || null,
 
         internEndorsementPath: payload[2]?.filename
-          ? `https://ojt-tracker-api.onrender.com/img/${payload[2].filename}` : null,
+          ? `https://ojttracker.site/img/${payload[2].filename}`
+          : null,
         // internEndorsementPath: payload[2]?.filename
         //   ? `http://localhost:4000/img/${payload[2].filename}` : null,
         internEndorsementFile: payload[2]?.filename || null,
 
         moaPath: payload[3]?.filename
-          ? `https://ojt-tracker-api.onrender.com/img/${payload[3].filename}`
+          ? `https://ojttracker.site/img/${payload[3].filename}`
           : null,
         // moaPath: payload[3]?.filename
         //   ? `http://localhost:4000/img/${payload[3].filename}`
@@ -152,7 +153,7 @@ class InternService {
         moaFile: payload[3]?.filename || null,
 
         firstEndorsementFormPath: payload[4]?.filename
-          ? `https://ojt-tracker-api.onrender.com/img/${payload[4].filename}`
+          ? `https://ojttracker.site/img/${payload[4].filename}`
           : null,
         // firstEndorsementFormPath: payload[4]?.filename
         //   ? `http://localhost:4000/img/${payload[4].filename}`
@@ -160,7 +161,7 @@ class InternService {
         firstEndorsementFormFile: payload[4]?.filename || null,
 
         certificationFormPath: payload[5]?.filename
-          ? `https://ojt-tracker-api.onrender.com/img/${payload[5].filename}`
+          ? `https://ojttracker.site/img/${payload[5].filename}`
           : null,
         // certificationFormPath: payload[5]?.filename
         //   ? `http://localhost:4000/img/${payload[5].filename}`
@@ -168,7 +169,7 @@ class InternService {
         certificationFormFile: payload[5]?.filename || null,
 
         internshipAgreementPath: payload[6]?.filename
-          ? `https://ojt-tracker-api.onrender.com/img/${payload[6].filename}`
+          ? `https://ojttracker.site/img/${payload[6].filename}`
           : null,
 
         // internshipAgreementPath: payload[6]?.filename
@@ -189,7 +190,7 @@ class InternService {
         hteId: vacancyData.hte,
         internId: userData.profile,
         internVacancy: jobId,
-        resumePath: "https://ojt-tracker-api.onrender.com/img/" + payload[0].filename,
+        resumePath: "https://ojttracker.site/img/" + payload[0].filename,
         // resumePath: "http://localhost:4000/img/" + payload[0].filename,
         resumeFile: payload[0].filename,
       });
@@ -286,7 +287,7 @@ class InternService {
     await newTimeIn.save();
     await Intern.updateOne(
       { _id: profileData.profile },
-      { $set: { isClockIn: true,currentLocation:payload.timeInLocation } }
+      { $set: { isClockIn: true, currentLocation: payload.timeInLocation } }
     );
     internProfile.dailyTimeRecords.push(newTimeIn._id);
     await internProfile.save();
@@ -307,9 +308,9 @@ class InternService {
     const updatedDTR = await DailyTimeRecord.findOne({ _id: dtrData._id });
     console.log(updatedDTR);
 
-    updatedDTR.timeOut = payload.timeOut
-      updatedDTR.timeOutLocation = payload.timeOutLocation
-      await updatedDTR.save();
+    updatedDTR.timeOut = payload.timeOut;
+    updatedDTR.timeOutLocation = payload.timeOutLocation;
+    await updatedDTR.save();
     console.log(updatedDTR.totalHours);
     if (updatedDTR.totalHours > 8) {
       updatedDTR.totalHours = 8;
@@ -325,17 +326,15 @@ class InternService {
       }
     );
     const internData = await Intern.findOne(profileData.profile);
-    if(internData.workedHours >= internData.requiredHours) {
+    if (internData.workedHours >= internData.requiredHours) {
       const updated = await Intern.updateOne(
         { _id: profileData.profile.toString() },
         {
           $set: {
-            isEvaluationReady:'Ready',
+            isEvaluationReady: "Ready",
           },
         }
       );
-
-      
     }
     console.log(updatedDTR);
     return updatedDTR;
@@ -376,7 +375,7 @@ class InternService {
         const attendanceObj = {
           date: element.date,
           timeIn: phtDateTimeIn,
-          timeOut: phtDateTimeOut,
+          timeOut: phtDateTimeOut === null ? null : phtDateTimeOut,
         };
         return attendanceObj;
       })
@@ -431,7 +430,7 @@ class InternService {
           municipality: payload.municipality,
           province: payload.province,
           zipcode: payload.zipcode,
-          isProfileComplete:true
+          isProfileComplete: true,
         },
       }
     );
@@ -459,11 +458,12 @@ class InternService {
     return await HTE.findOne({ _id: hteId });
   }
   async getEvaluationResults(userId) {
-    const userData = await User.findOne({_id: userId})
-    const evalResults =  await Evaluation.findOne({ internId: userData.profile });
+    const userData = await User.findOne({ _id: userId });
+    const evalResults = await Evaluation.findOne({
+      internId: userData.profile,
+    });
     console.log(evalResults);
     return evalResults;
-    
   }
 }
 

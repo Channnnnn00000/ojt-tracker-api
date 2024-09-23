@@ -11,12 +11,10 @@ const hteSchema = new mongoose.Schema({
   },
   street: {
     type: String,
-    
     default: null,
   },
   brgy: {
     type: String,
-    
     default: null,
   },
   municipality: {
