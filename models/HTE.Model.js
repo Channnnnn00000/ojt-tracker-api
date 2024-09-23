@@ -19,12 +19,10 @@ const hteSchema = new mongoose.Schema({
   },
   municipality: {
     type: String,
-    
     default: null,
   },
   province: {
     type: String,
-    
     default: null,
   },
   location: {
@@ -49,9 +47,9 @@ const hteSchema = new mongoose.Schema({
     },
   ],
   evaluationResults: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Evaluation",
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Evaluation",
+  },
   createdAt: {
     type: String,
     default: getDateValue(),

@@ -364,8 +364,12 @@ class HTEService {
       { _id: userData.profile.toString() },
       {
         $set: {
-          contact: payload.contact,
-          address: payload.address,
+          fullName: payload.name,
+          contactNumber: payload.contact,
+          province: payload.province,
+          municipality: payload.municipality,
+          brgy: payload.brgy,
+          street: payload.street,
           location: payload.location,
         },
       }
