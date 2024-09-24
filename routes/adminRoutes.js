@@ -135,5 +135,10 @@ router.get(
   authMiddleware.verifyToken,
   adminController.getListOfEvaluated
 );
+router.patch(
+  "/admin/update/info",
+  authMiddleware.verifyToken,
+  adminController.updateAdminInformation
+);
 
 module.exports = router;

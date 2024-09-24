@@ -1,62 +1,34 @@
 const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema({
-  // username: {
-  //   type: String,
-  //   required: true,
-  // },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
-  fullName: {
+  firstName: {
     type: String,
-    required: true,
-    default: "Admin",
+    default: null,
   },
-
-  // sex: {
-  //   type: String,
-  //   required: true,
-  //   default: "Male",
-  // },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   unique: true,
-  //   default: "Admin@admin.com",
-  // },
-  // birthday: {
-  //   type: String,
-  //   required: true,
-
-  //   default: "Admin",
-  // },
-  // contactNumber: {
-  //   type: Number,
-  //   required: true,
-  //   default: 12345,
-  // },
-  // province: {
-  //   type: String,
-  //   required: true,
-  //   default: "Admin",
-  // },
-  // city: {
-  //   type: String,
-  //   required: true,
-  //   default: "Admin",
-  // },
-  // brgy: {
-  //   type: String,
-  //   required: true,
-  //   default: "Admin",
-  // },
-  // street: {
-  //   type: String,
-  //   required: true,
-  //   default: "Admin",
-  // },
+  lastName: {
+    type: String,
+    default: null,
+  },
+  contact: {
+    type: Number,
+    default: null,
+  },
+  street: {
+    type: String,
+    default: null,
+  },
+  brgy: {
+    type: String,
+    default: null,
+  },
+  municipality: {
+    type: String,
+    default: null,
+  },
+  province: {
+    type: String,
+    default: null,
+  },
 
   createdAt: {
     type: String,

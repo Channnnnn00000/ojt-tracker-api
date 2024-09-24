@@ -100,17 +100,16 @@ class AdminController {
   async getAllUsers(req, res) {
     try {
       const listOfUsers = await adminService.getAllUsers();
-      const responseArray = listOfUsers.map(obj => {
+      const responseArray = listOfUsers.map((obj) => {
         // Create a shallow copy of the object excluding 'age'
         const { age, ...rest } = obj;
         return rest;
       });
-    
 
       if (responseArray.length === 0) {
         return res.status(201).json({
           message: "Request Success!",
-          content: 'No content',
+          content: "No content",
         });
       }
       return res.status(201).json({
@@ -297,7 +296,7 @@ class AdminController {
     try {
       const data = await adminService.updateUserInfo(req.params.id, req.body);
       res.status(201).json({
-        message: "Update Success!",
+        message: "Update User Success!",
         content: data,
       });
     } catch (error) {
@@ -551,6 +550,23 @@ class AdminController {
   }
 
   // #endregion
+
+  async updateAdminInformation(req, res) {
+    console.log(req.body);
+    console.log(req.params.id);
+    console.log(req.user.userId);
+    try {
+      const response = await adminService.updateAdminInformation(
+        req.user.userId,
+        req.body
+      );
+      return res.status(201).json(response);
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new AdminController();

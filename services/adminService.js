@@ -53,7 +53,8 @@ class AdminService {
     }
 
     const profileAdmin = new Admin({
-      fullName: payload.fullName,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
     });
 
     await profileAdmin.save();
@@ -355,6 +356,31 @@ class AdminService {
       );
       console.log(updatedProfile);
     }
+    if (userData.role === "Admin") {
+      const updatedUser = await User.updateOne(
+        { _id: id },
+        {
+          $set: { email: payload.email },
+        }
+      );
+      console.log(updatedUser);
+
+      const updatedProfile = await Admin.updateOne(
+        { _id: userData.profile.toString() },
+        {
+          $set: {
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            contact: payload.contact,
+            province: payload.province,
+            municipality: payload.municipality,
+            brgy: payload.brgy,
+            street: payload.street,
+          },
+        }
+      );
+      console.log(updatedProfile);
+    }
   }
 
   // fetching, adding, Department model to frontend
@@ -476,6 +502,33 @@ class AdminService {
   }
   async getInternsEvaluated(internId) {
     return await Evaluation.findOne({ internId: internId });
+  }
+  async updateAdminInformation(userId, payload) {
+    const userData = await User.findOne({ _id: userId });
+    const userDataUpdated = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          email: payload.email,
+        },
+      }
+    );
+    console.log(userDataUpdated);
+    const internData = await Admin.updateOne(
+      { _id: userData.profile },
+      {
+        $set: {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          contact: payload.contact,
+          street: payload.street,
+          brgy: payload.brgy,
+          municipality: payload.municipality,
+          province: payload.province,
+        },
+      }
+    );
+    console.log(internData);
   }
 }
 
