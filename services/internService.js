@@ -375,7 +375,8 @@ class InternService {
         const attendanceObj = {
           date: element.date,
           timeIn: phtDateTimeIn,
-          timeOut: phtDateTimeOut === null ? null : phtDateTimeOut,
+          timeOut: element.timeOut === null ? null : phtDateTimeOut,
+          totalHours: element.totalHours
         };
         return attendanceObj;
       })

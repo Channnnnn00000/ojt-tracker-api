@@ -10,7 +10,7 @@ const adminSchema = new mongoose.Schema({
     default: null,
   },
   contact: {
-    type: Number,
+    type: String,
     default: null,
   },
   street: {

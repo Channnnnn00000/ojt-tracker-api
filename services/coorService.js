@@ -7,9 +7,10 @@ const DailyTimeRecord = require("../models/DailyTimeRecord.Model");
 const jwtUtils = require("../utils/jwtUtils");
 const bcrypt = require("bcryptjs");
 const AcceptedApplicant = require("../models/AcceptedApplicant");
-const Coor = require("../models/Coordinator.Model");
+
 const VisitRequest = require("../models/VisitRequest.Model");
 const Evaluation = require("../models/Evaluation.Model");
+const Coor = require("../models/Coordinator.Model");
 
 class CoorService {
   // Get specific intern depends on the department
@@ -145,6 +146,35 @@ class CoorService {
     });
 
     return internEvaluation;
+  }
+  async updateCoorInformation(userId, payload) {
+    const userData = await User.findOne({ _id: userId });
+    const userDataUpdated = await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          email: payload.email,
+        },
+      }
+    );
+    console.log('====================================');
+    console.log(userData);
+    console.log('====================================');
+    const internData = await Coor.updateOne(
+      { _id: userData.profile },
+      {
+        $set: {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          contact: payload.contact,
+          street: payload.street,
+          brgy: payload.brgy,
+          municipality: payload.municipality,
+          province: payload.province,
+        },
+      }
+    );
+    console.log(internData);
   }
 }
 

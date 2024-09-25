@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const jwtUtils = require("../utils/jwtUtils")
+const jwtUtils = require("../utils/jwtUtils");
 const { Schema } = mongoose;
 
 const departmentSchema = new mongoose.Schema({
   name: { type: String, required: true, unique: true },
+  hours: { type: Number, required: true },
 
   createdAt: {
     type: String,

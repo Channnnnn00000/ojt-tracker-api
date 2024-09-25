@@ -55,6 +55,11 @@ class AdminService {
     const profileAdmin = new Admin({
       firstName: payload.firstName,
       lastName: payload.lastName,
+      contact: payload.contact,
+      street: payload.street,
+      brgy: payload.brgy,
+      municipality: payload.municipality,
+      province: payload.province,
     });
 
     await profileAdmin.save();
@@ -176,6 +181,7 @@ class AdminService {
       firstName: payload.firstName,
       lastName: payload.lastName,
       department: payload.department,
+      requiredHours: payload.hours
     });
     await internProfile.save();
 
@@ -434,7 +440,7 @@ class AdminService {
           dtrId: element._id,
           date: element.date,
           timeIn: phtDateTimeIn,
-          timeOut: phtDateTimeOut === null ? null : phtDateTimeOut,
+          timeOut: element.timeOut === null ? null : phtDateTimeOut,
         };
         return attendanceObj;
       })

@@ -63,6 +63,11 @@ router.patch(
   authMiddleware.verifyToken,
   coorController.doneRequest
 );
+router.patch(
+  "/change/info",
+  authMiddleware.verifyToken,
+  coorController.updateInformation
+);
 router.get(
   "/evaluation",
   authMiddleware.verifyToken,

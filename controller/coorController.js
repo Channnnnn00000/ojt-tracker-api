@@ -183,6 +183,21 @@ class CoorController {
       });
     }
   }
+  async updateInformation(req, res) {
+    console.log(req.body);
+    console.log(req.user.userId);
+    try {
+      const response = await coorService.updateCoorInformation(
+        req.user.userId,
+        req.body
+      );
+      return res.status(201).json(response);
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new CoorController();
