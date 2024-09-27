@@ -264,7 +264,7 @@ class HTEService {
 
         const onlineObj = {
           internId: internInfo._id,
-          name: internInfo.firstName + internInfo.lastName,
+          name: internInfo.firstName + ' ' +internInfo.lastName,
           timeIn: phtDateTimeIn,
           timeInLocation: element.timeInLocation,
           currentLocation: internInfo.currentLocation,
