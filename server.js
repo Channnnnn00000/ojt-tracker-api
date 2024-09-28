@@ -19,7 +19,7 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname + "/public")));
 app.use(
   express.urlencoded({
     extended: true,
@@ -39,7 +39,9 @@ app.options("*", cors());
 app.use(morgan("dev"));
 // app.use("/auth", authroutes);
 // app.use("/auth", useRoutes);
-
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.use("/api/v1/", conversationRoute);
 app.use("/api/v1/", messageRoute);
 
