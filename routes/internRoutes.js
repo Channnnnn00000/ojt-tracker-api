@@ -115,5 +115,10 @@ router.get(
   authMiddleware.verifyToken,
   internController.getEvaluationResults
 );
+router.patch(
+  "/check/status",
+  authMiddleware.verifyToken,
+  internController.checkTimeOutStatus
+);
 
 module.exports = router;

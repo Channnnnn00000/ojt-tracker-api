@@ -5,7 +5,6 @@ const internVacancySchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    unique: true,
   },
   requirements: {
     type: String,
@@ -22,7 +21,7 @@ const internVacancySchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    required: true,
+    required: true
   },
   hte: {
     type: mongoose.Schema.Types.ObjectId,

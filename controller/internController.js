@@ -344,6 +344,18 @@ class InternController {
       });
     }
   }
+  async checkTimeOutStatus(req, res) {
+    console.log(req.body)
+    console.log(req.user.userId)
+    try {
+      const response = await internService.checkTimeOutStatus(req.user.userId,req.body);
+      return res.status(201).json(response);
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new InternController();

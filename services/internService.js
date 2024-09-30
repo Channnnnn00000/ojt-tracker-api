@@ -354,12 +354,6 @@ class InternService {
       internId: profileData.profile,
     });
     const results = await Promise.all(
-      // attendanceList.map(async(element) => {
-      //   const attendanceObj = {
-      //     date: element.date,
-      //     timeIn: element.timeIn.toLocaleTimeString(),
-      //     timeOut: element.timeOut.toLocaleTimeString(),
-      //   }
       attendanceList.map(async (element) => {
         const utcDateIn = element.timeIn;
         const utcDateOut = element.timeOut;
@@ -465,6 +459,32 @@ class InternService {
     });
     console.log(evalResults);
     return evalResults;
+  }
+  async checkTimeOutStatus(userId,payload) {
+    console.log(payload)
+    const profileData = await User.findOne({ _id: userId });
+    const internProfile = await Intern.findOne(profileData.profile);
+    const applicationInfo = await InternApplication.findOne(
+      internProfile.acceptedInternship
+    );
+
+    const existingRecord = await DailyTimeRecord.findOne({
+      internId: profileData.profile,
+      jobId: applicationInfo.internVacancy,
+      date: payload.date
+    });
+    if(!existingRecord) {
+      const clockStatus = await Intern.updateOne(
+        { _id: internProfile._id },
+        {
+          $set: {
+            isClockIn: false,
+          },
+        }
+      );
+      return clockStatus
+    }
+
   }
 }
 
