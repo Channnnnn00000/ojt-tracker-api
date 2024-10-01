@@ -244,7 +244,7 @@ class HTEService {
 
     let today = new Date().toLocaleDateString();
     // const phDate = moment(today).tz("Asia/Manila").format("MM/DD/YYYY");
-    const phDate = moment().tz("Asia/Manila").format("MM/DD/YYYY");
+    const phDate = moment().tz("Asia/Manila").format("MM/D/YYYY");
 
     console.log(phDate);
     console.log(today);
