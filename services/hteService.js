@@ -249,7 +249,7 @@ class HTEService {
 
     const getOnlineIntern = await DailyTimeRecord.find({
       companyId: userData.profile,
-      date: phDate,
+      // date: phDate,
       timeOut: { $eq: null },
     });
     console.log(getOnlineIntern);
