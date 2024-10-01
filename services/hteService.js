@@ -242,10 +242,10 @@ class HTEService {
     const userData = await User.findOne({ _id: userId });
     const profileData = await HTE.findOne(userData.profile);
 
-    let today = new Date().toLocaleDateString();
-    // const phDateToday = moment.utc(today).tz("Asia/Manila")
-    // .format("h:mm:ss A");
-    console.log(today);
+    // let today = new Date().toLocaleDateString();
+    const phDate = moment(today).tz("Asia/Manila").format("YYYY-MM-DD");
+
+    console.log(phDate);
 
     const getOnlineIntern = await DailyTimeRecord.find({
       companyId: userData.profile,
