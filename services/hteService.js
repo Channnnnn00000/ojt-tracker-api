@@ -239,15 +239,17 @@ class HTEService {
   }
   async getOnlineIntern(userId) {
     let onlineInternArr = [];
-    const userData = await User.find({ _id: userId });
+    const userData = await User.findOne({ _id: userId });
     const profileData = await HTE.findOne(userData.profile);
 
     let today = new Date().toLocaleDateString();
     // const phDateToday = moment.utc(today).tz("Asia/Manila")
     // .format("h:mm:ss A");
+    console.log(today);
+
     const getOnlineIntern = await DailyTimeRecord.find({
-      companyId: profileData._id,
-      date: today,
+      companyId: userData.profile,
+      date: { $eq: today },
       timeOut: { $eq: null },
     });
     console.log(getOnlineIntern);
@@ -264,7 +266,7 @@ class HTEService {
 
         const onlineObj = {
           internId: internInfo._id,
-          name: internInfo.firstName + ' ' +internInfo.lastName,
+          name: internInfo.firstName + " " + internInfo.lastName,
           timeIn: phtDateTimeIn,
           timeInLocation: element.timeInLocation,
           currentLocation: internInfo.currentLocation,
