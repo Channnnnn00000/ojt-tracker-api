@@ -243,13 +243,14 @@ class HTEService {
     const profileData = await HTE.findOne(userData.profile);
 
     let today = new Date();
-    const phDate = moment(today).tz("Asia/Manila").format("MM/DD/YYYY");
+    // const phDate = moment(today).tz("Asia/Manila").format("MM/DD/YYYY");
+    const phDate = moment().tz("Asia/Manila").format("MM/DD/YYYY");
 
     console.log(phDate);
 
     const getOnlineIntern = await DailyTimeRecord.find({
       companyId: userData.profile,
-      // date: phDate,
+      date: phDate,
       timeOut: { $eq: null },
     });
     console.log(getOnlineIntern);
