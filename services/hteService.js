@@ -242,7 +242,7 @@ class HTEService {
     const userData = await User.findOne({ _id: userId });
     const profileData = await HTE.findOne(userData.profile);
 
-    // let today = new Date().toLocaleDateString();
+    let today = new Date().toLocaleDateString();
     const phDate = moment(today).tz("Asia/Manila").format("YYYY-MM-DD");
 
     console.log(phDate);
