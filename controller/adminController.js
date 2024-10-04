@@ -12,7 +12,7 @@ class AdminController {
       res.cookie("jwt", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
+        sameSite: 'None',
       });
       // res.setHeader("Authorization", `Bearer ${token}`);
       return res.status(201).json({ message: "Login Success" });
@@ -25,7 +25,7 @@ class AdminController {
   async logout(req, res) {
     await res.clearCookie("jwt", {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: 'None',
       secure: true,
     });
     await res.sendStatus(204);
