@@ -30,6 +30,17 @@ class AdminService {
   }
   // Registering the accounts
   async registerAdmin(payload) {
+    await sendEmail(
+      payload.email,
+      "Account Credentials",
+      {
+        // fullName:payload.fullName,
+        username: payload.username,
+        password: payload.password,
+      },
+      "./template/userCredentials.handlebars"
+    );
+
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
       username: payload.username,
@@ -68,7 +79,16 @@ class AdminService {
     await newUser.save();
   }
   async registerHTE(payload) {
-    console.log(payload);
+    await sendEmail(
+      payload.email,
+      "Account Credentials",
+      {
+        // fullName:payload.fullName,
+        username: payload.username,
+        password: payload.password,
+      },
+      "./template/userCredentials.handlebars"
+    );
 
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
@@ -108,6 +128,17 @@ class AdminService {
     await newUser.save();
   }
   async registerCoordinator(payload) {
+    await sendEmail(
+      payload.email,
+      "Account Credentials",
+      {
+        // fullName:payload.fullName,
+        username: payload.username,
+        password: payload.password,
+      },
+      "./template/userCredentials.handlebars"
+    );
+
     const hashedPassword = await bcrypt.hash(payload.password, 12);
     const newUser = new User({
       username: payload.username,
