@@ -81,6 +81,9 @@ dtrSchema.pre("save", function (next) {
     const totalMilliseconds = effectiveEnd - effectiveStart;
     const totalHours = totalMilliseconds / (1000 * 60 * 60);
 
+    if(totalHours > 8) {
+      totalHours = 8;
+    }
     this.totalHours = totalHours > 0 ? totalHours : 0;
   }
   // if (this.timeOut) {
