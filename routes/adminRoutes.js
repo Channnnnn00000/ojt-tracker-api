@@ -90,6 +90,10 @@ router.get(
   adminController.getHTEList
 );
 router.get(
+  "/admin/hte/list",
+  adminController.getHTEList
+);
+router.get(
   "/admin/hte/:id",
   authMiddleware.verifyToken,
   adminController.getHTEInternshipLists
