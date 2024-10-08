@@ -120,6 +120,7 @@ class AdminService {
       municipality: payload.municipality,
       province: payload.province,
       location: payload.mapLocation,
+      landMark: payload.landMark,
       // hasMoa: payload.hasMoa,
     });
     await profile.save();
@@ -360,6 +361,7 @@ class AdminService {
             province: payload.province,
             contactNumber: payload.contactNumber,
             location: payload.location,
+            landMark: payload.landMark
           },
         }
       );

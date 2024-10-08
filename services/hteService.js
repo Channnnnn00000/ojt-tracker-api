@@ -375,6 +375,7 @@ class HTEService {
           brgy: payload.brgy,
           street: payload.street,
           location: payload.location,
+          landMark: payload.landMark,
         },
       }
     );

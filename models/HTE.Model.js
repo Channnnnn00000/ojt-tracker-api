@@ -32,6 +32,9 @@ const hteSchema = new mongoose.Schema({
     },
     default: null,
   },
+  landMark: {
+    type: String,
+  },
   hasMoa: {
     type: String,
     default: "false",

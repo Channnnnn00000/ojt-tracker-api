@@ -450,7 +450,7 @@ class InternService {
     return passwordUpdated;
   }
   async getHteInformation(hteId) {
-    return await HTE.findOne({ _id: hteId });
+    return await HTE.findOne({ _id: hteId }).populate('internVacancy');
   }
   async getEvaluationResults(userId) {
     const userData = await User.findOne({ _id: userId });
