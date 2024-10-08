@@ -486,6 +486,9 @@ class InternService {
     }
 
   }
+  async getPDF() {
+    
+  }
 }
 
 module.exports = new InternService();
