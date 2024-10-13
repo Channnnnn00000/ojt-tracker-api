@@ -30,6 +30,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://ojtrackingsystem.vercel.app",
+      "https://ojtracker.vercel.app",
       "ws://localhost:8900",
     ],
     credentials: true,
