@@ -489,6 +489,18 @@ class InternService {
   async getPDF() {
     
   }
+  async updateInternEvaluation(internId,payload) {
+    const updateStatus = await Intern.updateOne(
+      { _id: internId },
+      {
+        $set: {
+          isEvaluationReady: payload.isEvaluationReady,
+          workedHours: payload.workedHours,
+        },
+      }
+    );
+
+  }
 }
 
 module.exports = new InternService();

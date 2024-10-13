@@ -120,5 +120,9 @@ router.patch(
   authMiddleware.verifyToken,
   internController.checkTimeOutStatus
 );
+router.patch(
+  "/update/evaluationstatus/:id",
+  internController.updateInternEval
+);
 
 module.exports = router;
