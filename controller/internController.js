@@ -367,6 +367,17 @@ class InternController {
       });
     }
   }
+  async updateInternEval(req, res) {
+
+    try {
+      const response = await internService.updateInternEvaluation(req.params.id,req.body);
+      return res.status(201).json({message: 'Success'});
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new InternController();
