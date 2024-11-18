@@ -291,6 +291,7 @@ class AdminService {
     if (profileData.role === "HTE") {
       await User.findByIdAndDelete(profileData._id);
       await HTE.findByIdAndDelete(profileData.profile);
+      await InternVacancy.findOneAndDelete({hte: profileData.profile})
       return {
         message: "Succesfully Deleted",
       };
