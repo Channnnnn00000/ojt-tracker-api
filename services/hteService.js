@@ -11,6 +11,7 @@ const VisitRequest = require("../models/VisitRequest.Model");
 const moment = require("moment-timezone");
 const Evaluation = require("../models/Evaluation.Model");
 const Coordinator = require("../models/Coordinator.Model");
+const sendEmailisting = require("../utils/email/sendEmailListing");
 
 class HTEService {
   async loginUser(username, password) {
@@ -31,6 +32,19 @@ class HTEService {
 
     newVacancy.hte = profileData._id;
     await newVacancy.save();
+    const users = await User.find({ role: 'Intern' }, 'email'); // Filter by role and only retrieve the email field
+    console.log(users);
+
+    const emailList = users.map(user => user.email);
+    console.log(emailList)
+    await sendEmailisting(emailList, "ALERT! NEW INTERNSHIP", {
+      company: profileData.fullName,
+      name: payload.title,
+      slots: payload.slots,
+      address: payload.location
+    }, "./template/hteListing.handlebars")
+
+
   }
 
   // Get internship you posted
@@ -404,7 +418,7 @@ class HTEService {
     return await Intern.findOne({ _id: id }).populate("dailyTimeRecords");
   }
   // Trigger when the intern not clock out
-  async updateTimeOutData() {}
+  async updateTimeOutData() { }
 }
 
 module.exports = new HTEService();
